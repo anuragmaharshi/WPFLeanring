@@ -58,10 +58,17 @@
     <Compile Include="ButtonUi.xaml.cs">
       <DependentUpon>ButtonUi.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataGridUI.xaml.cs">
+      <DependentUpon>DataGridUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataTriggers.xaml.cs">
       <DependentUpon>DataTriggers.xaml</DependentUpon>
     </Compile>
     <Page Include="ButtonUi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataGridUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -87,6 +94,8 @@
     <Compile Include="FirstUI.xaml.cs">
       <DependentUpon>FirstUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InitialiseAndLoadData.cs" />
+    <Compile Include="LetterRecord.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -1,0 +1,202 @@
+﻿<Window x:Class="LearnWpf.DataGridUI"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LearnWpf"
+        mc:Ignorable="d"
+        Title="DataGridUI" Height="450" Width="800">
+    <StackPanel Orientation="Vertical">
+        <StackPanel>
+            <Grid  Background="SandyBrown">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station" Padding="5" />
+                <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" BorderThickness="2" Name="PSFilter">
+                    <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"/>
+                    </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!--Topic Area-->
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="Topic/Area" Padding="5" />
+                <ComboBox Grid.Row="1" Grid.Column="4" Padding="5" BorderThickness="2" Name="TopicFilter">
+                    <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"/>
+                    </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!--Name of officer-->
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="Police Officer" Padding="5"/>
+                <ComboBox Grid.Row="2" Grid.Column="2" Padding="5" Margin="0,5,0,0"  BorderThickness="2" Name="POFilter">
+                    <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"/>
+                    </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!--Other Seach element-->
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="Other Filter" Padding="5"/>
+                <TextBox Grid.Row="2" Grid.Column=" 4">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                            <Style.Resources>
+                                <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                    <VisualBrush.Visual>
+                                        <Label Content="Search" Foreground="Black" />
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Style.Resources>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                </Trigger>
+                                <Trigger Property="Text" Value="{x:Null}">
+                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter Property="Background" Value="White" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <!--Search Button-->
+                <Button Content="Search" Grid.Row="2" Grid.Column="5" Margin="5,5,0,0" Width="80"/>
+
+
+            </Grid>
+        </StackPanel>
+         <StackPanel Orientation="Horizontal">
+            <DataGrid Height="300"  Width="560" HorizontalAlignment="Left" Name="Dgrid1"  IsReadOnly="True"
+                  HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" SelectionMode="Single"
+                  BorderBrush="Gray" BorderThickness="5" Background="LightGray" RowBackground="LightYellow" AlternatingRowBackground="LightBlue" 
+                  AutoGenerateColumns="False" RowDetailsVisibilityMode ="VisibleWhenSelected" SelectionChanged="Dgrid1_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="PoliceStation" Binding="{Binding PoliceStation}" />
+                    <DataGridTextColumn Header="Topic/Area" Binding="{Binding TopicArea}" />
+                    <DataGridTextColumn Header="Date of Recipt" Binding="{Binding DateOfRecipt}" />
+                    <DataGridTextColumn Header="Letter Number" Binding="{Binding LetterNumber}" />
+                    <DataGridTextColumn Header="D/R Number" Binding="{Binding DRNumber}" />
+                    <DataGridTextColumn Header="D/R Date" Binding="{Binding DRDate}" />
+                    <DataGridTextColumn Header="Police Officer" Binding="{Binding PoliceOfficer}" />
+                </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate >
+                        <DockPanel Background="GhostWhite">
+                            <TextBox Text="{Binding Remarks}"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            </DataGrid>
+            <Grid  Height="300" Background="Bisque">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderThickness="2" BorderBrush="Aquamarine" Grid.ColumnSpan="3" Grid.RowSpan="9"/>
+                <!--Police station-->
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station"  Padding="5"/>
+                <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" Name="PSList">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!--Topic Area-->
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="Topic/Area" Padding="5" />
+                <ComboBox  Grid.Row="2" Grid.Column="2" Padding="5" Name="TopicList">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!--Date of recipt-->
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="Date of Recipt" Padding="5" />
+                <DatePicker Grid.Row="3" Grid.Column="2"  Name="Reciptdate" SelectedDate="{Binding Path=ReciptDate,Mode=TwoWay}"/>
+
+                <!--Letter no-->
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="Letter Number" Padding="5" />
+                <TextBox Grid.Row="4" Grid.Column="2" Name="LetterNo" />
+
+                <!--Dispatch Number -->
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="D/R Number" Padding="5" />
+                <TextBox Grid.Row="5" Grid.Column="2" Name="DRno"/>
+
+                <!--Dispatch Dispatch-->
+                <TextBlock Grid.Row="6" Grid.Column="1" Text="Date of D/R" Padding="5" />
+                <DatePicker Grid.Row="6" Grid.Column="2" Name="DrDt"/>
+
+                <!--Police Office-->
+                <TextBlock Grid.Row="7" Grid.Column="1" Text="Police Officer" Padding="5" />
+
+                <ComboBox  Grid.Row="7" Grid.Column="2" Padding="5" Name="PoliceOfficer" BorderThickness="2" Margin="0,5,0,0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ScrollViewer Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2">
+                    <TextBox  Name="Remarks" />
+                </ScrollViewer>
+
+                <!--Save Cancel button-->
+                <StackPanel Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3" Margin="5,5,0,0" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <Button Content="Save" Margin="0,0,0,0" Height="25" Width="80"/>
+                    <Separator Width="30" Background="Transparent"/>
+                    <Button Content="Cancel" Margin="5,0,0,0" Height="25" Width="80"/>
+                </StackPanel>
+
+            </Grid>
+
+        </StackPanel>
+    </StackPanel>
+    
+   
+</Window>

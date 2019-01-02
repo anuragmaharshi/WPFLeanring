@@ -155,11 +155,11 @@
                 <TextBox Grid.Row="4" Grid.Column="2" />
 
                 <!--Dispatch Number -->
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="Dispatch Number" Padding="5" />
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="D/R Number" Padding="5" />
                 <TextBox Grid.Row="5" Grid.Column="2" />
 
                 <!--Dispatch Dispatch-->
-                <TextBlock Grid.Row="6" Grid.Column="1" Text="Date of Dispatch" Padding="5" />
+                <TextBlock Grid.Row="6" Grid.Column="1" Text="Date of D/R" Padding="5" />
                 <DatePicker Grid.Row="6" Grid.Column="2" />
 
                 <!--Police Office-->
