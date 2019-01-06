@@ -61,14 +61,24 @@
     <Compile Include="DataGridUI.xaml.cs">
       <DependentUpon>DataGridUI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataGridUI2.xaml.cs">
+      <DependentUpon>DataGridUI2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataTriggers.xaml.cs">
       <DependentUpon>DataTriggers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TabControl.xaml.cs">
+      <DependentUpon>TabControl.xaml</DependentUpon>
     </Compile>
     <Page Include="ButtonUi.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DataGridUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataGridUI2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -105,6 +115,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="NormalTrigger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

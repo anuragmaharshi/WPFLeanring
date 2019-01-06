@@ -1,0 +1,27 @@
+﻿<Window x:Class="LearnWpf.DataTriggers"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LearnWpf"
+        mc:Ignorable="d"
+        Title="StylesAndTriggers" Height="450" Width="800">
+    <Window.Resources>
+        <SolidColorBrush Color="AliceBlue" x:Key="Red"></SolidColorBrush>
+        <SolidColorBrush Color="Gray" x:Key="Gray"></SolidColorBrush>
+
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Button Height="100" Width="200" HorizontalAlignment="Left" Background="{StaticResource Red}" Content="Button 1" Foreground="{StaticResource Gray}"/>
+        <Button Height="100" Width="200" Content="Button 2" HorizontalAlignment="Right"/>
+    </Grid>
+</Window>

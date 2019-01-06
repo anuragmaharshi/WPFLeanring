@@ -66,7 +66,7 @@ namespace LearnWpf
             Reciptdate.SelectedDate = singleData.ReciptDate;
             LetterNo.Text = singleData.LetterNumber.ToString();
             DRno.Text = singleData.DRNumber.ToString();
-            DrDt.SelectedDate = singleData.dRDate;
+            //DrDt.SelectedDate = singleData.dRDate;
             Remarks.Text = singleData.Remarks;
         }
     }
