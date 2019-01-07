@@ -23,7 +23,7 @@ namespace LearnWpf
     {
         
         LetterRecord singleData;
-        IEnumerable<string> listPoliceStation, listTopic, listPoliceOfficer;
+        List<string> listPoliceStation, listTopic, listPoliceOfficer;
         public DataGridUI2()
         {
             //CultureInfo ci = CultureInfo.CreateSpecificCulture(CultureInfo.CurrentCulture.Name);
@@ -38,15 +38,15 @@ namespace LearnWpf
             var Data = InitialiseAndLoadData.GetData();
             Dgrid1.ItemsSource = Data;
 
-            listPoliceStation = Data.Select(o => o.PoliceStation).Distinct();
+            listPoliceStation = Data.Select(o => o.PoliceStation).Distinct().ToList();
           
             PSFilter.ItemsSource = listPoliceStation;
 
-            listTopic = Data.Select(o => o.TopicArea).Distinct();
+            listTopic = Data.Select(o => o.TopicArea).Distinct().ToList();
           
             TopicFilter.ItemsSource = listTopic;
 
-            listPoliceOfficer = Data.Select(o => o.PoliceOfficer).Distinct();
+            listPoliceOfficer = Data.Select(o => o.PoliceOfficer).Distinct().ToList();
             
             POFilter.ItemsSource = listPoliceOfficer;
 
@@ -54,6 +54,20 @@ namespace LearnWpf
 
             Dgrid1.Width = this.Width;
             Dgrid1.Height = this.Height;
+
+            AddGrid.Width = this.Width;
+            AddGrid.Height = this.Height;
+
+            PSList.ItemsSource = listPoliceStation;
+            PoliceOfficerList.ItemsSource = listPoliceOfficer;
+            TopicList.ItemsSource = listTopic;
+
+            AdminPSList.ItemsSource = listPoliceStation;
+            AdminPOList.ItemsSource = listPoliceOfficer;
+            AdminTopicList.ItemsSource = listTopic;
+
+            AdminTab.Width = this.Width;
+            AdminTab.Height = this.Height;
         }
         private void Dgrid1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

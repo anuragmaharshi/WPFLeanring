@@ -21,10 +21,29 @@
             <Setter Property="BorderThickness" Value="5" />
             <Setter Property="UseLayoutRounding" Value="True"/>
         </Style>
-  
+        
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="SaddleBrown"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Black"></Setter>
+                    <Setter Property="FontFamily" Value="Calibri"></Setter>
+                
+                    <Setter Property="FontWeight" Value="Bold"></Setter>
+                   
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            
+        </Style>
     </Window.Resources>
     <StackPanel>
-        <Border Background="#99FFFFFF" BorderBrush="#CCCCFF" BorderThickness="2" HorizontalAlignment="Left" Padding="3" Margin="0,0,0,0" Name="Border">
+        <Border Background="#99FFFFFF" BorderBrush="#CCCCFF" BorderThickness="1" HorizontalAlignment="Left" Padding="0" Margin="0,0,0,0" Name="Border">
             <TabControl Name="Tabs1" TabStripPlacement="Top" Background="LightGray" BorderBrush="Blue" Margin="10,10,0,5">
                 <TabItem Header="Reports" IsSelected="True" Background="Gray">
                     <StackPanel Orientation="Vertical" Name="ReportGrid">
@@ -214,10 +233,158 @@
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Add New" Background="Gray">
-                    <TextBlock Text="Add new Element"/>
+                    <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AddGrid">
+                        <Grid  Height="Auto" Background="LightGreen" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                            </Grid.ColumnDefinitions>
+                           
+                            <!--Police station-->
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station"  Padding="5"/>
+                            <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" Name="PSList">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <!--Topic Area-->
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="Topic/Area" Padding="5" />
+                            <ComboBox  Grid.Row="2" Grid.Column="2" Padding="5" Name="TopicList">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <!--Date of recipt-->
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="Date of Recipt" Padding="5" />
+                            <DatePicker Grid.Row="3" Grid.Column="2"  Name="Reciptdate" SelectedDate="{Binding Path=ReciptDate,Mode=TwoWay}"/>
+
+                            <!--Letter no-->
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="Letter Number" Padding="5" />
+                            <TextBox Grid.Row="4" Grid.Column="2" Name="LetterNo" />
+
+                            <!--Dispatch Number -->
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="D/R Number" Padding="5" />
+                            <TextBox Grid.Row="5" Grid.Column="2" Name="DRno"/>
+
+                            <!--Dispatch Dispatch-->
+                            <TextBlock Grid.Row="6" Grid.Column="1" Text="Date of D/R" Padding="5" />
+                            <DatePicker Grid.Row="6" Grid.Column="2" Name="DrDt"/>
+
+                            <!--Police Office-->
+                            <TextBlock Grid.Row="7" Grid.Column="1" Text="Police Officer" Padding="5" />
+
+                            <ComboBox  Grid.Row="7" Grid.Column="2" Padding="5" Name="PoliceOfficerList" BorderThickness="2" Margin="0,5,0,0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ScrollViewer Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" >
+                                <TextBox  Name="Remarks" />
+                            </ScrollViewer>
+
+                            <!--Save Cancel button-->
+                            <StackPanel Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3" Margin="5,5,0,0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                <Button Content="Save" Margin="0,0,0,0" Height="25" Width="80"/>
+                                <Separator Width="230" Background="Transparent"/>
+                                <Button Content="Cancel" Margin="5,0,0,0" Height="25" Width="80"/>
+                            </StackPanel>
+
+                        </Grid>
+                    </StackPanel>
+                    
                 </TabItem>
                 <TabItem Header="Admin" Background="Gray">
+                    <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AdminTab">
+                        <Grid  Height="Auto" Background="LightGreen" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                            </Grid.ColumnDefinitions>
 
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station"/>
+                            <TextBox Grid.Row="2" Grid.Column="1"/>
+                            <Button     Grid.Row="2" Grid.Column="2" Content="Add"/>
+
+                            <DataGrid  Grid.Row="4" Grid.Column="1" Margin="0,5,0,0" Grid.ColumnSpan="2" 
+                                   Name="AdminPSList" AutoGenerateColumns="False" HorizontalAlignment="Stretch" 
+                                   HorizontalContentAlignment="Stretch" ColumnWidth="*" CanUserAddRows="False" IsReadOnly="False"
+                                   Background="LightGray">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Path=.}" Header="List of All Police Station"/>
+                                   </DataGrid.Columns>
+                            </DataGrid>
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="Police Officer"/>
+                            <TextBox Grid.Row="2" Grid.Column="3"/>
+                            <Button     Grid.Row="2" Grid.Column="4" Content="Add"/>
+
+                            <DataGrid  Grid.Row="4" Grid.Column="3" Margin="0,5,0,0" Grid.ColumnSpan="2" 
+                                   Name="AdminPOList" AutoGenerateColumns="False" HorizontalAlignment="Stretch" 
+                                   HorizontalContentAlignment="Stretch" ColumnWidth="*" CanUserAddRows="False"
+                                   Background="LightGray">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Path=.}" Header="List of All Police officer" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <TextBlock Grid.Row="1" Grid.Column="5" Text="Topic / Area"/>
+                            <TextBox Grid.Row="2" Grid.Column="5"/>
+                            <Button     Grid.Row="2" Grid.Column="6" Content="Add"/>
+                            <DataGrid  Grid.Row="4" Grid.Column="5" Margin="0,5,0,0" Grid.ColumnSpan="2" 
+                                   Name="AdminTopicList" AutoGenerateColumns="False" HorizontalAlignment="Stretch" 
+                                   HorizontalContentAlignment="Stretch" ColumnWidth="*" CanUserAddRows="False"
+                                   Background="LightGray">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Path=.}" Header="List of All Topic/Area" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </StackPanel>
+                        
                 </TabItem>
                 <TabItem Header="About Us" Background="Gray">
 
