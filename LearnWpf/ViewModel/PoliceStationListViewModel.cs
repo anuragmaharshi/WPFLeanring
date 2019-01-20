@@ -1,0 +1,112 @@
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using LearnWpf.Services;
+using SqliteDataLayer;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LearnWpf.ViewModel
+{
+    public class PoliceStationListViewModel: ViewModelBase
+    {
+        IPoliceStationRepository repo;
+        ObservableCollection<PoliceStation> _PoliceStations;
+        public RelayCommand AddPoliceStation { get; private set; }
+        public RelayCommand DeletePoliceStation { get; private set; }
+        public RelayCommand SavePoliceStation { get; private set; }
+        private string _psname = "";
+        private PoliceStation _selectedPoliceStation;
+
+        //constructor
+        public PoliceStationListViewModel()
+        {
+            repo = new PoliceStationRepository();
+            AddPoliceStation = new RelayCommand(OnAdd);
+            DeletePoliceStation = new RelayCommand(OnDelete,CanDelete);
+            SavePoliceStation = new RelayCommand(OnSave, CanSave);
+        }
+
+       
+
+        #region All Properties
+        public ObservableCollection<PoliceStation> PoliceStations
+        {
+            get { return _PoliceStations; }
+            set { _PoliceStations = value;RaisePropertyChanged("PoliceStations"); }
+            
+        }
+
+        public PoliceStation SelectedPoliceStation
+        {
+            get
+            {
+                return _selectedPoliceStation;
+            }
+            set
+            {
+                _selectedPoliceStation = value;
+                DeletePoliceStation.RaiseCanExecuteChanged();
+            }
+        }
+        public string NewPsname
+        {
+            get { return _psname; }
+            set
+            {
+                _psname = value;
+                RaisePropertyChanged("NewPsname");
+                //AddPoliceStation.RaiseCanExecuteChanged(); // this code will work with CanAdd function.
+            }
+        }
+        #endregion
+
+        #region All methods
+        public void LoadData()
+        {
+            var data= repo.GetPoliceStationsAsync().Result.ToList();
+            ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
+            foreach (var item in data)
+                PSData.Add(item);
+            PoliceStations = PSData;
+        }
+
+        private void OnAdd()
+        {
+            PoliceStation PS = new PoliceStation() { Name = NewPsname };
+            NewPsname = "";
+            repo.AddPoliceStationAsync(PS);
+            PoliceStations.Add(PS);
+        
+            //LoadData();
+
+        }
+
+        private void OnDelete()
+        {
+            
+            repo.DeletePoliceStationAsync(SelectedPoliceStation.Id);
+            PoliceStations.Remove(SelectedPoliceStation);
+        }
+
+        private bool CanDelete()
+        {
+            return SelectedPoliceStation!=null;
+        }
+
+        private void OnSave()
+        {
+            repo.UpdatePoliceStationAsync(SelectedPoliceStation);
+        }
+
+        private bool CanSave()
+        {
+            return true;
+        }
+        #endregion
+
+    }
+}

@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LearnWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding Title}" Height="450" Width="800"
+        DataContext="{Binding Main, Source={StaticResource Locator}}"  
+        >
 
     <Window.Resources>
         <SolidColorBrush Color="Red" x:Key="RedBrush"/>
         <SolidColorBrush Color="Blue" x:Key="BlueBrush"/>
     </Window.Resources>
     <Grid>
-        <TextBox Height="100" Width="200" Text="default" Background="{StaticResource RedBrush}"></TextBox>
+        <local:PolicsStationList/>
     </Grid>
 </Window>
