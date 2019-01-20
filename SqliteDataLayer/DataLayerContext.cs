@@ -11,7 +11,7 @@ namespace SqliteDataLayer
 {
      public class DataLayerContext:DbContext
     {
-        public DataLayerContext() : base("name = DataLayerContext") { }
+        public DataLayerContext() : base("name = SqliteConnStr") { }
 
         public DataLayerContext(string filename) : base(new SQLiteConnection()
         {
@@ -39,7 +39,9 @@ namespace SqliteDataLayer
 
         public DbSet<PoliceStation> PoliceStations { get; set; }
 
-       
+        public DbSet<PoliceOfficer> PoliceOfficers { get; set; }
+
+        public DbSet<TopicsAndArea> TopicsAndAreas { get; set; }
 
     }
    

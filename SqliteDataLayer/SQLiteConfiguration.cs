@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace SqliteDataLayer
 {
-    class SQLiteConfiguration : DbConfiguration
+    [DbConfigurationType(typeof(SQLiteConfiguration))]
+    public class SQLiteConfiguration : DbConfiguration
     {
         public SQLiteConfiguration()
         {

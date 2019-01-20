@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LearnWpf"
+        xmlns:views="clr-namespace:LearnWpf.Views"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="450" Width="800"
+        Title="{Binding Title}" Height="450" Width="1000"
         DataContext="{Binding Main, Source={StaticResource Locator}}"  
         >
 
@@ -14,6 +15,10 @@
         <SolidColorBrush Color="Blue" x:Key="BlueBrush"/>
     </Window.Resources>
     <Grid>
-        <local:PolicsStationList/>
+        <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AdminTab">
+            <views:PoliceOfficerList/>
+            <views:PoliceStationList/>
+            <views:TopicAndAreaList/>
+        </StackPanel>
     </Grid>
 </Window>

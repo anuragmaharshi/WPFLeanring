@@ -24,10 +24,14 @@ namespace LearnWpf.ViewModel
         //constructor
         public PoliceStationListViewModel()
         {
-            repo = new PoliceStationRepository();
-            AddPoliceStation = new RelayCommand(OnAdd);
-            DeletePoliceStation = new RelayCommand(OnDelete,CanDelete);
-            SavePoliceStation = new RelayCommand(OnSave, CanSave);
+            if (!ViewModelBase.IsInDesignModeStatic)
+            {
+                //Code that throws the exception
+                repo = new PoliceStationRepository();
+                AddPoliceStation = new RelayCommand(OnAdd);
+                DeletePoliceStation = new RelayCommand(OnDelete, CanDelete);
+                SavePoliceStation = new RelayCommand(OnSave, CanSave);
+            }
         }
 
        

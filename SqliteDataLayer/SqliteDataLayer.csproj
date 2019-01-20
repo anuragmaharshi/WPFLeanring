@@ -61,9 +61,11 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="DataLayerContext.cs" />
+    <Compile Include="PoliceOfficer.cs" />
     <Compile Include="PoliceStation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLiteConfiguration.cs" />
+    <Compile Include="TopicsAndArea.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -33,7 +33,7 @@ namespace LearnWpf.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             if (ViewModelBase.IsInDesignModeStatic)
             {
-
+                return;
             }
                 //if (ViewModelBase.IsInDesignModeStatic)
                 //{

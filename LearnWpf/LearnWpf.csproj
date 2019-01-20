@@ -103,18 +103,30 @@
     <Compile Include="DataTriggers.xaml.cs">
       <DependentUpon>DataTriggers.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PolicsStationList.xaml.cs">
-      <DependentUpon>PolicsStationList.xaml</DependentUpon>
+    <Compile Include="Services\ITopicAndAreaRepository.cs" />
+    <Compile Include="Services\TopicAndAreaRepository.cs" />
+    <Compile Include="ViewModel\TopicAndAreaListViewModel.cs" />
+    <Compile Include="Views\PoliceStationList.xaml.cs">
+      <DependentUpon>PoliceStationList.xaml</DependentUpon>
     </Compile>
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Services\IPoliceOfficerRepository.cs" />
     <Compile Include="Services\IPoliceStationRepository.cs" />
+    <Compile Include="Services\PoliceOfficerRepository.cs" />
     <Compile Include="Services\PoliceStationRepository.cs" />
     <Compile Include="TabControl.xaml.cs">
       <DependentUpon>TabControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PoliceOfficerListViewModel.cs" />
     <Compile Include="ViewModel\PoliceStationListViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\PoliceOfficerList.xaml.cs">
+      <DependentUpon>PoliceOfficerList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TopicAndAreaList.xaml.cs">
+      <DependentUpon>TopicAndAreaList.xaml</DependentUpon>
+    </Compile>
     <Page Include="ButtonUi.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -163,11 +175,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PolicsStationList.xaml">
+    <Page Include="Views\PoliceStationList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PoliceOfficerList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TopicAndAreaList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

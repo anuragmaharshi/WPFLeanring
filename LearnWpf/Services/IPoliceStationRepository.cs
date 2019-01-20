@@ -11,8 +11,8 @@ namespace LearnWpf.Services
     {
         Task<List<PoliceStation>> GetPoliceStationsAsync();
         Task<PoliceStation> GetPoliceStationAsync(int id);
-        Task<PoliceStation> AddPoliceStationAsync(PoliceStation customer);
-        Task<PoliceStation> UpdatePoliceStationAsync(PoliceStation customer);
-        Task DeletePoliceStationAsync(int customerId);
+        Task<PoliceStation> AddPoliceStationAsync(PoliceStation policeStation);
+        Task<PoliceStation> UpdatePoliceStationAsync(PoliceStation policeStation);
+        Task DeletePoliceStationAsync(int Id);
     }
 }

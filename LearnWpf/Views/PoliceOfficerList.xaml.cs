@@ -13,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LearnWpf
+namespace LearnWpf.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for PoliceOfficerList.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PoliceOfficerList : UserControl
     {
-        public MainWindow()
+        public PoliceOfficerList()
         {
             InitializeComponent();
-            this.Height = SystemParameters.WorkArea.Height;
-            this.Width = SystemParameters.WorkArea.Width;
-            this.WindowStyle = WindowStyle.SingleBorderWindow;
-            this.WindowState = WindowState.Maximized;
         }
     }
 }
