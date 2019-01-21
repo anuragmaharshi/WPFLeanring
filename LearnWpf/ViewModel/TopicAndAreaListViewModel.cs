@@ -50,6 +50,7 @@ namespace LearnWpf.ViewModel
             {
                 _selectedTopicOrArea = value;
                 DeleteTopicOrAreaStation.RaiseCanExecuteChanged();
+                SaveTopicOrAreaStation.RaiseCanExecuteChanged();
             }
         }
         public string NewTOrAName
@@ -97,11 +98,12 @@ namespace LearnWpf.ViewModel
         private void OnSave()
         {
             repo.UpdateTopicAndAreaAsync(SelectedTopicOrArea);
+            SelectedTopicOrArea = null;
         }
 
         private bool CanSave()
         {
-            return true;
+            return SelectedTopicOrArea != null; 
         }
         #endregion
     }

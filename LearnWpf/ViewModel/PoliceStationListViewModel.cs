@@ -54,6 +54,7 @@ namespace LearnWpf.ViewModel
             {
                 _selectedPoliceStation = value;
                 DeletePoliceStation.RaiseCanExecuteChanged();
+                SavePoliceStation.RaiseCanExecuteChanged();
             }
         }
         public string NewPsname
@@ -84,9 +85,6 @@ namespace LearnWpf.ViewModel
             NewPsname = "";
             repo.AddPoliceStationAsync(PS);
             PoliceStations.Add(PS);
-        
-            //LoadData();
-
         }
 
         private void OnDelete()
@@ -104,11 +102,12 @@ namespace LearnWpf.ViewModel
         private void OnSave()
         {
             repo.UpdatePoliceStationAsync(SelectedPoliceStation);
+            SelectedPoliceStation = null;
         }
 
         private bool CanSave()
         {
-            return true;
+            return SelectedPoliceStation != null; 
         }
         #endregion
 

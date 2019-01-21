@@ -51,6 +51,7 @@ namespace LearnWpf.ViewModel
             {
                 _selectedPoliceOfficer = value;
                 DeletePoliceOfficer.RaiseCanExecuteChanged();
+                SavePoliceOfficer.RaiseCanExecuteChanged();
             }
         }
         public string NewPOname
@@ -98,11 +99,12 @@ namespace LearnWpf.ViewModel
         private void OnSave()
         {
             repo.UpdatePoliceOfficerAsync(SelectedPoliceOfficer);
+            SelectedPoliceOfficer = null;
         }
 
         private bool CanSave()
         {
-            return true;
+            return SelectedPoliceOfficer != null;
         }
         #endregion
     }

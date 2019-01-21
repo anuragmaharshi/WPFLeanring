@@ -16,9 +16,9 @@
     </Window.Resources>
     <Grid>
         <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AdminTab">
-            <views:PoliceOfficerList/>
-            <views:PoliceStationList/>
-            <views:TopicAndAreaList/>
+            <views:PoliceOfficerList Width="300"/>
+            <views:PoliceStationList Width="300"/>
+            <views:TopicAndAreaList Width="300"/>
         </StackPanel>
     </Grid>
 </Window>
