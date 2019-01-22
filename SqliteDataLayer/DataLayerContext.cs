@@ -43,6 +43,9 @@ namespace SqliteDataLayer
 
         public DbSet<TopicsAndArea> TopicsAndAreas { get; set; }
 
+        public DbSet<LetterRecord> LetterRecords { get; set; }
+        public  DbSet<Status> Status { get; set; }
+
     }
    
 }
