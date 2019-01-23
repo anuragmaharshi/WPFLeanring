@@ -35,6 +35,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="10"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -68,19 +69,45 @@
 
                 <!--Date of recipt-->
                 <TextBlock Grid.Row="3" Grid.Column="1" Text="Date of Recipt" Padding="5" />
-                <DatePicker Grid.Row="3" Grid.Column="2"  Name="Reciptdate" SelectedDate="{Binding ReciptDate}"/>
+                <DatePicker Grid.Row="3" Grid.Column="2"  Name="Reciptdate" SelectedDate="{Binding ReciptDate}">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox" >
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                        </TextBox>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
 
                 <!--Letter no-->
                 <TextBlock Grid.Row="4" Grid.Column="1" Text="Letter Number" Padding="5" />
-                <TextBox Grid.Row="4" Grid.Column="2" Name="LetterNo" Text="{Binding LetterNumber}"/>
+                <TextBox Grid.Row="4" Grid.Column="2" Name="LetterNo" Text="{Binding LetterNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!--Dispatch Number -->
                 <TextBlock Grid.Row="5" Grid.Column="1" Text="D/R Number" Padding="5" />
-                <TextBox Grid.Row="5" Grid.Column="2" Name="DRno" Text="{Binding DrNumber}"/>
+                <TextBox Grid.Row="5" Grid.Column="2" Name="DRno" Text="{Binding DrNumber,Mode=TwoWay}"/>
 
                 <!--Dispatch Dispatch-->
                 <TextBlock Grid.Row="6" Grid.Column="1" Text="Date of D/R" Padding="5" />
-                <DatePicker Grid.Row="6" Grid.Column="2" Name="DrDt" SelectedDate="{Binding DRDate}"/>
+                <DatePicker Grid.Row="6" Grid.Column="2" Name="DrDt" SelectedDate="{Binding DRDate}">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox" >
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                        </TextBox>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
 
                 <!--Police Office-->
                 <TextBlock Grid.Row="7" Grid.Column="1" Text="Police Officer" Padding="5" />
@@ -111,7 +138,7 @@
                     <Separator Width="230" Background="Transparent"/>
                     <Button Content="Cancel" Margin="5,0,0,0" Height="25" Width="80" Command="{Binding Path=CancelRecord}"/>
                 </StackPanel>
-
+                <TextBlock Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="2" Text="{Binding SaveText}"/>
             </Grid>
         </StackPanel>
     </Grid>

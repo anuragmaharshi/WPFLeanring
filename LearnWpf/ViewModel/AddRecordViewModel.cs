@@ -92,25 +92,45 @@ namespace LearnWpf.ViewModel
             set
             {
                 _receiptDate = value;
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
                 RaisePropertyChanged("ReciptDate");
 
             }
         }
 
-        private int _letterNumber;
+        private string _letterNumber ;
 
-        public int LetterNumber
+        public string LetterNumber
         {
             get { return _letterNumber; }
-            set { _letterNumber = value; RaisePropertyChanged("LetterNumber"); }
+            set {
+                //_letterNumber = value;
+                if (value != "")
+                    _letterNumber = value;
+                else
+                    _letterNumber = null;
+                RaisePropertyChanged("LetterNumber");
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+            }
         }
 
-        private int _dRnumber;
+        private string _dRnumber;
 
-        public int DrNumber
+        public string DrNumber
         {
             get { return _dRnumber; }
-            set { _dRnumber = value; RaisePropertyChanged("DrNumber"); }
+            set {
+                if (value != "")
+                    _dRnumber = value;
+                else
+                    _dRnumber = null;
+                //_dRnumber = value;
+                RaisePropertyChanged("DrNumber");
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+            }
         }
 
 
@@ -121,9 +141,11 @@ namespace LearnWpf.ViewModel
             get { return _drDate; }
             set
             {
+              
                 _drDate = value;
                 RaisePropertyChanged("DRDate");
-
+                CancelRecord.RaiseCanExecuteChanged();
+                AddNewRecord.RaiseCanExecuteChanged();
             }
         }
 
@@ -169,37 +191,65 @@ namespace LearnWpf.ViewModel
             get { return _remarks; }
             set { _remarks = value; }
         }
+
+        private string _saveText;
+        public string SaveText
+        {
+            get { return _saveText; }
+            set { _saveText = value; RaisePropertyChanged("SaveText"); }
+        }
         #endregion
         private bool canAdd()
         {
-            return SelectedPS!=null && SelectedTA != null && SelectedPO != null;
+            return SelectedPS!=null && SelectedTA != null && SelectedPO != null 
+                && LetterNumber != null && DrNumber!=null && DRDate!=null && ReciptDate!=null;
         }
 
         private void OnAdd()
         {
             SqliteDataLayer.LetterRecord record = new SqliteDataLayer.LetterRecord();
-            record.LetterNumber = LetterNumber;
+            record.LetterNumber = long.Parse(LetterNumber);
             record.ReciptDate = ReciptDate;
             record.TopicAreaID = SelectedTA.Id;
             record.PoliceOfficerID = SelectedPO.Id;
-            record.PoliceStationID = 33;
-            record.DRNumber = DrNumber;
+            record.PoliceStationID = SelectedPS.Id;
+            record.DRNumber = long.Parse(DrNumber);
             record.DRDate = DRDate;
-            record.StatusID = 5;
+            record.StatusID = 1;
             record.Remarks = Remarks;
-            AddRepo.AddLetterRecordAsync(record).Wait();
+            try
+            {
+                AddRepo.AddLetterRecordAsync(record).Wait();
+                SaveText = "Record added successfully.";
+            }
+            catch
+            {
+                SaveText = "Unable to add record.";
+            }
+            ResetUI();
         }
 
         private bool canCancel()
         {
-            return SelectedPS != null || SelectedTA != null || SelectedPO != null;
+            return SelectedPS != null || SelectedTA != null || SelectedPO != null 
+                || LetterNumber!=null || DrNumber!=null||DRDate!=null || ReciptDate!=null;
         }
 
         private void OnCancel()
         {
+            ResetUI();
+            SaveText = null;
+        }
+
+        private void ResetUI()
+        {
             SelectedPS = null;
             SelectedTA = null;
             SelectedPO = null;
+            LetterNumber = null;
+            DrNumber = null;
+            DRDate = null;
+            ReciptDate = null;
         }
     }
 }
