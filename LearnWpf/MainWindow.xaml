@@ -23,6 +23,6 @@
         </StackPanel
         -->
 
-        <views:AddRecord/>
+        <views:RecordsReport/>
     </Grid>
 </Window>

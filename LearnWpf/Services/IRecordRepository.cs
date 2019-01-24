@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LearnWpf.Services
 {
-    public interface IAddNewRecordRepository
+    public interface IRecordRepository
     {
         Task<SqliteDataLayer.LetterRecord> AddLetterRecordAsync(SqliteDataLayer.LetterRecord letterRecord);
+
+        Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync();
     }
 }

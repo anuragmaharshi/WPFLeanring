@@ -133,11 +133,12 @@
     <Compile Include="Models\TopicsAndArea.cs">
       <DependentUpon>Model2.tt</DependentUpon>
     </Compile>
-    <Compile Include="Services\AddNewRecordRepository.cs" />
-    <Compile Include="Services\IAddNewRecordRepository.cs" />
+    <Compile Include="Services\RecordRepository.cs" />
+    <Compile Include="Services\IRecordRepository.cs" />
     <Compile Include="Services\ITopicAndAreaRepository.cs" />
     <Compile Include="Services\TopicAndAreaRepository.cs" />
     <Compile Include="ViewModel\AddRecordViewModel.cs" />
+    <Compile Include="ViewModel\RecordsReportViewModel.cs" />
     <Compile Include="ViewModel\TopicAndAreaListViewModel.cs" />
     <Compile Include="Views\AddRecord.xaml.cs">
       <DependentUpon>AddRecord.xaml</DependentUpon>
@@ -159,6 +160,9 @@
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\PoliceOfficerList.xaml.cs">
       <DependentUpon>PoliceOfficerList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RecordsReport.xaml.cs">
+      <DependentUpon>RecordsReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TopicAndAreaList.xaml.cs">
       <DependentUpon>TopicAndAreaList.xaml</DependentUpon>
@@ -219,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PoliceOfficerList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecordsReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

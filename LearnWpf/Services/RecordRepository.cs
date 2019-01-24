@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using SqliteDataLayer;
 
 namespace LearnWpf.Services
 {
-    public class AddNewRecordRepository : IAddNewRecordRepository
+    public class RecordRepository : IRecordRepository
     {
          DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
         //DataLayerContext _context = new DataLayerContext();
@@ -17,6 +18,12 @@ namespace LearnWpf.Services
      
             await _context.SaveChangesAsync();
             return letterRecord;
+        }
+
+        public Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync()
+        {
+           return _context.LetterRecords.ToListAsync();
+            
         }
     }
 }

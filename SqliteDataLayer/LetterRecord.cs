@@ -20,5 +20,9 @@ namespace SqliteDataLayer
         public Nullable<long> StatusID { get; set; }
 
        
+     
+
+
+
     }
 }

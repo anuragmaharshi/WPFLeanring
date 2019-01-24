@@ -1,0 +1,206 @@
+﻿<UserControl x:Class="LearnWpf.Views.RecordsReport"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LearnWpf.Views"
+             xmlns:viewModel="clr-namespace:LearnWpf.ViewModel"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True"  xmlns:vm="clr-namespace:LearnWpf.ViewModel"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <viewModel:RecordsReportViewModel/>
+    </UserControl.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <ei:CallMethodAction TargetObject="{Binding}" MethodName="LoadData"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <StackPanel Orientation="Vertical" Name="ReportGrid">
+            <StackPanel>
+                <Grid  Background="SandyBrown">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station" Padding="5" />
+                    <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" BorderThickness="2" Name="PSFilter" ItemsSource="{Binding PoliceStations}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!--Topic Area-->
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="Topic/Area" Padding="5" />
+                    <ComboBox Grid.Row="1" Grid.Column="4" Padding="5" BorderThickness="2" Name="TopicFilter" ItemsSource="{Binding TopicsAndAreas}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!--Name of officer-->
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Police Officer" Padding="5"/>
+                    <ComboBox Grid.Row="2" Grid.Column="2" Padding="5" Margin="0,5,0,0"  BorderThickness="2" Name="POFilter" ItemsSource="{Binding PoliceOfficers}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!--Other Seach element-->
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="Other Filter" Padding="5"/>
+                    <TextBox Grid.Row="2" Grid.Column=" 4">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                                <Style.Resources>
+                                    <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                        <VisualBrush.Visual>
+                                            <Label Content="Search" Foreground="Black" />
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Style.Resources>
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                        <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="{x:Null}">
+                                        <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter Property="Background" Value="White" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+
+                    <!--Search Button-->
+                    <Button Content="Search" Grid.Row="2" Grid.Column="5" Margin="5,5,0,0" Width="80"/>
+
+
+                </Grid>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <DataGrid Height="300" Width="800"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" Name="Dgrid1"  IsReadOnly="False"
+                  HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" SelectionMode="Single"
+                  BorderBrush="Gray" BorderThickness="5" Background="LightGray"
+                  AutoGenerateColumns="False" RowDetailsVisibilityMode ="VisibleWhenSelected" CanUserAddRows="False" ItemsSource="{Binding ReportRecords}">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="LightGreen" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Green"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding LetterNumber}" Header="LetterNumber" />
+                        <DataGridTextColumn x:Name="cbxTA" Header="Topic/Area" Binding ="{Binding TopicAreaSelected}" />
+                        <!--<DataGridComboBoxColumn x:Name="cbxTA" Header="Topic/Area"    ItemsSource="{Binding TopicsAndAreas}" />-->
+
+                        <DataGridTemplateColumn Header="Recipt Date " CanUserSort="True" SortMemberPath="ReciptDate">
+                            <DataGridTemplateColumn.CellTemplate >
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ReciptDate}"  Margin="4"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate >
+                                    <DatePicker SelectedDate="{Binding ReciptDate, Mode=OneWay}" >
+                                        <DatePicker.Resources>
+                                            <Style TargetType="DatePickerTextBox" >
+                                                <Setter Property="Control.Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                                            </TextBox>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DatePicker.Resources>
+
+                                    </DatePicker>
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridComboBoxColumn x:Name="cbxPS" Header="Police Station"  ItemsSource="{Binding PoliceStations}"  >
+                            
+                        </DataGridComboBoxColumn>
+
+                        <DataGridTextColumn Binding="{Binding DRNumber}" Header="D/R Number" />
+
+                        <DataGridTemplateColumn Header="D/R Date " CanUserSort="True" SortMemberPath="DRDate">
+                            <DataGridTemplateColumn.CellTemplate >
+                                <DataTemplate >
+                                    <TextBlock Text="{Binding DRDate ,StringFormat='dd MMM yyyy'}"  Margin="4"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate >
+                                    <DatePicker SelectedDate="{Binding DRDate, Mode=OneWay}" >
+                                        <DatePicker.Resources>
+                                            <Style TargetType="DatePickerTextBox" >
+                                                <Setter Property="Control.Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                                            </TextBox>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DatePicker.Resources>
+
+                                    </DatePicker>
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridComboBoxColumn x:Name="cbxPO" Header="Police Officer"    SelectedValueBinding="{Binding PoliceOfficer}" />
+
+                        <DataGridTextColumn Binding="{Binding Remarks}" Header="Remarks" />
+
+                        
+
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

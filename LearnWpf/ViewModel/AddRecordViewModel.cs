@@ -4,6 +4,7 @@ using SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace LearnWpf.ViewModel
         ITopicAndAreaRepository TArepo;
         ObservableCollection<TopicsAndArea> _topicsAndAreas;
 
-        IAddNewRecordRepository AddRepo;
+        IRecordRepository AddRepo;
         public RelayCommand AddNewRecord{ get; private set; }
         public RelayCommand CancelRecord { get; private set; }
         public AddRecordViewModel()
@@ -32,7 +33,7 @@ namespace LearnWpf.ViewModel
                 POrepo = new PoliceOfficerRepository();
                 PSrepo = new PoliceStationRepository();
                 TArepo = new TopicAndAreaRepository();
-                AddRepo = new AddNewRecordRepository();
+                AddRepo = new RecordRepository();
                 AddNewRecord = new RelayCommand(OnAdd,canAdd);
                 CancelRecord= new RelayCommand(OnCancel, canCancel);
             }
@@ -209,12 +210,12 @@ namespace LearnWpf.ViewModel
         {
             SqliteDataLayer.LetterRecord record = new SqliteDataLayer.LetterRecord();
             record.LetterNumber = long.Parse(LetterNumber);
-            record.ReciptDate = ReciptDate;
+            record.ReciptDate = FormatDate(ReciptDate);
             record.TopicAreaID = SelectedTA.Id;
             record.PoliceOfficerID = SelectedPO.Id;
             record.PoliceStationID = SelectedPS.Id;
             record.DRNumber = long.Parse(DrNumber);
-            record.DRDate = DRDate;
+            record.DRDate = FormatDate(DRDate);
             record.StatusID = 1;
             record.Remarks = Remarks;
             try
@@ -242,7 +243,7 @@ namespace LearnWpf.ViewModel
         }
 
         private void ResetUI()
-        {
+        {   
             SelectedPS = null;
             SelectedTA = null;
             SelectedPO = null;
@@ -250,6 +251,12 @@ namespace LearnWpf.ViewModel
             DrNumber = null;
             DRDate = null;
             ReciptDate = null;
+        }
+
+        private string FormatDate(string dateTime)
+        {
+            var dty = DateTime.Parse(dateTime);
+            return dty.ToString("yyyy-MM-dd");
         }
     }
 }
