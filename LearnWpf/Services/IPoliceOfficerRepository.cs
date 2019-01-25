@@ -10,9 +10,9 @@ namespace LearnWpf.Services
     public interface IPoliceOfficerRepository
     {
         Task<List<PoliceOfficer>> GetPoliceOfficersAsync();
-        Task<PoliceOfficer> GetPoliceOfficerAsync(int id);
+        Task<PoliceOfficer> GetPoliceOfficerAsync(long id);
         Task<PoliceOfficer> AddPoliceOfficerAsync(PoliceOfficer policeOfficer);
         Task<PoliceOfficer> UpdatePoliceOfficerAsync(PoliceOfficer policeOfficer);
-        Task DeletePoliceOfficerAsync(int Id);
+        Task DeletePoliceOfficerAsync(long Id);
     }
 }

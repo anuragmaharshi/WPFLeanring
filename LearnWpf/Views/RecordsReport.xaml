@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LearnWpf.Views"
              xmlns:viewModel="clr-namespace:LearnWpf.ViewModel"
+             
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
@@ -108,10 +109,10 @@
                 </Grid>
             </StackPanel>
             <StackPanel Orientation="Horizontal" >
-                <DataGrid Height="300" Width="800"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" Name="Dgrid1"  IsReadOnly="False"
+                <DataGrid Height="300" Width="800"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*"  
                   HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" SelectionMode="Single"
                   BorderBrush="Gray" BorderThickness="5" Background="LightGray"
-                  AutoGenerateColumns="False" RowDetailsVisibilityMode ="VisibleWhenSelected" CanUserAddRows="False" ItemsSource="{Binding ReportRecords}">
+                  AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding ReportRecords}" SelectedItem="{Binding SelectedRecord}">
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Setter Property="Background" Value="LightGreen" />
@@ -125,18 +126,16 @@
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding LetterNumber}" Header="LetterNumber" />
-                        <DataGridTextColumn x:Name="cbxTA" Header="Topic/Area" Binding ="{Binding TopicAreaSelected}" />
-                        <!--<DataGridComboBoxColumn x:Name="cbxTA" Header="Topic/Area"    ItemsSource="{Binding TopicsAndAreas}" />-->
 
                         <DataGridTemplateColumn Header="Recipt Date " CanUserSort="True" SortMemberPath="ReciptDate">
                             <DataGridTemplateColumn.CellTemplate >
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ReciptDate}"  Margin="4"/>
+                                    <TextBlock Text="{Binding FormatReciptDate, UpdateSourceTrigger=LostFocus}"  Margin="4"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate >
-                                    <DatePicker SelectedDate="{Binding ReciptDate, Mode=OneWay}" >
+                                    <DatePicker SelectedDate="{Binding ReciptDate, StringFormat='dd MMM yyyy', Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  >
                                         <DatePicker.Resources>
                                             <Style TargetType="DatePickerTextBox" >
                                                 <Setter Property="Control.Template">
@@ -144,6 +143,7 @@
                                                         <ControlTemplate>
                                                             <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
                                                             </TextBox>
+
                                                         </ControlTemplate>
                                                     </Setter.Value>
                                                 </Setter>
@@ -155,9 +155,52 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
+                        
+                        <DataGridTextColumn  Header="Topic Area Id" Binding ="{Binding TopicAreaID}" />
+                        <DataGridComboBoxColumn Header="Topic/Area" 
+                                                SelectedValueBinding="{Binding TopicAreaID}" 
+                                                DisplayMemberPath="Name" 
+                                                SelectedValuePath="Id" >
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.TopicsAndAreas, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.TopicsAndAreas, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
 
-                        <DataGridComboBoxColumn x:Name="cbxPS" Header="Police Station"  ItemsSource="{Binding PoliceStations}"  >
-                            
+                        <DataGridComboBoxColumn  Header="Police Station"  SelectedValueBinding="{Binding PoliceStationID}" 
+                                                DisplayMemberPath="Name" 
+                                                SelectedValuePath="Id">
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.PoliceStations, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.PoliceStations, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
+
+                        <DataGridComboBoxColumn  Header="Police Officer" SelectedValueBinding="{Binding PoliceOfficerID}" 
+                                                DisplayMemberPath="Name" 
+                                                SelectedValuePath="Id">
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.PoliceOfficers, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.PoliceOfficers, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
                         </DataGridComboBoxColumn>
 
                         <DataGridTextColumn Binding="{Binding DRNumber}" Header="D/R Number" />
@@ -165,12 +208,12 @@
                         <DataGridTemplateColumn Header="D/R Date " CanUserSort="True" SortMemberPath="DRDate">
                             <DataGridTemplateColumn.CellTemplate >
                                 <DataTemplate >
-                                    <TextBlock Text="{Binding DRDate ,StringFormat='dd MMM yyyy'}"  Margin="4"/>
+                                    <TextBlock Text="{Binding FormatDRDate}"  Margin="4"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate >
-                                    <DatePicker SelectedDate="{Binding DRDate, Mode=OneWay}" >
+                                    <DatePicker SelectedDate="{Binding DRDate,StringFormat='dd MMM yyyy', Mode=TwoWay}" >
                                         <DatePicker.Resources>
                                             <Style TargetType="DatePickerTextBox" >
                                                 <Setter Property="Control.Template">
@@ -190,11 +233,7 @@
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridComboBoxColumn x:Name="cbxPO" Header="Police Officer"    SelectedValueBinding="{Binding PoliceOfficer}" />
-
                         <DataGridTextColumn Binding="{Binding Remarks}" Header="Remarks" />
-
-                        
 
                     </DataGrid.Columns>
                 </DataGrid>

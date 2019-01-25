@@ -18,7 +18,7 @@ namespace LearnWpf.Services
             return topicOrArea;
         }
 
-        public async Task DeleteTopicOrAreaAsync(int Id)
+        public async Task DeleteTopicOrAreaAsync(long Id)
         {
             var topicAndArea = _context.TopicsAndAreas.FirstOrDefault(c => c.Id == Id);
             if (topicAndArea != null)
@@ -33,7 +33,7 @@ namespace LearnWpf.Services
             return _context.TopicsAndAreas.ToListAsync();
         }
 
-        public Task<TopicsAndArea> GetTopicAndAreaAsync(int id)
+        public Task<TopicsAndArea> GetTopicAndAreaAsync(long id)
         {
             return _context.TopicsAndAreas.FirstOrDefaultAsync(c => c.Id == id);
         }

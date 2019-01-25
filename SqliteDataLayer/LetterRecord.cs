@@ -19,10 +19,28 @@ namespace SqliteDataLayer
         public string Remarks { get; set; }
         public Nullable<long> StatusID { get; set; }
 
-       
-     
 
 
+
+        public string FormatReciptDate
+        {
+            get
+            {
+                var dty = DateTime.Parse(ReciptDate);
+                return dty.ToString("yyyy-MM-dd");
+            }
+           
+        }
+
+        public string FormatDRDate
+        {
+            get
+            {
+                var dty = DateTime.Parse(DRDate);
+                return dty.ToString("yyyy-MM-dd");
+            }
+
+        }
 
     }
 }

@@ -10,9 +10,9 @@ namespace LearnWpf.Services
     public interface ITopicAndAreaRepository
     {
         Task<List<TopicsAndArea>> GetTopicAndAreasAsync();
-        Task<TopicsAndArea> GetTopicAndAreaAsync(int id);
+        Task<TopicsAndArea> GetTopicAndAreaAsync(long id);
         Task<TopicsAndArea> AddTopicOrAreaAsync(TopicsAndArea topicOrArea);
         Task<TopicsAndArea> UpdateTopicAndAreaAsync(TopicsAndArea topicOrArea);
-        Task DeleteTopicOrAreaAsync(int Id);
+        Task DeleteTopicOrAreaAsync(long Id);
     }
 }

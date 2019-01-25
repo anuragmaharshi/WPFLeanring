@@ -35,6 +35,23 @@ namespace LearnWpf.ViewModel
                 RecRepo = new RecordRepository();
             }
         }
+
+        SqliteDataLayer.LetterRecord _selectedRecord;
+        public SqliteDataLayer.LetterRecord SelectedRecord
+        {
+            get { return _selectedRecord; }
+            set { _selectedRecord = value;
+                SelectedRecord.ReciptDate= FormatDate(SelectedRecord.ReciptDate);
+                RaisePropertyChanged("SelectedRecord");
+            }
+        }
+
+         string _selectedDate;
+        public string SelectedDateInGridRow
+        {
+            get { return _selectedDate; }
+            set { _selectedDate = value;RaisePropertyChanged("SelectedDateInGridRow"); }
+        }
         #region Observable collections
         public ObservableCollection<PoliceOfficer> PoliceOfficers
         {
@@ -89,6 +106,10 @@ namespace LearnWpf.ViewModel
                 RecData.Add(item);
             ReportRecords = RecData;
         }
-
+        private string FormatDate(string dateTime)
+        {
+            var dty = DateTime.Parse(dateTime);
+            return dty.ToString("yyyy-MM-dd");
+        }
     }
 }

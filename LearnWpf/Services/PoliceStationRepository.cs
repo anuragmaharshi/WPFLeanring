@@ -19,7 +19,7 @@ namespace LearnWpf.Services
             return policeStation;
         }
 
-        public async Task DeletePoliceStationAsync(int id)
+        public async Task DeletePoliceStationAsync(long id)
         {
             var policeStation = _context.PoliceStations.FirstOrDefault(c => c.Id == id);
             if (policeStation != null)
@@ -31,7 +31,7 @@ namespace LearnWpf.Services
 
         }
 
-        public Task<PoliceStation> GetPoliceStationAsync(int id)
+        public Task<PoliceStation> GetPoliceStationAsync(long id)
         {
             return _context.PoliceStations.FirstOrDefaultAsync(c => c.Id == id);
         }
