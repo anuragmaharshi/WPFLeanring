@@ -31,10 +31,6 @@ namespace LearnWpf.SqliteDataLayer
             
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-         
-            //modelBuilder.Entity<Customer>().Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
         }
 
         public DbSet<PoliceStation> PoliceStations { get; set; }
@@ -44,7 +40,8 @@ namespace LearnWpf.SqliteDataLayer
         public DbSet<TopicsAndArea> TopicsAndAreas { get; set; }
 
         public DbSet<LetterRecord> LetterRecords { get; set; }
-        public  DbSet<Status> Status { get; set; }
+
+        public DbSet<Status> Status { get; set; }
 
     }
    

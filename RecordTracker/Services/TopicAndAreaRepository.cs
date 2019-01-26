@@ -11,7 +11,9 @@ namespace LearnWpf.Services
 {
     public class TopicAndAreaRepository : ITopicAndAreaRepository
     {
-        DataLayerContext _context = new DataLayerContext();
+        //DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
+        //DataLayerContext _context = new DataLayerContext();
+        DataLayerContext _context = new DataLayerContext(Constants.GetDbFilePath());
         public async Task<TopicsAndArea> AddTopicOrAreaAsync(TopicsAndArea topicOrArea)
         {
             _context.TopicsAndAreas.Add(topicOrArea);

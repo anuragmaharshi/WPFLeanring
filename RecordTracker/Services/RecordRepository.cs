@@ -10,8 +10,9 @@ namespace LearnWpf.Services
 {
     public class RecordRepository : IRecordRepository
     {
-         DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
+         //DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
         //DataLayerContext _context = new DataLayerContext();
+        DataLayerContext _context = new DataLayerContext(Constants.GetDbFilePath());
         public async Task<SqliteDataLayer.LetterRecord> AddLetterRecordAsync(SqliteDataLayer.LetterRecord letterRecord)
         {
             _context.LetterRecords.Add(letterRecord);

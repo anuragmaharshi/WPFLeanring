@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LearnWpf"
         xmlns:views="clr-namespace:LearnWpf.Views"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="450" Width="1000"
+        Title="Record Manager" Height="450" Width="1000"
         DataContext="{Binding Main, Source={StaticResource Locator}}"  
         >
 
@@ -17,13 +17,13 @@
    
     <StackPanel>
         <TabControl Name="Tabs1" TabStripPlacement="Top" Background="LightGray" BorderBrush="Blue" Margin="10,10,0,5">
-            <TabItem Header="Reports" IsSelected="True" Background="Gray">
+            <TabItem Header="Reports" IsSelected="True" Background="Beige">
                 <views:RecordsReport/>
             </TabItem>
-            <TabItem Header="Add New Record" IsSelected="True" Background="Gray">
+            <TabItem Header="Add New Record" IsSelected="True" Background="Beige">
                 <views:AddRecord/>
             </TabItem>
-            <TabItem Header="Admin" IsSelected="True" Background="Gray">
+            <TabItem Header="Admin" IsSelected="True" Background="Beige">
                 <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AdminTab">
                     <views:PoliceOfficerList Width="300"/>
                     <views:PoliceStationList Width="300"/>

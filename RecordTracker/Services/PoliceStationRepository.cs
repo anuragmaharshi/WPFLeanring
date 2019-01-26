@@ -10,8 +10,9 @@ namespace LearnWpf.Services
 {
     public class PoliceStationRepository : IPoliceStationRepository
     {
-        DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
-
+        //DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
+        //DataLayerContext _context = new DataLayerContext();
+        DataLayerContext _context = new DataLayerContext(Constants.GetDbFilePath());
         public async Task<PoliceStation> AddPoliceStationAsync(PoliceStation policeStation)
         {
             _context.PoliceStations.Add(policeStation);
