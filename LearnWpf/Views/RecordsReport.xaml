@@ -47,7 +47,8 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station" Padding="5" />
-                    <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" BorderThickness="2" Name="PSFilter" ItemsSource="{Binding PoliceStations}">
+                    <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" BorderThickness="2" 
+                              Name="PSFilter" ItemsSource="{Binding PoliceStations}" SelectedItem="{Binding SelectedPoliceStation}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -57,7 +58,8 @@
 
                     <!--Topic Area-->
                     <TextBlock Grid.Row="1" Grid.Column="3" Text="Topic/Area" Padding="5" />
-                    <ComboBox Grid.Row="1" Grid.Column="4" Padding="5" BorderThickness="2" Name="TopicFilter" ItemsSource="{Binding TopicsAndAreas}">
+                    <ComboBox Grid.Row="1" Grid.Column="4" Padding="5" BorderThickness="2" Name="TopicFilter" 
+                              ItemsSource="{Binding TopicsAndAreas}" SelectedItem="{Binding SelectedTopic}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -67,7 +69,8 @@
 
                     <!--Name of officer-->
                     <TextBlock Grid.Row="2" Grid.Column="1" Text="Police Officer" Padding="5"/>
-                    <ComboBox Grid.Row="2" Grid.Column="2" Padding="5" Margin="0,5,0,0"  BorderThickness="2" Name="POFilter" ItemsSource="{Binding PoliceOfficers}">
+                    <ComboBox Grid.Row="2" Grid.Column="2" Padding="5" Margin="0,5,0,0"  BorderThickness="2" Name="POFilter" 
+                              ItemsSource="{Binding PoliceOfficers}" SelectedItem="{Binding SelectedPoliceOfficer}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -114,7 +117,7 @@
                     <Button Content="Delete" Margin="10,0,10,0"  Width="100" IsEnabled="False" />
                     <Button Content="Print to PDF"  Width="100"/>
                 </StackPanel>
-                <DataGrid  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*"  
+                <DataGrid  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="80"  
                   HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" SelectionMode="Single"
                   BorderBrush="Gray" BorderThickness="5" Background="LightGray"
                   AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding ReportRecords}" SelectedItem="{Binding SelectedRecord}">
@@ -131,7 +134,7 @@
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
 
-                        <DataGridComboBoxColumn  Header="Status"  SelectedValueBinding="{Binding StatusID}" 
+                        <DataGridComboBoxColumn Width="100" Header="Status"  SelectedValueBinding="{Binding StatusID}" 
                                                 DisplayMemberPath="Name" 
                                                 SelectedValuePath="ID">
                             <DataGridComboBoxColumn.ElementStyle>
@@ -177,7 +180,7 @@
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         
-                        <DataGridTextColumn  Header="Topic Area Id" Binding ="{Binding TopicAreaID}" />
+                        <!--<DataGridTextColumn  Header="Topic Area Id" Binding ="{Binding TopicAreaID}" />-->
                         <DataGridComboBoxColumn Header="Topic/Area" 
                                                 SelectedValueBinding="{Binding TopicAreaID}" 
                                                 DisplayMemberPath="Name" 
@@ -254,7 +257,7 @@
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Binding="{Binding Remarks}" Header="Remarks" />
+                        <DataGridTextColumn Width="*" Binding="{Binding Remarks}" Header="Remarks" />
 
                     </DataGrid.Columns>
                 </DataGrid>
