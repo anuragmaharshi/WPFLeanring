@@ -14,15 +14,22 @@
         <SolidColorBrush Color="Red" x:Key="RedBrush"/>
         <SolidColorBrush Color="Blue" x:Key="BlueBrush"/>
     </Window.Resources>
-    <Grid>
-        <!--  For admin
-        <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AdminTab">
-            <views:PoliceOfficerList Width="300"/>
-            <views:PoliceStationList Width="300"/>
-            <views:TopicAndAreaList Width="300"/>
-        </StackPanel
-        -->
-
-        <views:RecordsReport/>
-    </Grid>
+   
+    <StackPanel>
+        <TabControl Name="Tabs1" TabStripPlacement="Top" Background="LightGray" BorderBrush="Blue" Margin="10,10,0,5">
+            <TabItem Header="Reports" IsSelected="True" Background="Gray">
+                <views:RecordsReport/>
+            </TabItem>
+            <TabItem Header="Add New Record" IsSelected="True" Background="Gray">
+                <views:AddRecord/>
+            </TabItem>
+            <TabItem Header="Admin" IsSelected="True" Background="Gray">
+                <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AdminTab">
+                    <views:PoliceOfficerList Width="300"/>
+                    <views:PoliceStationList Width="300"/>
+                    <views:TopicAndAreaList Width="300"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
 </Window>

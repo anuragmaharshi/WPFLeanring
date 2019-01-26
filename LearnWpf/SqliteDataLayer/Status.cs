@@ -1,4 +1,4 @@
-﻿namespace SqliteDataLayer
+﻿namespace LearnWpf.SqliteDataLayer
 {
     public class Status
     {

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using LearnWpf.SqliteDataLayer;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SqliteDataLayer;
+
 
 namespace LearnWpf.Services
 {

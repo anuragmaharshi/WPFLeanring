@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SqliteDataLayer;
 using System.Data.Entity;
+using LearnWpf.SqliteDataLayer;
 
 namespace LearnWpf.Services
 {

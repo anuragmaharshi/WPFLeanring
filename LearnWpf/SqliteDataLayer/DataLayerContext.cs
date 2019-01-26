@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SqliteDataLayer
+namespace LearnWpf.SqliteDataLayer
 {
      public class DataLayerContext:DbContext
     {

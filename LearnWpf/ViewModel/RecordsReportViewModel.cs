@@ -1,7 +1,6 @@
-﻿
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using LearnWpf.Services;
-using SqliteDataLayer;
+using LearnWpf.SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
