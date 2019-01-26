@@ -136,6 +136,7 @@
     <Compile Include="Services\RecordRepository.cs" />
     <Compile Include="Services\IRecordRepository.cs" />
     <Compile Include="Services\ITopicAndAreaRepository.cs" />
+    <Compile Include="Services\StatusRepository.cs" />
     <Compile Include="Services\TopicAndAreaRepository.cs" />
     <Compile Include="ViewModel\AddRecordViewModel.cs" />
     <Compile Include="ViewModel\RecordsReportViewModel.cs" />

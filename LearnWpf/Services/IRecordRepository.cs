@@ -11,5 +11,7 @@ namespace LearnWpf.Services
         Task<SqliteDataLayer.LetterRecord> AddLetterRecordAsync(SqliteDataLayer.LetterRecord letterRecord);
 
         Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync();
+
+        Task<SqliteDataLayer.LetterRecord> UpdateLetterRecordAsync(SqliteDataLayer.LetterRecord record);
     }
 }

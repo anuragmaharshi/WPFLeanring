@@ -13,6 +13,7 @@ namespace LearnWpf.ViewModel
 {
     public class RecordsReportViewModel : ViewModelBase
     {
+        #region variable declaration
         IPoliceOfficerRepository POrepo;
         ObservableCollection<PoliceOfficer> _policeOfficers;
 
@@ -24,6 +25,18 @@ namespace LearnWpf.ViewModel
 
         IRecordRepository RecRepo;
         ObservableCollection<SqliteDataLayer.LetterRecord> _reportRecords;
+
+        StatusRepository StatusRepo;
+        ObservableCollection<Status> _statusS;
+
+        SqliteDataLayer.LetterRecord _selectedRecord;
+
+        public RelayCommand SaveRecord { get; private set; }
+
+        public RelayCommand SearchRecord { get; private set; }
+        #endregion
+
+        #region Constructor
         public RecordsReportViewModel()
         {
             if (!ViewModelBase.IsInDesignModeStatic)
@@ -33,25 +46,19 @@ namespace LearnWpf.ViewModel
                 PSrepo = new PoliceStationRepository();
                 TArepo = new TopicAndAreaRepository();
                 RecRepo = new RecordRepository();
+                StatusRepo = new StatusRepository();
+
+                SaveRecord = new RelayCommand(OnSave, canSave);
+                SearchRecord = new RelayCommand(onSearch, canSearch);
             }
         }
 
-        SqliteDataLayer.LetterRecord _selectedRecord;
-        public SqliteDataLayer.LetterRecord SelectedRecord
-        {
-            get { return _selectedRecord; }
-            set { _selectedRecord = value;
-                SelectedRecord.ReciptDate= FormatDate(SelectedRecord.ReciptDate);
-                RaisePropertyChanged("SelectedRecord");
-            }
-        }
+       
 
-         string _selectedDate;
-        public string SelectedDateInGridRow
-        {
-            get { return _selectedDate; }
-            set { _selectedDate = value;RaisePropertyChanged("SelectedDateInGridRow"); }
-        }
+
+
+        #endregion
+
         #region Observable collections
         public ObservableCollection<PoliceOfficer> PoliceOfficers
         {
@@ -73,13 +80,34 @@ namespace LearnWpf.ViewModel
 
         }
 
+        public ObservableCollection<Status> Statuses
+        {
+            get { return _statusS; }
+            set { _statusS = value; RaisePropertyChanged("Statuses"); }
+        }
+
         public ObservableCollection<SqliteDataLayer.LetterRecord> ReportRecords
         {
             get { return _reportRecords; }
             set { _reportRecords = value; RaisePropertyChanged("ReportRecords"); }
 
         }
+
+
+       
+        public SqliteDataLayer.LetterRecord SelectedRecord
+        {
+            get { return _selectedRecord; }
+            set
+            {
+                _selectedRecord = value;
+
+                RaisePropertyChanged("SelectedRecord");
+            }
+        }
+
         #endregion
+
         public void LoadData()
         {
             var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
@@ -100,16 +128,42 @@ namespace LearnWpf.ViewModel
                 TAData.Add(item);
             TopicsAndAreas = TAData;
 
+            //var RecList = RecRepo.GetRecordsAsync().Result.ToList();
+            //ObservableCollection<SqliteDataLayer.LetterRecord> RecData = new ObservableCollection<SqliteDataLayer.LetterRecord>();
+            //foreach (var item in RecList)
+            //    RecData.Add(item);
+            //ReportRecords = RecData;
+
+            var StatusList = StatusRepo.GetStatus();
+            ObservableCollection<Status> StatusData = new ObservableCollection<Status>();
+            foreach (var item in StatusList)
+                StatusData.Add(item);
+            Statuses = StatusData;
+        }
+
+        private bool canSave()
+        {
+            return true;
+        }
+
+        private void OnSave()
+        {
+            RecRepo.UpdateLetterRecordAsync(SelectedRecord);
+        }
+
+        private bool canSearch()
+        {
+            return true;
+        }
+
+        private void onSearch()
+        {
             var RecList = RecRepo.GetRecordsAsync().Result.ToList();
             ObservableCollection<SqliteDataLayer.LetterRecord> RecData = new ObservableCollection<SqliteDataLayer.LetterRecord>();
             foreach (var item in RecList)
                 RecData.Add(item);
             ReportRecords = RecData;
         }
-        private string FormatDate(string dateTime)
-        {
-            var dty = DateTime.Parse(dateTime);
-            return dty.ToString("yyyy-MM-dd");
-        }
+
     }
 }

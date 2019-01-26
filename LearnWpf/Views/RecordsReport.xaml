@@ -103,13 +103,18 @@
                     </TextBox>
 
                     <!--Search Button-->
-                    <Button Content="Search" Grid.Row="2" Grid.Column="5" Margin="5,5,0,0" Width="80"/>
+                    <Button Content="Search" Grid.Row="2" Grid.Column="5" Margin="5,5,0,0" Width="80" Command="{Binding SearchRecord}"/>
 
 
                 </Grid>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" >
-                <DataGrid Height="300" Width="800"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*"  
+            <StackPanel Orientation="Vertical" >
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Save" Padding="2" Width="100" Command="{Binding SaveRecord}"/>
+                    <Button Content="Delete" Margin="10,0,10,0"  Width="100" IsEnabled="False" />
+                    <Button Content="Print to PDF"  Width="100"/>
+                </StackPanel>
+                <DataGrid  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*"  
                   HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" SelectionMode="Single"
                   BorderBrush="Gray" BorderThickness="5" Background="LightGray"
                   AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding ReportRecords}" SelectedItem="{Binding SelectedRecord}">
@@ -125,6 +130,22 @@
                         </Style>
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
+
+                        <DataGridComboBoxColumn  Header="Status"  SelectedValueBinding="{Binding StatusID}" 
+                                                DisplayMemberPath="Name" 
+                                                SelectedValuePath="ID">
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Statuses, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Statuses, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
+
                         <DataGridTextColumn Binding="{Binding LetterNumber}" Header="LetterNumber" />
 
                         <DataGridTemplateColumn Header="Recipt Date " CanUserSort="True" SortMemberPath="ReciptDate">
@@ -238,7 +259,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-
+                
             </StackPanel>
         </StackPanel>
     </Grid>
