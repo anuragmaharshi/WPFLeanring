@@ -1,6 +1,6 @@
 using GalaSoft.MvvmLight;
 
-namespace LearnWpf.ViewModel
+namespace RecordTracker.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -21,15 +21,8 @@ namespace LearnWpf.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            if (IsInDesignMode)
-            {
-                Title = "Alpha ";
-            }
-            else
-            {
-                Title = "beta";
-            }
+           
         }
-        public string Title { get; set; }
+        
     }
 }

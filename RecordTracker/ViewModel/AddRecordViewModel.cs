@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
-using LearnWpf.Services;
-using LearnWpf.SqliteDataLayer;
+using NLog;
+using RecordTracker.Services;
+using RecordTracker.SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,10 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWpf.ViewModel
+namespace RecordTracker.ViewModel
 {
     public class AddRecordViewModel : ViewModelBase
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         IPoliceOfficerRepository POrepo;
         ObservableCollection<PoliceOfficer> _policeOfficers;
 
@@ -27,16 +29,26 @@ namespace LearnWpf.ViewModel
         public RelayCommand CancelRecord { get; private set; }
         public AddRecordViewModel()
         {
-            if (!ViewModelBase.IsInDesignModeStatic)
+            try
             {
-
-                POrepo = new PoliceOfficerRepository();
-                PSrepo = new PoliceStationRepository();
-                TArepo = new TopicAndAreaRepository();
-                AddRepo = new RecordRepository();
-                AddNewRecord = new RelayCommand(OnAdd,canAdd);
-                CancelRecord= new RelayCommand(OnCancel, canCancel);
+                if (!ViewModelBase.IsInDesignModeStatic)
+                {
+                    _logger.Info("Inside Add Record ViewModel construtor");
+                    POrepo = new PoliceOfficerRepository();
+                    PSrepo = new PoliceStationRepository();
+                    TArepo = new TopicAndAreaRepository();
+                    AddRepo = new RecordRepository();
+                    AddNewRecord = new RelayCommand(OnAdd, canAdd);
+                    CancelRecord = new RelayCommand(OnCancel, canCancel);
+                }
             }
+            catch (Exception e)
+            {
+                _logger.Error("Some error have occured in AddRecordViewModel" + e.StackTrace);
+                _logger.Error("AddRecordViewModel error message is " + e.Message + " inner error is " + e.InnerException.Message);
+            }
+
+
         }
 
         
@@ -65,23 +77,31 @@ namespace LearnWpf.ViewModel
         #endregion
         public void LoadData()
         {
-            var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
-            ObservableCollection<PoliceOfficer> POData = new ObservableCollection<PoliceOfficer>();
-            foreach (var item in POList)
-                POData.Add(item);
-            PoliceOfficers = POData;
+            try
+            { 
+                var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
+                ObservableCollection<PoliceOfficer> POData = new ObservableCollection<PoliceOfficer>();
+                foreach (var item in POList)
+                    POData.Add(item);
+                PoliceOfficers = POData;
 
-            var PSList = PSrepo.GetPoliceStationsAsync().Result.ToList();
-            ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
-            foreach (var item in PSList)
-                PSData.Add(item);
-            PoliceStations = PSData;
+                var PSList = PSrepo.GetPoliceStationsAsync().Result.ToList();
+                ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
+                foreach (var item in PSList)
+                    PSData.Add(item);
+                PoliceStations = PSData;
 
-            var TAList = TArepo.GetTopicAndAreasAsync().Result.ToList();
-            ObservableCollection<TopicsAndArea> TAData = new ObservableCollection<TopicsAndArea>();
-            foreach (var item in TAList)
-                TAData.Add(item);
-            TopicsAndAreas = TAData;
+                var TAList = TArepo.GetTopicAndAreasAsync().Result.ToList();
+                ObservableCollection<TopicsAndArea> TAData = new ObservableCollection<TopicsAndArea>();
+                foreach (var item in TAList)
+                    TAData.Add(item);
+                TopicsAndAreas = TAData;
+            }
+            catch (Exception e)
+            {
+                _logger.Error("Some error have AddRecordViewModel Load data , stacktarce =" + e.StackTrace);
+                _logger.Error("AddRecordViewModel error message is " + e.Message + " inner error is " + e.InnerException.Message);
+            }
         }
 
         #region Properties

@@ -1,4 +1,5 @@
-﻿using LearnWpf.SqliteDataLayer;
+﻿using NLog;
+using RecordTracker.SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -6,15 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWpf.Services
+namespace RecordTracker.Services
 {
     public class PoliceOfficerRepository : IPoliceOfficerRepository
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         //DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
         //DataLayerContext _context = new DataLayerContext();
         DataLayerContext _context = new DataLayerContext(Constants.GetDbFilePath());
-        public async Task<PoliceOfficer> AddPoliceOfficerAsync(PoliceOfficer policeOfficer)
+        public async Task<PoliceOfficer> AddPoliceOfficerAsync(PoliceOfficer policeOfficer) 
         {
+            
             _context.PoliceOfficers.Add(policeOfficer);
             await _context.SaveChangesAsync();
             return policeOfficer;
@@ -38,7 +41,17 @@ namespace LearnWpf.Services
 
         public Task<List<PoliceOfficer>> GetPoliceOfficersAsync()
         {
-            return _context.PoliceOfficers.ToListAsync();
+            try
+            {
+                return _context.PoliceOfficers.ToListAsync();
+            }
+            catch(Exception e)
+            {
+                _logger.Error("Some error have occured in PoliceOfficerRepository, stacktrace=" + e.StackTrace);
+                _logger.Error("PoliceOfficerRepository error message is " + e.Message + " inner error is " + e.InnerException.Message);
+                return null;
+            }
+            
         }
 
         public async Task<PoliceOfficer> UpdatePoliceOfficerAsync(PoliceOfficer policeOfficer)

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using LearnWpf.SqliteDataLayer;
+using RecordTracker.SqliteDataLayer;
+using NLog;
 
-namespace LearnWpf.Services
+namespace RecordTracker.Services
 {
     public class PoliceStationRepository : IPoliceStationRepository
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         //DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
         //DataLayerContext _context = new DataLayerContext();
         DataLayerContext _context = new DataLayerContext(Constants.GetDbFilePath());
@@ -39,7 +41,17 @@ namespace LearnWpf.Services
 
         public  Task<List<PoliceStation>> GetPoliceStationsAsync()
         {
-            return _context.PoliceStations.ToListAsync();
+            try
+            {
+                return _context.PoliceStations.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.Error("Some error have occured in PoliceStationRepository, stacktrace=" + e.StackTrace);
+                _logger.Error("PoliceStationRepository error message is " + e.Message + " inner error is " + e.InnerException.Message);
+                return null;
+            }
+           
         }
 
         public async Task<PoliceStation> UpdatePoliceStationAsync(PoliceStation policeStation)

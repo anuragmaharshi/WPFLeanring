@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
-using LearnWpf.Services;
-using LearnWpf.SqliteDataLayer;
+using NLog;
+using RecordTracker.Services;
+using RecordTracker.SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,10 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWpf.ViewModel
+namespace RecordTracker.ViewModel
 {
     public class RecordsReportViewModel : ViewModelBase
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         #region variable declaration
         IPoliceOfficerRepository POrepo;
         ObservableCollection<PoliceOfficer> _policeOfficers;
@@ -42,18 +44,28 @@ namespace LearnWpf.ViewModel
         #region Constructor
         public RecordsReportViewModel()
         {
-            if (!ViewModelBase.IsInDesignModeStatic)
+            try
             {
+                _logger.Info("Inside Records viewer view model construtor");
+                if (!ViewModelBase.IsInDesignModeStatic)
+                {
 
-                POrepo = new PoliceOfficerRepository();
-                PSrepo = new PoliceStationRepository();
-                TArepo = new TopicAndAreaRepository();
-                RecRepo = new RecordRepository();
-                StatusRepo = new StatusRepository();
+                    POrepo = new PoliceOfficerRepository();
+                    PSrepo = new PoliceStationRepository();
+                    TArepo = new TopicAndAreaRepository();
+                    RecRepo = new RecordRepository();
+                    StatusRepo = new StatusRepository();
 
-                SaveRecord = new RelayCommand(OnSave, canSave);
-                SearchRecord = new RelayCommand(onSearch, canSearch);
+                    SaveRecord = new RelayCommand(OnSave, canSave);
+                    SearchRecord = new RelayCommand(onSearch, canSearch);
+                }
             }
+            catch(Exception e)
+            {
+                _logger.Error("Some error have occured in RecordsReportViewModel, stacktrace=" + e.StackTrace);
+                _logger.Error("RecordsReportViewModel error message is " + e.Message + " inner error is " + e.InnerException.Message);
+            }
+           
         }
 
        
@@ -146,37 +158,46 @@ namespace LearnWpf.ViewModel
 
         public void LoadData()
         {
-            var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
-            ObservableCollection<PoliceOfficer> POData = new ObservableCollection<PoliceOfficer>();
-            foreach (var item in POList)
-                POData.Add(item);
-            PoliceOfficers = POData;
-            SelectedPoliceOfficer = PoliceOfficers.First(x => x.Name.Equals("All"));
+            try
+            {
+                _logger.Info("Inside Records viewer view model Load data");
+                var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
+                ObservableCollection<PoliceOfficer> POData = new ObservableCollection<PoliceOfficer>();
+                foreach (var item in POList)
+                    POData.Add(item);
+                PoliceOfficers = POData;
+                SelectedPoliceOfficer = PoliceOfficers.First(x => x.Name.Equals("All"));
 
-            var PSList = PSrepo.GetPoliceStationsAsync().Result.ToList();
-            ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
-            foreach (var item in PSList)
-                PSData.Add(item);
-            PoliceStations = PSData;
-            SelectedPoliceStation = PoliceStations.First(x => x.Name.Equals("All"));
+                var PSList = PSrepo.GetPoliceStationsAsync().Result.ToList();
+                ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
+                foreach (var item in PSList)
+                    PSData.Add(item);
+                PoliceStations = PSData;
+                SelectedPoliceStation = PoliceStations.First(x => x.Name.Equals("All"));
 
-            var TAList = TArepo.GetTopicAndAreasAsync().Result.ToList();
-            ObservableCollection<TopicsAndArea> TAData = new ObservableCollection<TopicsAndArea>();
-            foreach (var item in TAList)
-                TAData.Add(item);
-            TopicsAndAreas = TAData;
-            SelectedTopic = TopicsAndAreas.First(x => x.Name.Equals("All"));
-            //var RecList = RecRepo.GetRecordsAsync().Result.ToList();
-            //ObservableCollection<SqliteDataLayer.LetterRecord> RecData = new ObservableCollection<SqliteDataLayer.LetterRecord>();
-            //foreach (var item in RecList)
-            //    RecData.Add(item);
-            //ReportRecords = RecData;
+                var TAList = TArepo.GetTopicAndAreasAsync().Result.ToList();
+                ObservableCollection<TopicsAndArea> TAData = new ObservableCollection<TopicsAndArea>();
+                foreach (var item in TAList)
+                    TAData.Add(item);
+                TopicsAndAreas = TAData;
+                SelectedTopic = TopicsAndAreas.First(x => x.Name.Equals("All"));
+                //var RecList = RecRepo.GetRecordsAsync().Result.ToList();
+                //ObservableCollection<SqliteDataLayer.LetterRecord> RecData = new ObservableCollection<SqliteDataLayer.LetterRecord>();
+                //foreach (var item in RecList)
+                //    RecData.Add(item);
+                //ReportRecords = RecData;
 
-            var StatusList = StatusRepo.GetStatus();
-            ObservableCollection<Status> StatusData = new ObservableCollection<Status>();
-            foreach (var item in StatusList)
-                StatusData.Add(item);
-            Statuses = StatusData;
+                var StatusList = StatusRepo.GetStatus();
+                ObservableCollection<Status> StatusData = new ObservableCollection<Status>();
+                foreach (var item in StatusList)
+                    StatusData.Add(item);
+                Statuses = StatusData;
+            }
+            catch (Exception e)
+            {
+                _logger.Error("Some error have occured in Report.xaml" + e.StackTrace);
+                _logger.Error("Report.xaml error message is " + e.Message + " inner error is " + e.InnerException.Message);
+            }
         }
 
         private bool canSave()

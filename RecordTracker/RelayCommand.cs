@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace LearnWpf
+namespace RecordTracker
 {
     public class RelayCommand : ICommand
     {

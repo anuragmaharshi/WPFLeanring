@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
-using LearnWpf.Services;
-using LearnWpf.SqliteDataLayer;
+using RecordTracker.Services;
+using RecordTracker.SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWpf.ViewModel
+namespace RecordTracker.ViewModel
 {
     public class TopicAndAreaListViewModel : ViewModelBase
     {

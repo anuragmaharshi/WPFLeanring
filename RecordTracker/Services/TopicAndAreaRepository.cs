@@ -1,4 +1,5 @@
-﻿using LearnWpf.SqliteDataLayer;
+﻿using NLog;
+using RecordTracker.SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace LearnWpf.Services
+namespace RecordTracker.Services
 {
     public class TopicAndAreaRepository : ITopicAndAreaRepository
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
         //DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
         //DataLayerContext _context = new DataLayerContext();
         DataLayerContext _context = new DataLayerContext(Constants.GetDbFilePath());
@@ -33,7 +35,17 @@ namespace LearnWpf.Services
 
         public Task<List<TopicsAndArea>> GetTopicAndAreasAsync()
         {
-            return _context.TopicsAndAreas.ToListAsync();
+            try
+            {
+                return _context.TopicsAndAreas.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.Error("Some error have occured in TopicAndAreaRepository, stacktrace=" + e.StackTrace);
+                _logger.Error("TopicAndAreaRepository error message is " + e.Message + " inner error is " + e.InnerException.Message);
+                return null;
+            }
+            
         }
 
         public Task<TopicsAndArea> GetTopicAndAreaAsync(long id)

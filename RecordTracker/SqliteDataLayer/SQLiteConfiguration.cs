@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWpf.SqliteDataLayer
+namespace RecordTracker.SqliteDataLayer
 {
     [DbConfigurationType(typeof(SQLiteConfiguration))]
     public class SQLiteConfiguration : DbConfiguration

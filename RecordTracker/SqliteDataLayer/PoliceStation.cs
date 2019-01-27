@@ -1,5 +1,5 @@
 ﻿
-namespace LearnWpf.SqliteDataLayer
+namespace RecordTracker.SqliteDataLayer
 {
     public class PoliceStation
     {

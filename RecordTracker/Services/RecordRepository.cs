@@ -1,4 +1,5 @@
-﻿using LearnWpf.SqliteDataLayer;
+﻿using NLog;
+using RecordTracker.SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -6,13 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnWpf.Services
+namespace RecordTracker.Services
 {
     public class RecordRepository : IRecordRepository
     {
-         //DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        //DataLayerContext _context = new DataLayerContext(@"C:\Users\Home\MainApplication.db");
         //DataLayerContext _context = new DataLayerContext();
         DataLayerContext _context = new DataLayerContext(Constants.GetDbFilePath());
+        
         public async Task<SqliteDataLayer.LetterRecord> AddLetterRecordAsync(SqliteDataLayer.LetterRecord letterRecord)
         {
             _context.LetterRecords.Add(letterRecord);
