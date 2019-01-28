@@ -39,6 +39,11 @@ namespace RecordTracker.ViewModel
         public RelayCommand SaveRecord { get; private set; }
 
         public RelayCommand SearchRecord { get; private set; }
+
+        public RelayCommand ExportToPDF { get; private set; }
+
+        List<string> Headers;
+        List<SqliteDataLayer.LetterRecord> letterRecords;
         #endregion
 
         #region Constructor
@@ -58,6 +63,12 @@ namespace RecordTracker.ViewModel
 
                     SaveRecord = new RelayCommand(OnSave, canSave);
                     SearchRecord = new RelayCommand(onSearch, canSearch);
+                    ExportToPDF = new RelayCommand(onExportToPdf, canExport);
+                    Headers = new List<string>();
+                    Headers.Add("Letter Number");
+                    Headers.Add("D/R Number");
+                    Headers.Add("Received Date");
+                    Headers.Add("Police Station");
                 }
             }
             catch(Exception e)
@@ -68,10 +79,7 @@ namespace RecordTracker.ViewModel
            
         }
 
-       
-
-
-
+     
         #endregion
 
         #region Observable collections
@@ -101,10 +109,12 @@ namespace RecordTracker.ViewModel
             set { _statusS = value; RaisePropertyChanged("Statuses"); }
         }
 
-        public ObservableCollection<SqliteDataLayer.LetterRecord> ReportRecords
+        public ObservableCollection<LetterRecord> ReportRecords
         {
             get { return _reportRecords; }
-            set { _reportRecords = value; RaisePropertyChanged("ReportRecords"); }
+            set { _reportRecords = value; RaisePropertyChanged("ReportRecords");
+                ExportToPDF.RaiseCanExecuteChanged();
+            }
 
         }
 
@@ -221,7 +231,7 @@ namespace RecordTracker.ViewModel
             idPO = new List<long>();
             idPS = new List<long>();
             idTA = new List<long>();
-            List<SqliteDataLayer.LetterRecord> letterRecords;
+            
             if (SelectedPoliceOfficer.Name.Equals("All"))
             {
                 foreach(var item in PoliceOfficers)
@@ -268,5 +278,33 @@ namespace RecordTracker.ViewModel
           
         }
 
+        private bool canExport()
+        {
+            if (ReportRecords == null)
+            {
+                return false;
+            }
+            else
+            {
+                return ReportRecords.Count > 0;
+            }
+            
+        }
+
+
+        private void onExportToPdf()
+        {
+            CreatePDFDataGrid create = new CreatePDFDataGrid("First.pdf");
+            //create.AddHeader(Headers);
+            create.AddFilters("Police Officer", SelectedPoliceOfficer.Name);
+            create.AddFilters("Police Station", SelectedPoliceStation.Name);
+            create.AddFilters("Topic Or Area", SelectedTopic.Name);
+            create.AddRecords(_reportRecords,_policeOfficers,_PoliceStations,_topicsAndAreas);
+            create.SaveAndClose();
+            
+           
+
+
+        }
     }
 }

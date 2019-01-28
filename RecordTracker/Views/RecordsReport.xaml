@@ -115,12 +115,12 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Save" Padding="2" Width="100" Command="{Binding SaveRecord}"/>
                     <Button Content="Delete" Margin="10,0,10,0"  Width="100" IsEnabled="False" />
-                    <Button Content="Print to PDF"  Width="100"/>
+                    <Button Content="Print to PDF"  Width="100" Command="{Binding ExportToPDF}"/>
                 </StackPanel>
                 <DataGrid  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="80"  
                   HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" SelectionMode="Single"
                   BorderBrush="Gray" BorderThickness="5" Background="LightGray"
-                  AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding ReportRecords}" SelectedItem="{Binding SelectedRecord}">
+                  AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding ReportRecords}" SelectedItem="{Binding SelectedRecord}" Name="LetterDataGrd">
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Setter Property="Background" Value="LightGreen" />
