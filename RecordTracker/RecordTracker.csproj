@@ -113,20 +113,28 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\CreatePDFDataGrid.cs" />
+    <Compile Include="Services\ISourceRepository.cs" />
+    <Compile Include="Services\ISubjectRepository.cs" />
     <Compile Include="Services\RecordRepository.cs" />
     <Compile Include="Services\IRecordRepository.cs" />
     <Compile Include="Services\ITopicAndAreaRepository.cs" />
+    <Compile Include="Services\SourceRepository.cs" />
     <Compile Include="Services\StatusRepository.cs" />
+    <Compile Include="Services\SubjectRepository.cs" />
     <Compile Include="Services\TopicAndAreaRepository.cs" />
     <Compile Include="SqliteDataLayer\DataLayerContext.cs" />
     <Compile Include="SqliteDataLayer\LetterRecord.cs" />
     <Compile Include="SqliteDataLayer\PoliceOfficer.cs" />
     <Compile Include="SqliteDataLayer\PoliceStation.cs" />
+    <Compile Include="SqliteDataLayer\Source.cs" />
     <Compile Include="SqliteDataLayer\SQLiteConfiguration.cs" />
     <Compile Include="SqliteDataLayer\Status.cs" />
+    <Compile Include="SqliteDataLayer\Subject.cs" />
     <Compile Include="SqliteDataLayer\TopicsAndArea.cs" />
     <Compile Include="ViewModel\AddRecordViewModel.cs" />
     <Compile Include="ViewModel\RecordsReportViewModel.cs" />
+    <Compile Include="ViewModel\SourceListViewModel.cs" />
+    <Compile Include="ViewModel\SubjectListViewModel.cs" />
     <Compile Include="ViewModel\TopicAndAreaListViewModel.cs" />
     <Compile Include="Views\AddRecord.xaml.cs">
       <DependentUpon>AddRecord.xaml</DependentUpon>
@@ -148,6 +156,12 @@
     </Compile>
     <Compile Include="Views\RecordsReport.xaml.cs">
       <DependentUpon>RecordsReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SourceList.xaml.cs">
+      <DependentUpon>SourceList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubjectList.xaml.cs">
+      <DependentUpon>SubjectList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TopicAndAreaList.xaml.cs">
       <DependentUpon>TopicAndAreaList.xaml</DependentUpon>
@@ -173,6 +187,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RecordsReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SourceList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SubjectList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

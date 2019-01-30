@@ -14,8 +14,8 @@ namespace RecordTracker
         public static string GetDbFilePath()
         {
 
-           // _logger.Info("DB file path set = " + ConfigurationManager.AppSettings["DbFilePath"]);
-            return "MainApplication.db";
+            //_logger.Info("DB file path set = " + ConfigurationManager.AppSettings["DbFilePath"]);
+            return ConfigurationManager.AppSettings["DbFilePath"];
         }
     }
 }

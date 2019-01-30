@@ -230,12 +230,12 @@ namespace RecordTracker.ViewModel
         {
             SqliteDataLayer.LetterRecord record = new SqliteDataLayer.LetterRecord();
             record.LetterNumber = long.Parse(LetterNumber);
-            record.ReciptDate = FormatDate(ReciptDate);
+            record.OfficeReceiptDate = FormatDate(ReciptDate);
             record.TopicAreaID = SelectedTA.Id;
             record.PoliceOfficerID = SelectedPO.Id;
             record.PoliceStationID = SelectedPS.Id;
-            record.DRNumber = long.Parse(DrNumber);
-            record.DRDate = FormatDate(DRDate);
+            record.OfficeDispatchNumber = long.Parse(DrNumber);
+            record.OfficeDispatchDate = FormatDate(DRDate);
             record.StatusID = 1;
             record.Remarks = Remarks;
             try

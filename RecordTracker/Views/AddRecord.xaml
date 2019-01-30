@@ -22,7 +22,7 @@
     </i:Interaction.Triggers>
     <Grid>
         <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AddGrid">
-            <Grid  Height="Auto" Background="LightGreen" >
+            <Grid  Height="Auto" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="Auto"/>

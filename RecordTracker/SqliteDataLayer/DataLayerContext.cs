@@ -43,6 +43,10 @@ namespace RecordTracker.SqliteDataLayer
 
         public DbSet<Status> Status { get; set; }
 
+        public DbSet<Source> Sources { get; set; }
+
+        public DbSet<Subject> Subjects { get; set; }
+
     }
    
 }

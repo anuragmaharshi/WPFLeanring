@@ -34,15 +34,18 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Topic/Area" Grid.Row="1" Grid.Column="1" Margin="10,0,0,0"/>
-        <TextBox Grid.Row="1" Grid.Column="2" Name="TopicOrAreaTxt" Text="{Binding NewTOrAName}"  />
-        <Button Grid.Row="1" Grid.Column="3" Content="Add" Command="{Binding Path=AddTopicOrAreaStation}" IsEnabled="{Binding ElementName=TopicOrAreaTxt,Path=Text.Length,Mode=OneWay}"/>
-        <DataGrid  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="PSgrid" ItemsSource="{Binding TopicsAndAreas}"
+        <TextBlock Text="Topic/Area" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="5,0,0,0" 
+                       FontWeight="ExtraBold" FontSize="25" Foreground="DarkBlue" FontStretch="Expanded"
+                       HorizontalAlignment="Center"/>
+        
+        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Name="TopicOrAreaTxt" Text="{Binding NewTOrAName}"  />
+        <Button Grid.Row="2" Grid.Column="3" Content="Add" Command="{Binding Path=AddTopicOrAreaStation}" IsEnabled="{Binding ElementName=TopicOrAreaTxt,Path=Text.Length,Mode=OneWay}"/>
+        <DataGrid  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Name="PSgrid" ItemsSource="{Binding TopicsAndAreas}"
                   AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*" SelectedItem="{Binding SelectedTopicOrArea}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id"  Binding="{Binding Id}" IsReadOnly="True" />

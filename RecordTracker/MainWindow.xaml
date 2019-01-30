@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:RecordTracker.Views"
         mc:Ignorable="d"
-        Title="Record Manager" Height="450" Width="1000"
+        Title="Record Manager"
         >
 
-   
-    <StackPanel>
-        <TabControl Name="Tabs1" TabStripPlacement="Top" Background="LightGray" BorderBrush="Blue" Margin="10,10,0,5">
+
+    <StackPanel Background="SandyBrown">
+        <TabControl Name="Tabs1" TabStripPlacement="Top" Margin="10,10,0,5">
             <TabItem Header="Reports" IsSelected="True" Background="Beige">
                 <views:RecordsReport/>
             </TabItem>
@@ -18,11 +18,34 @@
                 <views:AddRecord/>
             </TabItem>
             <TabItem Header="Admin" IsSelected="True" Background="Beige">
-                <StackPanel Orientation="Horizontal" Background="SandyBrown" Name="AdminTab">
-                    <views:PoliceOfficerList Width="300"/>
-                    <views:PoliceStationList Width="300"/>
-                    <views:TopicAndAreaList Width="300"/>
-                </StackPanel>
+               
+                    <Grid Background="SandyBrown">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="2*"/>
+                       
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+                        <views:PoliceOfficerList Grid.Row="1" Grid.Column="1"/>
+                        <views:PoliceStationList Grid.Row="1" Grid.Column="2"/>
+                        <views:TopicAndAreaList Grid.Row="1" Grid.Column="3"/>
+                        <views:SourceList Grid.Row="2" Grid.Column="1"/>
+
+                        <views:SubjectList Grid.Row="2" Grid.Column="2" />
+                        
+                        
+                    </Grid>
+                    
+                    
+             
             </TabItem>
         </TabControl>
     </StackPanel>
