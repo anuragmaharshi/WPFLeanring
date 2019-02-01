@@ -376,17 +376,30 @@ namespace RecordTracker.ViewModel
             SqliteDataLayer.LetterRecord record = new SqliteDataLayer.LetterRecord();
 
             record.LetterNumber = long.Parse(LetterNumber);
-            record.OfficeDispatchNumber = long.Parse(OfficeDispatchNumber);
-            record.SourceID = SelectedSource.Id;
-            record.OfficeDispatchDate = FormatDate(OfficeDispatchDate);
-            record.OfficeReceiptDate = FormatDate(OfficeReceiptDate);
+            if (OfficeDispatchNumber != null)
+                record.OfficeDispatchNumber = long.Parse(OfficeDispatchNumber);
+            else
+                record.OfficeDispatchNumber = null;
 
-            record.OrganizationName = OrganizationName;
-            record.SanhaDetail = SanhaDetail;
+            if(SelectedSource!=null)
+                record.SourceID = SelectedSource.Id;
+
+            if(OfficeDispatchDate!=null)
+                record.OfficeDispatchDate = FormatDate(OfficeDispatchDate);
+            if(OfficeReceiptDate!=null)
+                record.OfficeReceiptDate = FormatDate(OfficeReceiptDate);
+
+            if(OrganizationName!=null)
+                record.OrganizationName = OrganizationName;
+
+            if(SanhaDetail!=null)
+                record.SanhaDetail = SanhaDetail;
+
             record.VerificationDetail = VerificationDetail;
             record.SubjectID = SelectedSubject.Id;
 
-            record.PsDispatchNumber = long.Parse(PsDispatchNumber);
+            if(PsDispatchNumber!=null)
+                record.PsDispatchNumber = long.Parse(PsDispatchNumber);
             record.PsDispatchDate = PsDispatchDate;
             record.TopicAreaID = SelectedTA.Id;
             record.PoliceOfficerID = SelectedPO.Id;
@@ -394,7 +407,8 @@ namespace RecordTracker.ViewModel
   
             record.StatusID = 1;
             record.Remarks = Remarks;
-            record.CaseNumber = long.Parse(CaseNumber);
+            if(CaseNumber!=null)
+                record.CaseNumber = long.Parse(CaseNumber);
             try
             {
                 AddRepo.AddLetterRecordAsync(record).Wait();
