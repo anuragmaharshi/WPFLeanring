@@ -14,10 +14,10 @@
             <TabItem Header="Reports" IsSelected="True" Background="Beige">
                 <views:RecordsReport/>
             </TabItem>
-            <TabItem Header="Add New Record" IsSelected="True" Background="Beige">
+            <TabItem Header="Add New Record" IsSelected="False" Background="Beige">
                 <views:AddRecord/>
             </TabItem>
-            <TabItem Header="Admin" IsSelected="True" Background="Beige">
+            <TabItem Header="Admin" IsSelected="False" Background="Beige">
                
                     <Grid Background="SandyBrown">
                         <Grid.RowDefinitions>

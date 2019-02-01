@@ -43,78 +43,19 @@
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="10"/>
                 </Grid.ColumnDefinitions>
+                <!--Letter no-->
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="Letter Number" Padding="5" />
+                <TextBox Grid.Row="1" Grid.Column="2" Name="LetterNo" Text="{Binding LetterNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <!--Police station-->
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station"  Padding="5"/>
-                <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" Name="PSList"  ItemsSource="{Binding PoliceStations}" SelectedItem="{Binding SelectedPS ,Mode=TwoWay}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                
 
                 <!--Topic Area-->
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="Topic/Area" Padding="5" />
-                <ComboBox  Grid.Row="2" Grid.Column="2" Padding="5" Name="TopicList" ItemsSource="{Binding TopicsAndAreas}" SelectedItem="{Binding SelectedTA}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-
-                <!--Date of recipt-->
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="Date of Recipt" Padding="5" />
-                <DatePicker Grid.Row="3" Grid.Column="2"  Name="Reciptdate" SelectedDate="{Binding ReciptDate}">
-                    <DatePicker.Resources>
-                        <Style TargetType="DatePickerTextBox" >
-                            <Setter Property="Control.Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
-                                        </TextBox>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DatePicker.Resources>
-                </DatePicker>
-
-                <!--Letter no-->
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="Letter Number" Padding="5" />
-                <TextBox Grid.Row="4" Grid.Column="2" Name="LetterNo" Text="{Binding LetterNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <!--Dispatch Number -->
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="D/R Number" Padding="5" />
-                <TextBox Grid.Row="5" Grid.Column="2" Name="DRno" Text="{Binding DrNumber,Mode=TwoWay}"/>
-
-                <!--Dispatch Dispatch-->
-                <TextBlock Grid.Row="6" Grid.Column="1" Text="Date of D/R" Padding="5" />
-                <DatePicker Grid.Row="6" Grid.Column="2" Name="DrDt" SelectedDate="{Binding DRDate}">
-                    <DatePicker.Resources>
-                        <Style TargetType="DatePickerTextBox" >
-                            <Setter Property="Control.Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
-                                        </TextBox>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DatePicker.Resources>
-                </DatePicker>
-
-                <!--Police Office-->
-                <TextBlock Grid.Row="7" Grid.Column="1" Text="Police Officer" Padding="5" />
-
-                <ComboBox  Grid.Row="7" Grid.Column="2" Padding="5" Name="PoliceOfficerList" 
-                           BorderThickness="2" Margin="0,5,0,0" ItemsSource="{Binding PoliceOfficers}"
-                           SelectedItem="{Binding SelectedPO}">
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="Topic/Area" Padding="5" />
+                <ComboBox  Grid.Row="1" Grid.Column="4" Padding="5" Name="TopicList" ItemsSource="{Binding TopicsAndAreas}" SelectedItem="{Binding SelectedTA}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>
@@ -122,13 +63,143 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 
-                <TextBlock Grid.Row="8" Grid.Column="1" Text="State" Padding="5"/>
-                <ListBox Grid.Row="8" Grid.Column="2" IsEnabled="False">
+                <!--Police officer-->
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="Police Officer" Padding="5" />
+
+                <ComboBox  Grid.Row="2" Grid.Column="2" Padding="5" Name="PoliceOfficerList" 
+                            ItemsSource="{Binding PoliceOfficers}"
+                           SelectedItem="{Binding SelectedPO}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!--Subject-->
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="Subject" Padding="5" />
+
+                <ComboBox  Grid.Row="2" Grid.Column="4" Padding="5"  
+                            ItemsSource="{Binding Subjects}"
+                           SelectedItem="{Binding SelectedSubject}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!--Source-->
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="Source" Padding="5" />
+
+                <ComboBox  Grid.Row="3" Grid.Column="2" Padding="5"  
+                            ItemsSource="{Binding Sources}"
+                           SelectedItem="{Binding SelectedSource}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <!--Office Receipt Date-->
+                <TextBlock Grid.Row="3" Grid.Column="3" Text="Office Receipt Date" Padding="5" />
+                <DatePicker Grid.Row="3" Grid.Column="4"  SelectedDate="{Binding OfficeReceiptDate}">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox" >
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                        </TextBox>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
+
+
+                <!--Office Dispatch Date-->
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="Office Dispatch Date" Padding="5" />
+                <DatePicker Grid.Row="4" Grid.Column="2"   SelectedDate="{Binding OfficeDispatchDate}">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox" >
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                        </TextBox>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
+
+                <!--Office Dispatch Number -->
+                <TextBlock Grid.Row="4" Grid.Column="3" Text="Ofice Dispatch Number" Padding="5" />
+                <TextBox Grid.Row="4" Grid.Column="4"  Text="{Binding OfficeDispatchNumber,Mode=TwoWay}"/>
+
+                <!--Police station-->
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="Police Station"  Padding="5"/>
+                <ComboBox Grid.Row="5" Grid.Column="2" Padding="5" Name="PSList"  ItemsSource="{Binding PoliceStations}" SelectedItem="{Binding SelectedPS ,Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                
+              
+                <!--PsDispatchDate-->
+                <TextBlock Grid.Row="5" Grid.Column="3" Text="PS Dispatch Date" Padding="5" />
+                <DatePicker Grid.Row="5" Grid.Column="4"  SelectedDate="{Binding PsDispatchDate}">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox" >
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                        </TextBox>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
+
+
+                <!--PS Dispatch Number -->
+                <TextBlock Grid.Row="6" Grid.Column="1" Text="PS Dispatch Number" Padding="5" />
+                <TextBox Grid.Row="6" Grid.Column="2"  Text="{Binding PsDispatchNumber,Mode=TwoWay}"/>
+
+
+                <!--SanhaDetail -->
+                <TextBlock Grid.Row="6" Grid.Column="3" Text="Sanha Detail" Padding="5" />
+                <TextBox Grid.Row="6" Grid.Column="4"  Text="{Binding SanhaDetail,Mode=TwoWay}"/>
+
+                <!--Verification Detail -->
+                <TextBlock Grid.Row="7" Grid.Column="1" Text="Verification Detail" Padding="5" />
+                <TextBox Grid.Row="7" Grid.Column="2"  Text="{Binding VerificationDetail,Mode=TwoWay}"/>
+
+                <!--Case Number -->
+                <TextBlock Grid.Row="7" Grid.Column="3" Text="Case Number" Padding="5" />
+                <TextBox Grid.Row="7" Grid.Column="4"  Text="{Binding CaseNumber,Mode=TwoWay}"/>
+
+
+                <!--OrganizationName -->
+                <TextBlock Grid.Row="8" Grid.Column="1" Text="Organization Name" Padding="5" />
+                <TextBox Grid.Row="8" Grid.Column="2"  Text="{Binding OrganizationName,Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="8" Grid.Column="3" Text="State" Padding="5"/>
+                <ListBox Grid.Row="8" Grid.Column="4" IsEnabled="False">
                     <ListBoxItem>
                         <TextBlock Text="Open"/>
                     </ListBoxItem>
                 </ListBox>
-                <ScrollViewer Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" >
+                
+                <ScrollViewer Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="4" >
                     <TextBox  Name="Remarks" Text="{Binding Remarks}"/>
                 </ScrollViewer>
 

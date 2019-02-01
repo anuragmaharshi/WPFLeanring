@@ -24,6 +24,12 @@ namespace RecordTracker.ViewModel
         ITopicAndAreaRepository TArepo;
         ObservableCollection<TopicsAndArea> _topicsAndAreas;
 
+        ISubjectRepository SubRepo;
+        ObservableCollection<Subject> _subjects;
+
+        ISourceRepository SourceRepo;
+        ObservableCollection<Source> _source;
+
         IRecordRepository AddRepo;
         public RelayCommand AddNewRecord{ get; private set; }
         public RelayCommand CancelRecord { get; private set; }
@@ -37,6 +43,8 @@ namespace RecordTracker.ViewModel
                     POrepo = new PoliceOfficerRepository();
                     PSrepo = new PoliceStationRepository();
                     TArepo = new TopicAndAreaRepository();
+                    SourceRepo = new SourceRepository();
+                    SubRepo = new SubjectRepository();
                     AddRepo = new RecordRepository();
                     AddNewRecord = new RelayCommand(OnAdd, canAdd);
                     CancelRecord = new RelayCommand(OnCancel, canCancel);
@@ -74,6 +82,20 @@ namespace RecordTracker.ViewModel
             set { _topicsAndAreas = value; RaisePropertyChanged("TopicsAndAreas"); }
 
         }
+
+        public ObservableCollection<Subject> Subjects
+        {
+            get { return _subjects; }
+            set { _subjects = value; RaisePropertyChanged("Subjects"); }
+
+        }
+
+        public ObservableCollection<Source> Sources
+        {
+            get { return _source; }
+            set { _source = value; RaisePropertyChanged("Sources"); }
+
+        }
         #endregion
         public void LoadData()
         {
@@ -96,6 +118,18 @@ namespace RecordTracker.ViewModel
                 foreach (var item in TAList)
                     TAData.Add(item);
                 TopicsAndAreas = TAData;
+
+                var SourceList = SourceRepo.GetSourcesAsync().Result.ToList();
+                ObservableCollection<Source> SourceData = new ObservableCollection<Source>();
+                foreach (var item in SourceList)
+                    SourceData.Add(item);
+                Sources = SourceData;
+
+                var SubjectList = SubRepo.GetSubectsAsync().Result.ToList();
+                ObservableCollection<Subject> SubjectData = new ObservableCollection<Subject>();
+                foreach (var item in SubjectList)
+                    SubjectData.Add(item);
+                Subjects = SubjectData;
             }
             catch (Exception e)
             {
@@ -105,23 +139,9 @@ namespace RecordTracker.ViewModel
         }
 
         #region Properties
-        private string _receiptDate;
-
-        public string ReciptDate
-        {
-            get { return _receiptDate; }
-            set
-            {
-                _receiptDate = value;
-                AddNewRecord.RaiseCanExecuteChanged();
-                CancelRecord.RaiseCanExecuteChanged();
-                RaisePropertyChanged("ReciptDate");
-
-            }
-        }
+      
 
         private string _letterNumber ;
-
         public string LetterNumber
         {
             get { return _letterNumber; }
@@ -137,37 +157,142 @@ namespace RecordTracker.ViewModel
             }
         }
 
-        private string _dRnumber;
-
-        public string DrNumber
+        private string _officeReceiptDate;
+        public string OfficeReceiptDate
         {
-            get { return _dRnumber; }
+            get { return _officeReceiptDate; }
+            set
+            {
+
+                _officeReceiptDate = value;
+                RaisePropertyChanged("OfficeReceiptDate");
+                CancelRecord.RaiseCanExecuteChanged();
+                AddNewRecord.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string _officeDispatchDate;
+        public string OfficeDispatchDate
+        {
+            get { return _officeDispatchDate; }
+            set
+            {
+
+                _officeDispatchDate = value;
+                RaisePropertyChanged("OfficeDispatchDate");
+                CancelRecord.RaiseCanExecuteChanged();
+                AddNewRecord.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string _officeDispatchNumber;
+        public string OfficeDispatchNumber
+        {
+            get { return _officeDispatchNumber; }
             set {
                 if (value != "")
-                    _dRnumber = value;
+                    _officeDispatchNumber = value;
                 else
-                    _dRnumber = null;
-                //_dRnumber = value;
-                RaisePropertyChanged("DrNumber");
+                    _officeDispatchNumber = null;
+                
+                RaisePropertyChanged("OfficeDispatchNumber");
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string _psDispatchDate;
+        public string PsDispatchDate
+        {
+            get { return _psDispatchDate; }
+            set
+            {
+                _psDispatchDate = value;
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+                RaisePropertyChanged("PsDispatchDate");
+
+            }
+        }
+
+        private string _psDispatchNumber;
+        public string PsDispatchNumber
+        {
+            get { return _psDispatchNumber; }
+            set
+            {
+                if (value != "")
+                    _psDispatchNumber = value;
+                else
+                    _psDispatchNumber = null;
+
+                RaisePropertyChanged("PsDispatchNumber");
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string _sanhaDetail;
+        public string SanhaDetail
+        {
+            get { return _sanhaDetail; }
+            set
+            {
+                _sanhaDetail = value;
+                RaisePropertyChanged("SanhaDetail");
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string _verificationDetail;
+        public string VerificationDetail
+        {
+            get { return _verificationDetail; }
+            set
+            {
+                _verificationDetail = value;
+                RaisePropertyChanged("VerificationDetail");
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string _caseNumber;
+        public string CaseNumber
+        {
+            get { return _caseNumber; }
+            set
+            {
+                if (value != "")
+                    _caseNumber = value;
+                else
+                    _caseNumber = null;
+                RaisePropertyChanged("CaseNumber");
                 AddNewRecord.RaiseCanExecuteChanged();
                 CancelRecord.RaiseCanExecuteChanged();
             }
         }
 
 
-        private string _drDate;
-
-        public string DRDate
+        private string _organizationName;
+        public string OrganizationName
         {
-            get { return _drDate; }
+            get { return _organizationName; }
             set
             {
-              
-                _drDate = value;
-                RaisePropertyChanged("DRDate");
-                CancelRecord.RaiseCanExecuteChanged();
+                _organizationName = value;
+                RaisePropertyChanged("OrganizationName");
                 AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
             }
+        }
+
+        private string _remarks;
+        public string Remarks
+        {
+            get { return _remarks; }
+            set { _remarks = value; }
         }
 
 
@@ -205,12 +330,32 @@ namespace RecordTracker.ViewModel
             }
         }
 
-        private string _remarks;
 
-        public string Remarks
+        private Subject _selectedSubject;
+        public Subject SelectedSubject
         {
-            get { return _remarks; }
-            set { _remarks = value; }
+            get { return _selectedSubject; }
+            set
+            {
+                _selectedSubject = value;
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+                RaisePropertyChanged("SelectedSubject");
+            }
+        }
+
+
+        private Source _selectedSource;
+        public Source SelectedSource
+        {
+            get { return _selectedSource; }
+            set
+            {
+                _selectedSource = value;
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+                RaisePropertyChanged("SelectedSource");
+            }
         }
 
         private string _saveText;
@@ -223,21 +368,33 @@ namespace RecordTracker.ViewModel
         private bool canAdd()
         {
             return SelectedPS!=null && SelectedTA != null && SelectedPO != null 
-                && LetterNumber != null && DrNumber!=null && DRDate!=null && ReciptDate!=null;
+                && LetterNumber != null && OfficeDispatchNumber != null && OfficeDispatchDate != null && OfficeReceiptDate != null;
         }
 
         private void OnAdd()
         {
             SqliteDataLayer.LetterRecord record = new SqliteDataLayer.LetterRecord();
+
             record.LetterNumber = long.Parse(LetterNumber);
-            record.OfficeReceiptDate = FormatDate(ReciptDate);
+            record.OfficeDispatchNumber = long.Parse(OfficeDispatchNumber);
+            record.SourceID = SelectedSource.Id;
+            record.OfficeDispatchDate = FormatDate(OfficeDispatchDate);
+            record.OfficeReceiptDate = FormatDate(OfficeReceiptDate);
+
+            record.OrganizationName = OrganizationName;
+            record.SanhaDetail = SanhaDetail;
+            record.VerificationDetail = VerificationDetail;
+            record.SubjectID = SelectedSubject.Id;
+
+            record.PsDispatchNumber = long.Parse(PsDispatchNumber);
+            record.PsDispatchDate = PsDispatchDate;
             record.TopicAreaID = SelectedTA.Id;
             record.PoliceOfficerID = SelectedPO.Id;
             record.PoliceStationID = SelectedPS.Id;
-            record.OfficeDispatchNumber = long.Parse(DrNumber);
-            record.OfficeDispatchDate = FormatDate(DRDate);
+  
             record.StatusID = 1;
             record.Remarks = Remarks;
+            record.CaseNumber = long.Parse(CaseNumber);
             try
             {
                 AddRepo.AddLetterRecordAsync(record).Wait();
@@ -253,7 +410,7 @@ namespace RecordTracker.ViewModel
         private bool canCancel()
         {
             return SelectedPS != null || SelectedTA != null || SelectedPO != null 
-                || LetterNumber!=null || DrNumber!=null||DRDate!=null || ReciptDate!=null;
+                || LetterNumber!=null || OfficeDispatchNumber != null|| OfficeDispatchDate != null || OfficeReceiptDate != null;
         }
 
         private void OnCancel()
@@ -268,9 +425,9 @@ namespace RecordTracker.ViewModel
             SelectedTA = null;
             SelectedPO = null;
             LetterNumber = null;
-            DrNumber = null;
-            DRDate = null;
-            ReciptDate = null;
+            OfficeDispatchNumber = null;
+            OfficeDispatchDate = null;
+            OfficeReceiptDate = null;
         }
 
         private string FormatDate(string dateTime)

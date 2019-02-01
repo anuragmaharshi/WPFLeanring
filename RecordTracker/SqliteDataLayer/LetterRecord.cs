@@ -9,23 +9,27 @@ namespace RecordTracker.SqliteDataLayer
     public class LetterRecord
     {
         public long Id { get; set; }
+
         public long LetterNumber { get; set; }
         public Nullable<long> OfficeDispatchNumber { get; set; }
-        public Nullable<long> Source { get; set; }
+        public Nullable<long> SourceID { get; set; }
         public string OfficeDispatchDate { get; set; }
         public string OfficeReceiptDate { get; set; }
+
         public string OrganizationName { get; set; }
         public string SanhaDetail { get; set; }
         public string VerificationDetail { get; set; }
-        public Nullable<long> Subject { get; set; }
+        public Nullable<long> SubjectID { get; set; }
+
         public Nullable<long> PsDispatchNumber { get; set; }
         public string PsDispatchDate { get; set; }
         public long TopicAreaID { get; set; }
         public long PoliceStationID { get; set; }
         public long PoliceOfficerID { get; set; }
+
         public Nullable<long> StatusID { get; set; }
         public string Remarks { get; set; }
-
+        public Nullable<long> CaseNumber { get; set; }
 
 
 
