@@ -33,6 +33,8 @@ namespace RecordTracker.ViewModel
         IRecordRepository AddRepo;
         public RelayCommand AddNewRecord{ get; private set; }
         public RelayCommand CancelRecord { get; private set; }
+
+        #region Constructor
         public AddRecordViewModel()
         {
             try
@@ -48,6 +50,7 @@ namespace RecordTracker.ViewModel
                     AddRepo = new RecordRepository();
                     AddNewRecord = new RelayCommand(OnAdd, canAdd);
                     CancelRecord = new RelayCommand(OnCancel, canCancel);
+                   
                 }
             }
             catch (Exception e)
@@ -58,9 +61,7 @@ namespace RecordTracker.ViewModel
 
 
         }
-
-        
-
+        #endregion
 
         #region Observable collections
         public ObservableCollection<PoliceOfficer> PoliceOfficers
@@ -97,46 +98,6 @@ namespace RecordTracker.ViewModel
 
         }
         #endregion
-        public void LoadData()
-        {
-            try
-            { 
-                var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
-                ObservableCollection<PoliceOfficer> POData = new ObservableCollection<PoliceOfficer>();
-                foreach (var item in POList)
-                    POData.Add(item);
-                PoliceOfficers = POData;
-
-                var PSList = PSrepo.GetPoliceStationsAsync().Result.ToList();
-                ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
-                foreach (var item in PSList)
-                    PSData.Add(item);
-                PoliceStations = PSData;
-
-                var TAList = TArepo.GetTopicAndAreasAsync().Result.ToList();
-                ObservableCollection<TopicsAndArea> TAData = new ObservableCollection<TopicsAndArea>();
-                foreach (var item in TAList)
-                    TAData.Add(item);
-                TopicsAndAreas = TAData;
-
-                var SourceList = SourceRepo.GetSourcesAsync().Result.ToList();
-                ObservableCollection<Source> SourceData = new ObservableCollection<Source>();
-                foreach (var item in SourceList)
-                    SourceData.Add(item);
-                Sources = SourceData;
-
-                var SubjectList = SubRepo.GetSubectsAsync().Result.ToList();
-                ObservableCollection<Subject> SubjectData = new ObservableCollection<Subject>();
-                foreach (var item in SubjectList)
-                    SubjectData.Add(item);
-                Subjects = SubjectData;
-            }
-            catch (Exception e)
-            {
-                _logger.Error("Some error have AddRecordViewModel Load data , stacktarce =" + e.StackTrace);
-                _logger.Error("AddRecordViewModel error message is " + e.Message + " inner error is " + e.InnerException.Message);
-            }
-        }
 
         #region Properties
       
@@ -292,7 +253,13 @@ namespace RecordTracker.ViewModel
         public string Remarks
         {
             get { return _remarks; }
-            set { _remarks = value; }
+            set
+            {
+                _remarks = value;
+                AddNewRecord.RaiseCanExecuteChanged();
+                CancelRecord.RaiseCanExecuteChanged();
+                RaisePropertyChanged("Remarks");
+            }
         }
 
 
@@ -307,6 +274,7 @@ namespace RecordTracker.ViewModel
                 RaisePropertyChanged("SelectedPS");
               }
         }
+
         private TopicsAndArea _selectedTA;
         public TopicsAndArea SelectedTA
         {
@@ -318,6 +286,7 @@ namespace RecordTracker.ViewModel
                 RaisePropertyChanged("SelectedTA");
             }
         }
+
         private PoliceOfficer _selectedPO;
         public PoliceOfficer SelectedPO
         {
@@ -365,10 +334,53 @@ namespace RecordTracker.ViewModel
             set { _saveText = value; RaisePropertyChanged("SaveText"); }
         }
         #endregion
+
+        #region Methods
+        public void LoadData()
+        {
+            try
+            {
+                var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
+                ObservableCollection<PoliceOfficer> POData = new ObservableCollection<PoliceOfficer>();
+                foreach (var item in POList)
+                    POData.Add(item);
+                PoliceOfficers = POData;
+
+                var PSList = PSrepo.GetPoliceStationsAsync().Result.ToList();
+                ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
+                foreach (var item in PSList)
+                    PSData.Add(item);
+                PoliceStations = PSData;
+
+                var TAList = TArepo.GetTopicAndAreasAsync().Result.ToList();
+                ObservableCollection<TopicsAndArea> TAData = new ObservableCollection<TopicsAndArea>();
+                foreach (var item in TAList)
+                    TAData.Add(item);
+                TopicsAndAreas = TAData;
+
+                var SourceList = SourceRepo.GetSourcesAsync().Result.ToList();
+                ObservableCollection<Source> SourceData = new ObservableCollection<Source>();
+                foreach (var item in SourceList)
+                    SourceData.Add(item);
+                Sources = SourceData;
+
+                var SubjectList = SubRepo.GetSubectsAsync().Result.ToList();
+                ObservableCollection<Subject> SubjectData = new ObservableCollection<Subject>();
+                foreach (var item in SubjectList)
+                    SubjectData.Add(item);
+                Subjects = SubjectData;
+            }
+            catch (Exception e)
+            {
+                _logger.Error("Some error have AddRecordViewModel Load data , stacktarce =" + e.StackTrace);
+                _logger.Error("AddRecordViewModel error message is " + e.Message + " inner error is " + e.InnerException.Message);
+            }
+        }
+
         private bool canAdd()
         {
             return SelectedPS!=null && SelectedTA != null && SelectedPO != null 
-                && LetterNumber != null && OfficeDispatchNumber != null && OfficeDispatchDate != null && OfficeReceiptDate != null;
+                && LetterNumber != null && SelectedSource != null && SelectedSubject != null && OfficeReceiptDate != null;
         }
 
         private void OnAdd()
@@ -424,7 +436,10 @@ namespace RecordTracker.ViewModel
         private bool canCancel()
         {
             return SelectedPS != null || SelectedTA != null || SelectedPO != null 
-                || LetterNumber!=null || OfficeDispatchNumber != null|| OfficeDispatchDate != null || OfficeReceiptDate != null;
+                || LetterNumber!=null || OfficeDispatchNumber != null|| OfficeDispatchDate != null 
+                || OfficeReceiptDate != null || SelectedSource!=null || SelectedSubject!=null || PsDispatchDate!=null
+                || PsDispatchNumber!=null || SanhaDetail!=null|| VerificationDetail!=null || CaseNumber!=null
+                || OrganizationName!=null|| Remarks!=null;
         }
 
         private void OnCancel()
@@ -442,6 +457,16 @@ namespace RecordTracker.ViewModel
             OfficeDispatchNumber = null;
             OfficeDispatchDate = null;
             OfficeReceiptDate = null;
+            SelectedSource = null;
+            SelectedSubject = null;
+            PsDispatchDate = null;
+            PsDispatchNumber = null;
+            SanhaDetail = null;
+            VerificationDetail = null;
+            CaseNumber = null;
+            OrganizationName = null;
+            Remarks = null;
+            
         }
 
         private string FormatDate(string dateTime)
@@ -449,5 +474,6 @@ namespace RecordTracker.ViewModel
             var dty = DateTime.Parse(dateTime);
             return dty.ToString("yyyy-MM-dd");
         }
+        #endregion
     }
 }
