@@ -14,6 +14,7 @@ namespace RecordTracker.ViewModel
     public class RecordsReportViewModel : ViewModelBase
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         #region variable declaration
         IPoliceOfficerRepository POrepo;
         ObservableCollection<PoliceOfficer> _policeOfficers;
@@ -30,11 +31,19 @@ namespace RecordTracker.ViewModel
         StatusRepository StatusRepo;
         ObservableCollection<Status> _statusS;
 
-        SqliteDataLayer.LetterRecord _selectedRecord;
+        ISubjectRepository SubRepo;
+        ObservableCollection<Subject> _subjects;
+
+        ISourceRepository SourceRepo;
+        ObservableCollection<Source> _source;
+
+        LetterRecord _selectedRecord;
 
         PoliceOfficer _selectedPoliceOfficer;
         PoliceStation _selectedPoliceStation;
         TopicsAndArea _selectedTopic;
+       
+
 
         public RelayCommand SaveRecord { get; private set; }
 
@@ -60,7 +69,8 @@ namespace RecordTracker.ViewModel
                     TArepo = new TopicAndAreaRepository();
                     RecRepo = new RecordRepository();
                     StatusRepo = new StatusRepository();
-
+                    SourceRepo = new SourceRepository();
+                    SubRepo = new SubjectRepository();
                     SaveRecord = new RelayCommand(OnSave, canSave);
                     SearchRecord = new RelayCommand(onSearch, canSearch);
                     ExportToPDF = new RelayCommand(onExportToPdf, canExport);
@@ -117,10 +127,47 @@ namespace RecordTracker.ViewModel
             }
 
         }
+        public ObservableCollection<Subject> Subjects
+        {
+            get { return _subjects; }
+            set { _subjects = value; RaisePropertyChanged("Subjects"); }
+
+        }
+
+        public ObservableCollection<Source> Sources
+        {
+            get { return _source; }
+            set { _source = value; RaisePropertyChanged("Sources"); }
+
+        }
+        #endregion
+
+        private Subject _selectedSubject;
+        public Subject SelectedSubject
+        {
+            get { return _selectedSubject; }
+            set
+            {
+                _selectedSubject = value;
+               
+                RaisePropertyChanged("SelectedSubject");
+            }
+        }
 
 
-       
-        public SqliteDataLayer.LetterRecord SelectedRecord
+        private Source _selectedSource;
+        public Source SelectedSource
+        {
+            get { return _selectedSource; }
+            set
+            {
+                _selectedSource = value;
+                
+                RaisePropertyChanged("SelectedSource");
+            }
+        }
+
+        public LetterRecord SelectedRecord
         {
             get { return _selectedRecord; }
             set
@@ -164,7 +211,7 @@ namespace RecordTracker.ViewModel
                 RaisePropertyChanged("SelectedTopic");
             }
         }
-        #endregion
+       
 
         public void LoadData()
         {
@@ -202,6 +249,18 @@ namespace RecordTracker.ViewModel
                 foreach (var item in StatusList)
                     StatusData.Add(item);
                 Statuses = StatusData;
+
+                var SourceList = SourceRepo.GetSourcesAsync().Result.ToList();
+                ObservableCollection<Source> SourceData = new ObservableCollection<Source>();
+                foreach (var item in SourceList)
+                    SourceData.Add(item);
+                Sources = SourceData;
+
+                var SubjectList = SubRepo.GetSubectsAsync().Result.ToList();
+                ObservableCollection<Subject> SubjectData = new ObservableCollection<Subject>();
+                foreach (var item in SubjectList)
+                    SubjectData.Add(item);
+                Subjects = SubjectData;
             }
             catch (Exception e)
             {

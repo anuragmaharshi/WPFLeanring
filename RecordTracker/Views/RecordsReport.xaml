@@ -30,22 +30,21 @@
                         <RowDefinition Height="10" />
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="150"/>
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
-
+                    
+                    <!--Police Station-->
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station" Padding="5" />
                     <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" BorderThickness="2" 
                               Name="PSFilter" ItemsSource="{Binding PoliceStations}" SelectedItem="{Binding SelectedPoliceStation}">
@@ -68,8 +67,8 @@
                     </ComboBox>
 
                     <!--Name of officer-->
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Police Officer" Padding="5"/>
-                    <ComboBox Grid.Row="2" Grid.Column="2" Padding="5" Margin="0,5,0,0"  BorderThickness="2" Name="POFilter" 
+                    <TextBlock Grid.Row="1" Grid.Column="5" Text="Police officer" Padding="5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="6" Padding="5"  BorderThickness="2" Name="POFilter" 
                               ItemsSource="{Binding PoliceOfficers}" SelectedItem="{Binding SelectedPoliceOfficer}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -78,9 +77,33 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
+                    <!--Source-->
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Source" Padding="5"/>
+                    <ComboBox Grid.Row="2" Grid.Column="2" Padding="5" Margin="0,5,0,0"  BorderThickness="2" 
+                        ItemsSource="{Binding Sources}" SelectedItem="{Binding SelectedSource}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!--Subject-->
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="Subject" Padding="5"/>
+                    <ComboBox Grid.Row="2" Grid.Column="4" Padding="5" Margin="0,5,0,0"  BorderThickness="2" 
+                        ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="2" Grid.Column="5" Text="Search Closed" Padding="5"/>
+                    <CheckBox Grid.Row="2" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <!--Other Seach element-->
-                    <TextBlock Grid.Row="2" Grid.Column="3" Text="Other Filter" Padding="5"/>
-                    <TextBox Grid.Row="2" Grid.Column=" 4">
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Other Filter" Margin="5,5,0,0" />
+                    <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2">
                         <TextBox.Style>
                             <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                                 <Style.Resources>
@@ -106,7 +129,7 @@
                     </TextBox>
 
                     <!--Search Button-->
-                    <Button Content="Search" Grid.Row="2" Grid.Column="5" Margin="5,5,0,0" Width="80" Command="{Binding SearchRecord}"/>
+                    <Button Content="Search" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Margin="5,5,0,0"  Command="{Binding SearchRecord}"/>
 
 
                 </Grid>
