@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using Microsoft.Win32;
 using NLog;
 using RecordTracker.Services;
 using RecordTracker.SqliteDataLayer;
@@ -17,33 +18,31 @@ namespace RecordTracker.ViewModel
 
         #region variable declaration
         IPoliceOfficerRepository POrepo;
-        ObservableCollection<PoliceOfficer> _policeOfficers;
-
+        ObservableCollection<PoliceOfficer> _policeOfficers,_poListFilter;
+       
         IPoliceStationRepository PSrepo;
-        ObservableCollection<PoliceStation> _PoliceStations;
+        ObservableCollection<PoliceStation> _PoliceStations, _psListFilter;
 
         ITopicAndAreaRepository TArepo;
-        ObservableCollection<TopicsAndArea> _topicsAndAreas;
+        ObservableCollection<TopicsAndArea> _topicsAndAreas, _taListFilter;
 
         IRecordRepository RecRepo;
-        ObservableCollection<SqliteDataLayer.LetterRecord> _reportRecords;
-
-        StatusRepository StatusRepo;
-        ObservableCollection<Status> _statusS;
+        ObservableCollection<LetterRecord> _reportRecords;
 
         ISubjectRepository SubRepo;
-        ObservableCollection<Subject> _subjects;
+        ObservableCollection<Subject> _subjects,_subjectListFilter;
 
         ISourceRepository SourceRepo;
-        ObservableCollection<Source> _source;
+        ObservableCollection<Source> _source,_sourceListFilter;
+
+        StatusRepository StatusRepo;
+        ObservableCollection<Status> _statusS,_statusFilter;
 
         LetterRecord _selectedRecord;
-
         PoliceOfficer _selectedPoliceOfficer;
         PoliceStation _selectedPoliceStation;
         TopicsAndArea _selectedTopic;
        
-
 
         public RelayCommand SaveRecord { get; private set; }
 
@@ -52,7 +51,7 @@ namespace RecordTracker.ViewModel
         public RelayCommand ExportToPDF { get; private set; }
 
         List<string> Headers;
-        List<SqliteDataLayer.LetterRecord> letterRecords;
+        List<LetterRecord> letterRecords;
         #endregion
 
         #region Constructor
@@ -79,6 +78,7 @@ namespace RecordTracker.ViewModel
                     Headers.Add("D/R Number");
                     Headers.Add("Received Date");
                     Headers.Add("Police Station");
+                   
                 }
             }
             catch(Exception e)
@@ -99,17 +99,35 @@ namespace RecordTracker.ViewModel
             set { _policeOfficers = value; RaisePropertyChanged("PoliceOfficers"); }
 
         }
+
+        public ObservableCollection<PoliceOfficer> POFilter
+        {
+            get { return _poListFilter; }
+            set { _poListFilter = value; RaisePropertyChanged("POFilter"); }
+
+        }
         public ObservableCollection<PoliceStation> PoliceStations
         {
             get { return _PoliceStations; }
             set { _PoliceStations = value; RaisePropertyChanged("PoliceStations"); }
 
         }
+        public ObservableCollection<PoliceStation> PSFilter
+        {
+            get { return _psListFilter; }
+            set { _psListFilter = value; RaisePropertyChanged("PSFilter"); }
 
+        }
         public ObservableCollection<TopicsAndArea> TopicsAndAreas
         {
             get { return _topicsAndAreas; }
             set { _topicsAndAreas = value; RaisePropertyChanged("TopicsAndAreas"); }
+
+        }
+        public ObservableCollection<TopicsAndArea> TAFilter
+        {
+            get { return _taListFilter; }
+            set { _taListFilter = value; RaisePropertyChanged("TAFilter"); }
 
         }
 
@@ -117,6 +135,12 @@ namespace RecordTracker.ViewModel
         {
             get { return _statusS; }
             set { _statusS = value; RaisePropertyChanged("Statuses"); }
+        }
+
+        public ObservableCollection<Status> StatusFilter
+        {
+            get { return _statusFilter; }
+            set { _statusFilter = value; RaisePropertyChanged("StatusFilter"); }
         }
 
         public ObservableCollection<LetterRecord> ReportRecords
@@ -133,11 +157,22 @@ namespace RecordTracker.ViewModel
             set { _subjects = value; RaisePropertyChanged("Subjects"); }
 
         }
+        public ObservableCollection<Subject> SubFilter
+        {
+            get { return _subjectListFilter; }
+            set { _subjectListFilter = value; RaisePropertyChanged("SubFilter"); }
 
+        }
         public ObservableCollection<Source> Sources
         {
             get { return _source; }
             set { _source = value; RaisePropertyChanged("Sources"); }
+
+        }
+        public ObservableCollection<Source> SrcFilter
+        {
+            get { return _sourceListFilter; }
+            set { _sourceListFilter = value; RaisePropertyChanged("SrcFilter"); }
 
         }
         #endregion
@@ -149,7 +184,6 @@ namespace RecordTracker.ViewModel
             set
             {
                 _selectedSubject = value;
-               
                 RaisePropertyChanged("SelectedSubject");
             }
         }
@@ -162,7 +196,6 @@ namespace RecordTracker.ViewModel
             set
             {
                 _selectedSource = value;
-                
                 RaisePropertyChanged("SelectedSource");
             }
         }
@@ -173,7 +206,6 @@ namespace RecordTracker.ViewModel
             set
             {
                 _selectedRecord = value;
-
                 RaisePropertyChanged("SelectedRecord");
             }
         }
@@ -184,7 +216,6 @@ namespace RecordTracker.ViewModel
             set
             {
                 _selectedPoliceOfficer = value;
-
                 RaisePropertyChanged("SelectedPoliceOfficer");
             }
         }
@@ -196,7 +227,6 @@ namespace RecordTracker.ViewModel
             set
             {
                 _selectedPoliceStation = value;
-
                 RaisePropertyChanged("SelectedPoliceStation");
             }
         }
@@ -207,11 +237,20 @@ namespace RecordTracker.ViewModel
             set
             {
                 _selectedTopic = value;
-
                 RaisePropertyChanged("SelectedTopic");
             }
         }
-       
+
+        private Status _selectedStatus;
+        public Status SelectedStatus
+        {
+            get { return _selectedStatus; }
+            set
+            {
+                _selectedStatus = value;
+                RaisePropertyChanged("SelectedStatus");
+            }
+        }
 
         public void LoadData()
         {
@@ -220,47 +259,83 @@ namespace RecordTracker.ViewModel
                 _logger.Info("Inside Records viewer view model Load data");
                 var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
                 ObservableCollection<PoliceOfficer> POData = new ObservableCollection<PoliceOfficer>();
+                POFilter = new ObservableCollection<PoliceOfficer>();
                 foreach (var item in POList)
+                {
                     POData.Add(item);
+                    POFilter.Add(item);
+                }
+                   
                 PoliceOfficers = POData;
-                SelectedPoliceOfficer = PoliceOfficers.First(x => x.Name.Equals("All"));
+                POFilter.Add(new PoliceOfficer() { Id = 1000, Name = "All" });
+                SelectedPoliceOfficer = POFilter.First(x => x.Name.Equals("All"));
 
                 var PSList = PSrepo.GetPoliceStationsAsync().Result.ToList();
                 ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
+                PSFilter = new ObservableCollection<PoliceStation>();
                 foreach (var item in PSList)
+                {
                     PSData.Add(item);
+                    PSFilter.Add(item);
+                }
+                   
                 PoliceStations = PSData;
-                SelectedPoliceStation = PoliceStations.First(x => x.Name.Equals("All"));
+                PSFilter.Add(new PoliceStation() { Id = 1000, Name = "All" });
+                SelectedPoliceStation = PSFilter.First(x => x.Name.Equals("All"));
 
                 var TAList = TArepo.GetTopicAndAreasAsync().Result.ToList();
                 ObservableCollection<TopicsAndArea> TAData = new ObservableCollection<TopicsAndArea>();
+                TAFilter = new ObservableCollection<TopicsAndArea>();
                 foreach (var item in TAList)
+                {
                     TAData.Add(item);
+                    TAFilter.Add(item);
+                }
+                    
                 TopicsAndAreas = TAData;
-                SelectedTopic = TopicsAndAreas.First(x => x.Name.Equals("All"));
-                //var RecList = RecRepo.GetRecordsAsync().Result.ToList();
-                //ObservableCollection<SqliteDataLayer.LetterRecord> RecData = new ObservableCollection<SqliteDataLayer.LetterRecord>();
-                //foreach (var item in RecList)
-                //    RecData.Add(item);
-                //ReportRecords = RecData;
+              
+                TAFilter.Add(new TopicsAndArea() { Id = 1000, Name = "All" });
+                SelectedTopic = TAFilter.First(x => x.Name.Equals("All"));
+                
 
                 var StatusList = StatusRepo.GetStatus();
                 ObservableCollection<Status> StatusData = new ObservableCollection<Status>();
+                StatusFilter = new ObservableCollection<Status>();
                 foreach (var item in StatusList)
+                {
                     StatusData.Add(item);
+                    StatusFilter.Add(item);
+                }
+                
                 Statuses = StatusData;
+                StatusFilter.Add(new Status() { Id = 1000, Name = "All" });
+                SelectedStatus = StatusFilter.First(x => x.Name.Equals("Open"));
 
                 var SourceList = SourceRepo.GetSourcesAsync().Result.ToList();
                 ObservableCollection<Source> SourceData = new ObservableCollection<Source>();
+                SrcFilter = new ObservableCollection<Source>();
                 foreach (var item in SourceList)
+                {
                     SourceData.Add(item);
+                    SrcFilter.Add(item);
+                }
+                    
                 Sources = SourceData;
+                SrcFilter.Add(new Source() { Id = 1000, Name = "All" });
+                SelectedSource= SrcFilter.First(x => x.Name.Equals("All"));
 
                 var SubjectList = SubRepo.GetSubectsAsync().Result.ToList();
                 ObservableCollection<Subject> SubjectData = new ObservableCollection<Subject>();
+                SubFilter = new ObservableCollection<Subject>();
                 foreach (var item in SubjectList)
+                {
                     SubjectData.Add(item);
+                    SubFilter.Add(item);
+                }
+                  
                 Subjects = SubjectData;
+                SubFilter.Add(new Subject() { Id = 1000, Name = "All" });
+                SelectedSubject = SubFilter.First(x => x.Name.Equals("All"));
             }
             catch (Exception e)
             {
@@ -286,11 +361,13 @@ namespace RecordTracker.ViewModel
 
         private void onSearch()
         {
-            List<long> idPO, idPS, idTA;
+            List<long> idPO, idPS, idTA,idSrc,idSub,idStatus;
             idPO = new List<long>();
             idPS = new List<long>();
             idTA = new List<long>();
-            
+            idSrc = new List<long>();
+            idSub = new List<long>();
+            idStatus = new List<long>();
             if (SelectedPoliceOfficer.Name.Equals("All"))
             {
                 foreach(var item in PoliceOfficers)
@@ -327,7 +404,42 @@ namespace RecordTracker.ViewModel
                 idTA.Add(SelectedTopic.Id);
             }
 
-            letterRecords = RecRepo.GetRecordsAsync(idPS,idPO,idTA).Result.ToList();
+            if (SelectedSource.Name.Equals("All"))
+            {
+                foreach (var item in Sources)
+                {
+                    idSrc.Add(item.Id);
+                }
+            }
+            else
+            {
+                idSrc.Add(SelectedSource.Id);
+            }
+
+            if (SelectedSubject.Name.Equals("All"))
+            {
+                foreach (var item in Subjects)
+                {
+                    idSub.Add(item.Id);
+                }
+            }
+            else
+            {
+                idSub.Add(SelectedSubject.Id);
+            }
+
+            if (SelectedStatus.Name.Equals("All"))
+            {
+                foreach (var item in Statuses)
+                {
+                    idStatus.Add(item.Id);
+                }
+            }
+            else
+            {
+                idStatus.Add(SelectedStatus.Id);
+            }
+            letterRecords = RecRepo.GetRecordsAsync(idPS,idPO,idTA,idSrc,idSub,idStatus).Result.ToList();
           
             ObservableCollection<SqliteDataLayer.LetterRecord> RecData = new ObservableCollection<SqliteDataLayer.LetterRecord>();
             foreach (var item in letterRecords)
@@ -353,13 +465,22 @@ namespace RecordTracker.ViewModel
 
         private void onExportToPdf()
         {
-            CreatePDFDataGrid create = new CreatePDFDataGrid("First.pdf");
-            //create.AddHeader(Headers);
-            create.AddFilters("Police Officer", SelectedPoliceOfficer.Name);
-            create.AddFilters("Police Station", SelectedPoliceStation.Name);
-            create.AddFilters("Topic Or Area", SelectedTopic.Name);
-            create.AddRecords(_reportRecords,_policeOfficers,_PoliceStations,_topicsAndAreas);
-            create.SaveAndClose();
+            SaveFileDialog dialog = new SaveFileDialog()
+            {
+                Filter = "Pdf Files|*.pdf"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                CreatePDFDataGrid create = new CreatePDFDataGrid(dialog.FileName);
+                //create.AddHeader(Headers);
+                create.AddFilters("Police Officer", SelectedPoliceOfficer.Name);
+                create.AddFilters("Police Station", SelectedPoliceStation.Name);
+                create.AddFilters("Topic Or Area", SelectedTopic.Name);
+                create.AddRecords(_reportRecords, _policeOfficers, _PoliceStations, _topicsAndAreas);
+                create.SaveAndClose();
+            }
+           
             
            
 

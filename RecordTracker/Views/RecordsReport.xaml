@@ -36,18 +36,18 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
                     
                     <!--Police Station-->
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="Police Station" Padding="5" />
                     <ComboBox Grid.Row="1" Grid.Column="2" Padding="5" BorderThickness="2" 
-                              Name="PSFilter" ItemsSource="{Binding PoliceStations}" SelectedItem="{Binding SelectedPoliceStation}">
+                              Name="PSFilter" ItemsSource="{Binding PSFilter}" SelectedItem="{Binding SelectedPoliceStation}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -58,7 +58,7 @@
                     <!--Topic Area-->
                     <TextBlock Grid.Row="1" Grid.Column="3" Text="Topic/Area" Padding="5" />
                     <ComboBox Grid.Row="1" Grid.Column="4" Padding="5" BorderThickness="2" Name="TopicFilter" 
-                              ItemsSource="{Binding TopicsAndAreas}" SelectedItem="{Binding SelectedTopic}">
+                              ItemsSource="{Binding TAFilter}" SelectedItem="{Binding SelectedTopic}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -69,7 +69,7 @@
                     <!--Name of officer-->
                     <TextBlock Grid.Row="1" Grid.Column="5" Text="Police officer" Padding="5"/>
                     <ComboBox Grid.Row="1" Grid.Column="6" Padding="5"  BorderThickness="2" Name="POFilter" 
-                              ItemsSource="{Binding PoliceOfficers}" SelectedItem="{Binding SelectedPoliceOfficer}">
+                              ItemsSource="{Binding POFilter}" SelectedItem="{Binding SelectedPoliceOfficer}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -80,7 +80,7 @@
                     <!--Source-->
                     <TextBlock Grid.Row="2" Grid.Column="1" Text="Source" Padding="5"/>
                     <ComboBox Grid.Row="2" Grid.Column="2" Padding="5" Margin="0,5,0,0"  BorderThickness="2" 
-                        ItemsSource="{Binding Sources}" SelectedItem="{Binding SelectedSource}">
+                        ItemsSource="{Binding SrcFilter}" SelectedItem="{Binding SelectedSource}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -91,7 +91,7 @@
                     <!--Subject-->
                     <TextBlock Grid.Row="2" Grid.Column="3" Text="Subject" Padding="5"/>
                     <ComboBox Grid.Row="2" Grid.Column="4" Padding="5" Margin="0,5,0,0"  BorderThickness="2" 
-                        ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}">
+                        ItemsSource="{Binding SubFilter}" SelectedItem="{Binding SelectedSubject}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -99,11 +99,18 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    <TextBlock Grid.Row="2" Grid.Column="5" Text="Search Closed" Padding="5"/>
-                    <CheckBox Grid.Row="2" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="5" Text="Status" Padding="5"/>
+                    <ComboBox Grid.Row="2" Grid.Column="6" Padding="5" Margin="0,5,0,0"  BorderThickness="2" 
+                        ItemsSource="{Binding StatusFilter}" SelectedItem="{Binding SelectedStatus}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <!--Other Seach element-->
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Other Filter" Margin="5,5,0,0" />
-                    <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2">
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Other Filter" Margin="5,5,0,0" Visibility="Hidden"/>
+                    <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Visibility="Hidden">
                         <TextBox.Style>
                             <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                                 <Style.Resources>
@@ -126,10 +133,10 @@
                                 </Style.Triggers>
                             </Style>
                         </TextBox.Style>
-                    </TextBox>
+                    </TextBox >
 
                     <!--Search Button-->
-                    <Button Content="Search" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Margin="5,5,0,0"  Command="{Binding SearchRecord}"/>
+                    <Button Content="Search" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,5,0,0"  Command="{Binding SearchRecord}"/>
 
 
                 </Grid>
@@ -140,9 +147,9 @@
                     <Button Content="Delete" Margin="10,0,10,0"  Width="100" IsEnabled="False" />
                     <Button Content="Print to PDF"  Width="100" Command="{Binding ExportToPDF}"/>
                 </StackPanel>
-                <DataGrid  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="80"  
-                  HorizontalScrollBarVisibility="Visible"  VerticalScrollBarVisibility="Visible" SelectionMode="Single"
-                  BorderBrush="Gray" BorderThickness="5" Background="LightGray"
+                <DataGrid  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="80"  RowHeaderWidth="40" 
+                   VerticalScrollBarVisibility="Auto" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                  BorderBrush="Gray" BorderThickness="5" Background="LightGray" 
                   AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding ReportRecords}" SelectedItem="{Binding SelectedRecord}" Name="LetterDataGrd">
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
@@ -155,11 +162,27 @@
                             </Style.Triggers>
                         </Style>
                     </DataGrid.RowStyle>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        
+                            <Setter Property="MinWidth" Value="40">
+                                
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
                     <DataGrid.Columns>
 
-                        <DataGridComboBoxColumn Width="100" Header="Status"  SelectedValueBinding="{Binding StatusID}" 
+                        <DataGridComboBoxColumn Width="100" Header="Status"   
+                                                SelectedValueBinding="{Binding StatusID}" 
                                                 DisplayMemberPath="Name" 
-                                                SelectedValuePath="ID">
+                                                SelectedValuePath="Id" >
                             <DataGridComboBoxColumn.ElementStyle>
                                 <Style TargetType="{x:Type ComboBox}">
                                     <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Statuses, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
@@ -174,15 +197,15 @@
 
                         <DataGridTextColumn Binding="{Binding LetterNumber}" Header="LetterNumber" />
 
-                        <DataGridTemplateColumn Header="Recipt Date " CanUserSort="True" SortMemberPath="ReciptDate">
+                        <DataGridTemplateColumn Header="Recipt Date " CanUserSort="True" SortMemberPath="OfficeReceiptDate">
                             <DataGridTemplateColumn.CellTemplate >
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding FormatReciptDate, UpdateSourceTrigger=LostFocus}"  Margin="4"/>
+                                    <TextBlock Text="{Binding FormatOfficeReceiptDate, UpdateSourceTrigger=LostFocus}"  Margin="4"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate >
-                                    <DatePicker SelectedDate="{Binding ReciptDate, StringFormat='dd MMM yyyy', Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  >
+                                    <DatePicker SelectedDate="{Binding OfficeReceiptDate, StringFormat='dd MMM yyyy', Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  >
                                         <DatePicker.Resources>
                                             <Style TargetType="DatePickerTextBox" >
                                                 <Setter Property="Control.Template">
@@ -203,7 +226,7 @@
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         
-                        <!--<DataGridTextColumn  Header="Topic Area Id" Binding ="{Binding TopicAreaID}" />-->
+                        
                         <DataGridComboBoxColumn Header="Topic/Area" 
                                                 SelectedValueBinding="{Binding TopicAreaID}" 
                                                 DisplayMemberPath="Name" 
@@ -250,17 +273,85 @@
                             </DataGridComboBoxColumn.EditingElementStyle>
                         </DataGridComboBoxColumn>
 
-                        <DataGridTextColumn Binding="{Binding DRNumber}" Header="D/R Number" />
+                        <DataGridTextColumn Binding="{Binding OfficeDispatchNumber}" Header="Office Dispatch Number" />
 
-                        <DataGridTemplateColumn Header="D/R Date " CanUserSort="True" SortMemberPath="DRDate">
+                        <DataGridTemplateColumn Header="Office Dispatch Date" CanUserSort="True" SortMemberPath="OfficeDispatchDate">
                             <DataGridTemplateColumn.CellTemplate >
                                 <DataTemplate >
-                                    <TextBlock Text="{Binding FormatDRDate}"  Margin="4"/>
+                                    <TextBlock Text="{Binding FormatOfficeDispatchDate}"  Margin="4"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate >
-                                    <DatePicker SelectedDate="{Binding DRDate,StringFormat='dd MMM yyyy', Mode=TwoWay}" >
+                                    <DatePicker SelectedDate="{Binding OfficeDispatchDate,StringFormat='dd MMM yyyy', Mode=TwoWay}" >
+                                        <DatePicker.Resources>
+                                            <Style TargetType="DatePickerTextBox" >
+                                                <Setter Property="Control.Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                                            </TextBox>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DatePicker.Resources>
+
+                                    </DatePicker>
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <DataGridComboBoxColumn Header="Source" 
+                                                SelectedValueBinding="{Binding SourceID}" 
+                                                DisplayMemberPath="Name" 
+                                                SelectedValuePath="Id" >
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Sources, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Sources, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
+
+                        <DataGridTextColumn Binding="{Binding OrganizationName}" Header="Organization Name" />
+
+                        <DataGridTextColumn Binding="{Binding SanhaDetail}" Header="Sanha Detail" />
+
+                        <DataGridTextColumn Binding="{Binding VerificationDetail}" Header="Verification Detail" />
+
+                        <DataGridComboBoxColumn Header="Subject" 
+                                                SelectedValueBinding="{Binding SubjectID}" 
+                                                DisplayMemberPath="Name" 
+                                                SelectedValuePath="Id" >
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Subjects, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Subjects, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
+
+                        <DataGridTextColumn Binding="{Binding PsDispatchNumber}" Header="PS Dispatch Number" />
+
+                        <DataGridTemplateColumn Header="PS Dispatch Date" CanUserSort="True" SortMemberPath="PsDispatchDate">
+                            <DataGridTemplateColumn.CellTemplate >
+                                <DataTemplate >
+                                    <TextBlock Text="{Binding FormatPsDispatchDate}"  Margin="4"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate >
+                                    <DatePicker SelectedDate="{Binding PsDispatchDate,StringFormat='dd MMM yyyy', Mode=TwoWay}" >
                                         <DatePicker.Resources>
                                             <Style TargetType="DatePickerTextBox" >
                                                 <Setter Property="Control.Template">
@@ -280,7 +371,9 @@
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Width="*" Binding="{Binding Remarks}" Header="Remarks" />
+                        <DataGridTextColumn Binding="{Binding CaseNumber}" Header="Case Number" />
+
+                        <DataGridTextColumn Width="200" Binding="{Binding Remarks}" Header="Remarks" />
 
                     </DataGrid.Columns>
                 </DataGrid>

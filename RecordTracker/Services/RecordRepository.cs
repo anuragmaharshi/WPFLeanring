@@ -36,49 +36,6 @@ namespace RecordTracker.Services
         {
 
 
-
-            /*
-            IQueryable<SqliteDataLayer.LetterRecord> OffData;
-            if (officer.Name.Equals("All"))
-            {
-                OffData= (from record in _context.LetterRecords where record.PoliceOfficerID != officer.Id select record);
-            }
-            else
-            {
-                OffData = (from record in _context.LetterRecords where record.PoliceOfficerID == officer.Id select record);
-            }
-
-            IQueryable<SqliteDataLayer.LetterRecord> StatData;
-            if (stations.Name.Equals("All"))
-            {
-                StatData = (from record in _context.LetterRecords where record.PoliceStationID != stations.Id select record);
-            }
-            else
-            {
-                StatData = (from record in _context.LetterRecords where record.PoliceStationID == stations.Id select record);
-            }
-
-            IQueryable<SqliteDataLayer.LetterRecord> TopicData;
-            if (stations.Name.Equals("All"))
-            {
-                TopicData = (from record in _context.LetterRecords where checktopic(record) select record);
-            }
-            else
-            {
-                TopicData = (from record in _context.LetterRecords where record.TopicAreaID == topics.Id select record);
-            }
-            */
-            //All not selected
-            //IQueryable<SqliteDataLayer.LetterRecord> AllData;
-            //AllData = (from record in _context.LetterRecords where record.StatusID == 1 && record.PoliceStationID == stations.Id
-            //           && (record.PoliceOfficerID == officer.Id ) && record.TopicAreaID == topics.Id 
-            //    select record);
-            //return AllData.ToListAsync();
-
-            //List<long> Ids = new List<long>();
-            //Ids.Add(1);
-            //Ids.Add(2);
-            ////Ids.Any(x=>x.Equals())
             IQueryable<SqliteDataLayer.LetterRecord> AllData;
             AllData = (from record in _context.LetterRecords
                        where record.StatusID == 1 
@@ -89,27 +46,27 @@ namespace RecordTracker.Services
           
             return AllData.ToListAsync();
 
-            //if (stations != null)
-            //{
-            //    dataStation = (from record in _context.LetterRecords where record.PoliceStationID == stations.Id select record);
-            //    AllData.Intersect(dataStation);
-            //}
+           
+        }
 
-            //if (officer != null)
-            //{
-            //    dataOff = (from record in _context.LetterRecords where record.PoliceOfficerID == officer.Id select record);
-            //    AllData.Intersect(dataOff);
-            //}
+        public Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync(List<long> PSids, 
+            List<long> POids, List<long> TAids,List<long> Srcids,List<long> Subids, List<long> StatusIds)
+        {
 
-            //if (topics != null)
-            //{
-            //    dataTopic = (from record in _context.LetterRecords where record.TopicAreaID == topics.Id select record);
-            //    AllData.Intersect(dataTopic);
 
-            //}
+            IQueryable<SqliteDataLayer.LetterRecord> AllData;
+            AllData = (from record in _context.LetterRecords
+                       where StatusIds.Any(x=>x.Equals(record.StatusID))
+                       && PSids.Any(x => x.Equals(record.PoliceStationID))
+                       && POids.Any(x => x.Equals(record.PoliceOfficerID))
+                       && TAids.Any(x => x.Equals(record.TopicAreaID))
+                       && Srcids.Any(x => x.Equals(record.SourceID))
+                       && Subids.Any(x=> x.Equals(record.SubjectID))
+                       select record);
 
-            //return AllData.ToListAsync();
-            //_context.LetterRecords.Select(r => (r.PoliceStationID == stations.Id) && (r.PoliceOfficerID == officer.Id) && (r.TopicAreaID == topics.Id) && (r.StatusID == 1));
+            return AllData.ToListAsync();
+
+
         }
 
         public async Task<SqliteDataLayer.LetterRecord> UpdateLetterRecordAsync(SqliteDataLayer.LetterRecord record)

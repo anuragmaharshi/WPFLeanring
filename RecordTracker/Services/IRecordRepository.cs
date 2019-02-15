@@ -14,6 +14,7 @@ namespace RecordTracker.Services
 
         Task<SqliteDataLayer.LetterRecord> UpdateLetterRecordAsync(SqliteDataLayer.LetterRecord record);
 
-        Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync(List<long> PSids, List<long> POids, List<long> TAids);
+        Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync(List<long> PSids, List<long> POids, List<long> TAids, 
+            List<long> Srcids, List<long> Subids,List<long> StatusIds);
     }
 }

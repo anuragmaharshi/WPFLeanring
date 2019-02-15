@@ -9,36 +9,41 @@ namespace RecordTracker.SqliteDataLayer
     public class LetterRecord
     {
         public long Id { get; set; }
-
-        public long LetterNumber { get; set; }
-        public Nullable<long> OfficeDispatchNumber { get; set; }
-        public Nullable<long> SourceID { get; set; }
-        public string OfficeDispatchDate { get; set; }
+        public long StatusID { get; set; }
+        public string LetterNumber { get; set; }
         public string OfficeReceiptDate { get; set; }
-
-        public string OrganizationName { get; set; }
-        public string SanhaDetail { get; set; }
-        public string VerificationDetail { get; set; }
-        public Nullable<long> SubjectID { get; set; }
-
-        public Nullable<long> PsDispatchNumber { get; set; }
-        public string PsDispatchDate { get; set; }
         public long TopicAreaID { get; set; }
         public long PoliceStationID { get; set; }
         public long PoliceOfficerID { get; set; }
+        public string OfficeDispatchNumber { get; set; }
+   
+        public long SourceID { get; set; }
+        public string OfficeDispatchDate { get; set; }
+        public string OrganizationName { get; set; }
+        public string SanhaDetail { get; set; }
+        public string VerificationDetail { get; set; }
 
-        public Nullable<long> StatusID { get; set; }
+        public long SubjectID { get; set; }
+        public string PsDispatchNumber { get; set; }
+        public string PsDispatchDate { get; set; }
+        public string CaseNumber { get; set; }
+
         public string Remarks { get; set; }
-        public Nullable<long> CaseNumber { get; set; }
-
-
 
         public string FormatOfficeDispatchDate
         {
             get
             {
-                var dty = DateTime.Parse(OfficeDispatchDate);
-                return dty.ToString("yyyy-MM-dd");
+                try
+                {
+                    var dty = DateTime.Parse(OfficeDispatchDate);
+                    return dty.ToString("yyyy-MM-dd");
+                }
+                catch 
+                {
+                    return "";
+                }
+               
             }
            
         }
@@ -57,8 +62,16 @@ namespace RecordTracker.SqliteDataLayer
         {
             get
             {
-                var dty = DateTime.Parse(PsDispatchDate);
-                return dty.ToString("yyyy-MM-dd");
+                try
+                {
+                    var dty = DateTime.Parse(PsDispatchDate);
+                    return dty.ToString("yyyy-MM-dd");
+                }
+                catch
+                {
+                    return "";
+                }
+              
             }
 
         }

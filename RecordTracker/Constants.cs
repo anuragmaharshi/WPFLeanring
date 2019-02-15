@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,10 @@ namespace RecordTracker
         {
 
             //_logger.Info("DB file path set = " + ConfigurationManager.AppSettings["DbFilePath"]);
-            return ConfigurationManager.AppSettings["DbFilePath"];
+            // return ConfigurationManager.AppSettings["DbFilePath"];
+            var fileName = Path.Combine(Environment.GetFolderPath(
+            Environment.SpecialFolder.LocalApplicationData), "RecordTracker\\MainApplication.db");
+            return fileName;
         }
     }
 }

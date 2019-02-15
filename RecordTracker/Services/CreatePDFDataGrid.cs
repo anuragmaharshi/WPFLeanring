@@ -102,9 +102,9 @@ namespace RecordTracker.Services
             {
                 records.AddCell(item.OfficeReceiptDate.ToString());
                 records.AddCell(item.LetterNumber.ToString());
-              
-                records.AddCell(item.OfficeDispatchNumber.ToString());
-                records.AddCell(item.OfficeDispatchDate.ToString());
+                
+                records.AddCell(item.OfficeDispatchNumber == null ? "" : item.OfficeDispatchNumber.ToString());
+                records.AddCell(item.OfficeDispatchDate==null?"":item.OfficeDispatchDate.ToString());
                 records.AddCell(PoliceOfficers.First(x=>x.Id== item.PoliceOfficerID).Name);
                 records.AddCell(PoliceStations.First(x=>x.Id== item.PoliceStationID).Name);
                 records.AddCell(TopicsAndAreas.First(x=>x.Id== item.TopicAreaID).Name);

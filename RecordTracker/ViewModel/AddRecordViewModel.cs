@@ -387,9 +387,9 @@ namespace RecordTracker.ViewModel
         {
             SqliteDataLayer.LetterRecord record = new SqliteDataLayer.LetterRecord();
 
-            record.LetterNumber = long.Parse(LetterNumber);
+            record.LetterNumber = LetterNumber;
             if (OfficeDispatchNumber != null)
-                record.OfficeDispatchNumber = long.Parse(OfficeDispatchNumber);
+                record.OfficeDispatchNumber = OfficeDispatchNumber;
             else
                 record.OfficeDispatchNumber = null;
 
@@ -411,7 +411,7 @@ namespace RecordTracker.ViewModel
             record.SubjectID = SelectedSubject.Id;
 
             if(PsDispatchNumber!=null)
-                record.PsDispatchNumber = long.Parse(PsDispatchNumber);
+                record.PsDispatchNumber = PsDispatchNumber;
             record.PsDispatchDate = PsDispatchDate;
             record.TopicAreaID = SelectedTA.Id;
             record.PoliceOfficerID = SelectedPO.Id;
@@ -420,7 +420,7 @@ namespace RecordTracker.ViewModel
             record.StatusID = 1;
             record.Remarks = Remarks;
             if(CaseNumber!=null)
-                record.CaseNumber = long.Parse(CaseNumber);
+                record.CaseNumber = CaseNumber;
             try
             {
                 AddRepo.AddLetterRecordAsync(record).Wait();
