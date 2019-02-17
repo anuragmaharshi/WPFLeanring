@@ -16,5 +16,7 @@ namespace RecordTracker.Services
 
         Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync(List<long> PSids, List<long> POids, List<long> TAids, 
             List<long> Srcids, List<long> Subids,List<long> StatusIds);
+
+        Task DeleteRecordsAsync(long id);
     }
 }

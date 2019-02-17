@@ -85,6 +85,7 @@ namespace RecordTracker.ViewModel
 
         private void OnDelete()
         {
+           
             repo.DeleteSourceAsync(SelectedSource.Id);
             Sources.Remove(SelectedSource);
         }

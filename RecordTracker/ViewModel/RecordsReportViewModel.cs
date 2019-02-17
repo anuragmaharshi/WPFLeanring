@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace RecordTracker.ViewModel
 {
@@ -50,7 +51,8 @@ namespace RecordTracker.ViewModel
 
         public RelayCommand ExportToPDF { get; private set; }
 
-        List<string> Headers;
+        public RelayCommand DeleteRecord { get; private set; }
+
         List<LetterRecord> letterRecords;
         #endregion
 
@@ -73,12 +75,9 @@ namespace RecordTracker.ViewModel
                     SaveRecord = new RelayCommand(OnSave, canSave);
                     SearchRecord = new RelayCommand(onSearch, canSearch);
                     ExportToPDF = new RelayCommand(onExportToPdf, canExport);
-                    Headers = new List<string>();
-                    Headers.Add("Letter Number");
-                    Headers.Add("D/R Number");
-                    Headers.Add("Received Date");
-                    Headers.Add("Police Station");
-                   
+                    DeleteRecord = new RelayCommand(onDelete, canDelete);
+                    PdfFilterLetterNumber = true;
+                    PdfFilterStatus = true;
                 }
             }
             catch(Exception e)
@@ -89,7 +88,23 @@ namespace RecordTracker.ViewModel
            
         }
 
-     
+        private bool canDelete()
+        {
+            return SelectedRecord != null;
+        }
+
+        private void onDelete()
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo,MessageBoxImage.Warning);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                RecRepo.DeleteRecordsAsync(SelectedRecord.Id);
+                ReportRecords.Remove(SelectedRecord);
+                SelectedRecord = null;
+            }
+        }
+
+
         #endregion
 
         #region Observable collections
@@ -207,6 +222,7 @@ namespace RecordTracker.ViewModel
             {
                 _selectedRecord = value;
                 RaisePropertyChanged("SelectedRecord");
+                DeleteRecord.RaiseCanExecuteChanged();
             }
         }
 
@@ -250,6 +266,119 @@ namespace RecordTracker.ViewModel
                 _selectedStatus = value;
                 RaisePropertyChanged("SelectedStatus");
             }
+        }
+
+        private bool _pdfLetterNumberFilter;
+        public bool PdfFilterLetterNumber
+        {
+            get { return _pdfLetterNumberFilter; }
+            set { _pdfLetterNumberFilter = value; RaisePropertyChanged("PdfFilterLetterNumber"); }
+        }
+
+
+        private bool _pdfStatusFilter;
+        public bool PdfFilterStatus
+        {
+            get { return _pdfStatusFilter; }
+            set { _pdfStatusFilter = value; RaisePropertyChanged("PdfFilterStatus"); }
+        }
+
+        private bool _officeReceiptDateFilter;
+        public bool PdfFilterOfficeReceiptDate
+        {
+            get { return _officeReceiptDateFilter; }
+            set { _officeReceiptDateFilter = value; RaisePropertyChanged("PdfFilterOfficeReceiptDate"); }
+        }
+
+        private bool _topicAreaFilter;
+        public bool PdfFilterTopicArea
+        {
+            get { return _topicAreaFilter; }
+            set { _topicAreaFilter = value; RaisePropertyChanged("PdfFilterTopicArea"); }
+        }
+
+        private bool _policeStationFilter;
+        public bool PdfFilterPoliceStation
+        {
+            get { return _policeStationFilter; }
+            set { _policeStationFilter = value; RaisePropertyChanged("PdfFilterPoliceStation"); }
+        }
+
+        private bool _policeOfficerFilter;
+        public bool PdfFilterPoliceOfficer
+        {
+            get { return _policeOfficerFilter; }
+            set { _policeOfficerFilter = value; RaisePropertyChanged("PdfFilterPoliceOfficer"); }
+        }
+
+        private bool _officeDispatchNumberFilter;
+        public bool PdfFilterOfficeDispatchNumber
+        {
+            get { return _officeDispatchNumberFilter; }
+            set { _officeDispatchNumberFilter = value; RaisePropertyChanged("PdfFilterOfficeDispatchNumber"); }
+        }
+
+        private bool _sourceFilter;
+        public bool PdfFilterSource
+        {
+            get { return _sourceFilter; }
+            set { _sourceFilter = value; RaisePropertyChanged("PdfFilterSource"); }
+        }
+
+        private bool _officeDispatchDateFilter;
+        public bool PdfFilterOfficeDispatchDate
+        {
+            get { return _officeDispatchDateFilter; }
+            set { _officeDispatchDateFilter = value; RaisePropertyChanged("PdfFilterOfficeDispatchDate"); }
+        }
+
+        private bool _organizationNameFilter;
+        public bool PdfFilterOrganizationName
+        {
+            get { return _organizationNameFilter; }
+            set { _organizationNameFilter = value; RaisePropertyChanged("PdfFilterOrganizationName"); }
+        }
+
+        private bool _sanhaDetailFilter;
+        public bool PdfFilterSanhaDetail
+        {
+            get { return _sanhaDetailFilter; }
+            set { _sanhaDetailFilter = value; RaisePropertyChanged("PdfFilterSanhaDetail"); }
+        }
+
+        private bool _verificationDetaillFilter;
+        public bool PdfFilterVerificationDetail
+        {
+            get { return _verificationDetaillFilter; }
+            set { _verificationDetaillFilter = value; RaisePropertyChanged("PdfFilterVerificationDetail"); }
+        }
+
+        private bool _subjectFilter;
+        public bool PdfFilterSubject
+        {
+            get { return _subjectFilter; }
+            set { _subjectFilter = value; RaisePropertyChanged("PdfFilterSubject"); }
+        }
+
+        private bool _psDispatchNumberFilter;
+        public bool PdfFilterPSDispatchNumber
+        {
+            get { return _psDispatchNumberFilter; }
+            set { _psDispatchNumberFilter = value; RaisePropertyChanged("PdfFilterPSDispatchNumber"); }
+        }
+
+        private bool _psDispatchDateFilter;
+        public bool PdfFilterPSDispatchDate
+        {
+            get { return _psDispatchDateFilter; }
+            set { _psDispatchDateFilter = value; RaisePropertyChanged("PdfFilterPSDispatchDate"); }
+        }
+
+        private bool _caseNumberFilter;
+        public bool PdfFilterCaseNumber
+        {
+            get { return _caseNumberFilter; }
+            set { _caseNumberFilter = value; RaisePropertyChanged("PdfFilterCaseNumber"); }
         }
 
         public void LoadData()
@@ -472,19 +601,206 @@ namespace RecordTracker.ViewModel
 
             if (dialog.ShowDialog() == true)
             {
-                CreatePDFDataGrid create = new CreatePDFDataGrid(dialog.FileName);
-                //create.AddHeader(Headers);
+                var listOfItems= GetPDFDAta();
+                var listOfColumns = GetColumnHeaders();
+                int len = listOfColumns.Count;
+                CreatePDFDataGrid create = new CreatePDFDataGrid(dialog.FileName, len);
+                
+            
                 create.AddFilters("Police Officer", SelectedPoliceOfficer.Name);
                 create.AddFilters("Police Station", SelectedPoliceStation.Name);
                 create.AddFilters("Topic Or Area", SelectedTopic.Name);
-                create.AddRecords(_reportRecords, _policeOfficers, _PoliceStations, _topicsAndAreas);
+                create.AddFilters("Source", SelectedSource.Name);
+                create.AddFilters("Subject", SelectedSubject.Name);
+                create.AddFilters("Status", SelectedStatus.Name);
+                //create.AddRecords(_reportRecords, _policeOfficers, _PoliceStations, _topicsAndAreas);
+                create.AddHeader(listOfColumns);
+                create.AddRecords(listOfItems);
                 create.SaveAndClose();
             }
+   
+        }
+
+        public List<List<string>> GetPDFDAta()
+        {
+            List<List<string>> ListOfRecord = new List<List<string>>();
            
             
-           
+            foreach(var item in ReportRecords)
+            {
+                List<string> SingleRecord = new List<string>();
+                if (PdfFilterLetterNumber)
+                {
+                    SingleRecord.Add(item.LetterNumber);
+                }
+
+                if (PdfFilterStatus)
+                {
+                    SingleRecord.Add(Statuses.First(x=>x.Id.Equals(item.StatusID)).Name.ToString());
+                }
+
+                if (PdfFilterOfficeReceiptDate)
+                {
+                    SingleRecord.Add(item.OfficeReceiptDate);
+                }
+
+                if (PdfFilterTopicArea)
+                {
+                    SingleRecord.Add(TopicsAndAreas.First(x => x.Id.Equals(item.TopicAreaID)).Name.ToString());
+                }
+
+                if (PdfFilterPoliceStation)
+                {
+                    SingleRecord.Add(PoliceStations.First(x => x.Id.Equals(item.PoliceStationID)).Name.ToString());
+                }
+
+                if (PdfFilterPoliceOfficer)
+                {
+                    SingleRecord.Add(PoliceOfficers.First(x => x.Id.Equals(item.PoliceOfficerID)).Name.ToString());
+                }
+
+                if (PdfFilterOfficeDispatchNumber)
+                {
+                    SingleRecord.Add(item.OfficeDispatchNumber);
+                }
+
+                if (PdfFilterSource)
+                {
+                    SingleRecord.Add(Sources.First(x => x.Id.Equals(item.SourceID)).Name.ToString());
+                }
+
+                if (PdfFilterOfficeDispatchDate)
+                {
+                    SingleRecord.Add(item.OfficeDispatchDate);
+                }
+
+                if (PdfFilterOrganizationName)
+                {
+                    SingleRecord.Add(item.OrganizationName);
+                }
+
+                if (PdfFilterSanhaDetail)
+                {
+                    SingleRecord.Add(item.SanhaDetail);
+                }
+
+                if (PdfFilterVerificationDetail)
+                {
+                    SingleRecord.Add(item.VerificationDetail);
+                }
+
+                if (PdfFilterSubject)
+                {
+                    SingleRecord.Add(Subjects.First(x => x.Id.Equals(item.SubjectID)).Name.ToString());
+                }
+
+                if (PdfFilterPSDispatchNumber)
+                {
+                    SingleRecord.Add(item.PsDispatchNumber);
+                }
+
+                if (PdfFilterPSDispatchDate)
+                {
+                    SingleRecord.Add(item.PsDispatchDate);
+                }
+
+                if (PdfFilterCaseNumber)
+                {
+                    SingleRecord.Add(item.CaseNumber);
+                }
+                ListOfRecord.Add(SingleRecord);
+            }
+
+            return ListOfRecord;
+
+        }
+
+        public List<string> GetColumnHeaders()
+        {
+          List<string> ListOfColumn = new List<string>();
+            if (PdfFilterLetterNumber)
+            {
+                ListOfColumn.Add("Letter number");
+            }
+
+            if (PdfFilterStatus)
+            {
+                ListOfColumn.Add("Status");
+            }
+
+            if (PdfFilterOfficeReceiptDate)
+            {
+                ListOfColumn.Add("Office Receipt Date");
+            }
+
+            if (PdfFilterTopicArea)
+            {
+                ListOfColumn.Add("Topic Or Area");
+            }
+
+            if (PdfFilterPoliceStation)
+            {
+                ListOfColumn.Add("Police Station");
+            }
+
+            if (PdfFilterPoliceOfficer)
+            {
+                ListOfColumn.Add("Police Officer");
+            }
+
+            if (PdfFilterOfficeDispatchNumber)
+            {
+                ListOfColumn.Add("Office Dispatch Number");
+            }
+
+            if (PdfFilterSource)
+            {
+                ListOfColumn.Add("Source");
+            }
+
+            if (PdfFilterOfficeDispatchDate)
+            {
+                ListOfColumn.Add("Office Dispatch Date");
+            }
+
+            if (PdfFilterOrganizationName)
+            {
+                ListOfColumn.Add("Organization Name");
+            }
+
+            if (PdfFilterSanhaDetail)
+            {
+                ListOfColumn.Add("Sanha Detail");
+            }
+
+            if (PdfFilterVerificationDetail)
+            {
+                ListOfColumn.Add("Verification Detail");
+            }
+
+            if (PdfFilterSubject)
+            {
+                ListOfColumn.Add("Subject");
+            }
+
+            if (PdfFilterPSDispatchNumber)
+            {
+                ListOfColumn.Add("PS Dispatch Number");
+            }
+
+            if (PdfFilterPSDispatchDate)
+            {
+                ListOfColumn.Add("PS Dispatch Date");
+            }
+
+            if (PdfFilterCaseNumber)
+            {
+                ListOfColumn.Add("Case Number");
+            }
 
 
+
+            return ListOfColumn;
         }
     }
 }

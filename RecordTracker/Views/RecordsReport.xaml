@@ -144,9 +144,59 @@
             <StackPanel Orientation="Vertical" >
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Save" Padding="2" Width="100" Command="{Binding SaveRecord}"/>
-                    <Button Content="Delete" Margin="10,0,10,0"  Width="100" IsEnabled="False" />
+                    <Button Content="Delete" Margin="10,0,10,0"  Width="100" Command="{Binding DeleteRecord}" />
                     <Button Content="Print to PDF"  Width="100" Command="{Binding ExportToPDF}"/>
+                    <ToggleButton Name="buttonPDFConfig" Content="Configure PDF" Margin="10,0,10,0"/>
+
+
                 </StackPanel>
+                <Popup StaysOpen="False" Name="ConfigPDFReport" IsOpen="{Binding IsChecked, ElementName=buttonPDFConfig}" 
+                       Placement="MousePoint" PlacementTarget="{Binding ElementName=ReportGrid}">
+                    <Border Background="White" BorderThickness="1" BorderBrush="Black">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <CheckBox Content="Letter Number" Grid.Row="1" Grid.Column="1" IsChecked="{Binding PdfFilterLetterNumber}" />
+                                <CheckBox Content="Status" Grid.Row="1" Grid.Column="2" IsChecked="{Binding PdfFilterStatus}" />
+                                <CheckBox Content="Office Receipt Date" Grid.Row="1" Grid.Column="3" IsChecked="{Binding PdfFilterOfficeReceiptDate}"/>
+                                <CheckBox Content="Topic Area" Grid.Row="1" Grid.Column="4" IsChecked="{Binding PdfFilterTopicArea}"/>
+
+                                <CheckBox Content="Police Station" Grid.Row="2" Grid.Column="1" IsChecked="{Binding PdfFilterPoliceStation}"/>
+                                <CheckBox Content="Police Officer" Grid.Row="2" Grid.Column="2" IsChecked="{Binding PdfFilterPoliceOfficer}"/>
+                                <CheckBox Content="Office Dispatch Number" Grid.Row="2" Grid.Column="3" IsChecked="{Binding PdfFilterOfficeDispatchNumber}"/>
+                                <CheckBox Content="Source" Grid.Row="2" Grid.Column="4" IsChecked="{Binding PdfFilterSource}"/>
+
+                                <CheckBox Content="Office Dispatch Date" Grid.Row="3" Grid.Column="1" IsChecked="{Binding PdfFilterOfficeDispatchDate}"/>
+                                <CheckBox Content="Organization Name" Grid.Row="3" Grid.Column="2" IsChecked="{Binding PdfFilterOrganizationName}"/>
+                                <CheckBox Content="Sanha Detail" Grid.Row="3" Grid.Column="3" IsChecked="{Binding PdfFilterSanhaDetail}"/>
+                                <CheckBox Content="Verification Detail" Grid.Row="3" Grid.Column="4" IsChecked="{Binding PdfFilterVerificationDetail}"/>
+
+                                <CheckBox Content="Subject" Grid.Row="4" Grid.Column="1" IsChecked="{Binding PdfFilterSubject}"/>
+                                <CheckBox Content="PS Dispatch Number" Grid.Row="4" Grid.Column="2" IsChecked="{Binding PdfFilterPSDispatchNumber}"/>
+                                <CheckBox Content="PS Dispatch Date" Grid.Row="4" Grid.Column="3" IsChecked="{Binding PdfFilterPSDispatchDate}"/>
+                                <CheckBox Content="Case Number" Grid.Row="4" Grid.Column="4" IsChecked="{Binding PdfFilterCaseNumber}"/>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+                </Popup>
+
                 <DataGrid  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="80"  RowHeaderWidth="40" 
                    VerticalScrollBarVisibility="Auto" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                   BorderBrush="Gray" BorderThickness="5" Background="LightGray" 
@@ -381,5 +431,6 @@
                 
             </StackPanel>
         </StackPanel>
-    </Grid>
+        
+           </Grid>
 </UserControl>

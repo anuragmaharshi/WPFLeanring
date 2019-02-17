@@ -15,6 +15,7 @@ using NLog;
 using System.Data;
 using RecordTracker.SqliteDataLayer;
 using System.Collections.ObjectModel;
+using iTextSharp.text.pdf.draw;
 
 namespace RecordTracker.Services
 {
@@ -33,60 +34,43 @@ namespace RecordTracker.Services
             doc.Open();
            
         }
+        public CreatePDFDataGrid(string FileName, int NoOfCols)
+        {
+            InitialiseFilter();
+            InitailseRecords(NoOfCols);
+            doc = new Document(iTextSharp.text.PageSize.LETTER, 25, 25, 30, 30);
+            writer = PdfWriter.GetInstance(doc, new System.IO.FileStream(FileName, System.IO.FileMode.Create));
+            doc.Open();
 
+        }
         private void InitialiseFilter()
         {
             filter = new PdfPTable(2);
             PdfPCell cell = new PdfPCell(new Phrase("Filter selected for records"));
             cell.Colspan = 2;
             cell.HorizontalAlignment = 1;
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
             filter.AddCell(cell);
         }
 
-        private void InitailseRecords()
+        private void InitailseRecords(int NoOfCols=9)
         {
-            records = new PdfPTable(9);
+            
+            records = new PdfPTable(NoOfCols);
             PdfPCell cell = new PdfPCell(new Phrase("List of Records:"));
-            cell.Colspan = 9;
+            cell.Colspan = NoOfCols;
             cell.HorizontalAlignment = 1;
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
             records.AddCell(cell);
         }
 
         public void AddHeader(List<string> Headers)
         {
-           // doc.Add(new Paragraph("Hello World!"));
-            //foreach (string str in Headers)
-            //{
-            //    table.AddCell(new PdfPCell(new Phrase(str)));
-            //}
-
-            //PdfPTable table = new PdfPTable(3);
-
-            //PdfPCell cell = new PdfPCell(new Phrase("Header spanning 3 columns"));
-
-            //cell.Colspan = 2;
-
-            //cell.HorizontalAlignment = 1; //0=Left, 1=Centre, 2=Right
-
-            //table.AddCell(cell);
-
-            //table.AddCell("Col 1 Row 1");
-
-            //table.AddCell("Col 2 Row 1");
-
-            //table.AddCell("Col 3 Row 1");
-
-            //table.AddCell("Col 1 Row 2");
-
-            //table.AddCell("Col 2 Row 2");
-
-            //table.AddCell("Col 3 Row 2");
-
-            //foreach (string str in Headers)
-            //{
-            //    table.AddCell(str);
-            //}
-            //doc.Add(table);
+           
+            foreach (string str in Headers)
+            {
+                records.AddCell(str);
+            }
         }
 
         public void AddFilters(string FilterName,string FilterValue)
@@ -113,10 +97,23 @@ namespace RecordTracker.Services
             }
         }
 
+
+        public void AddRecords(List<List<string>> AllData)
+        {
+            foreach (var item in AllData)
+            {
+                foreach(string str in item)
+                {
+                    records.AddCell(str);
+                }
+            }
+        }
         public void SaveAndClose()
         {
 
             doc.Add(filter);
+            Paragraph linebreak = new Paragraph(" ");
+            doc.Add(linebreak);
             doc.Add(records);
             doc.Close();
         }

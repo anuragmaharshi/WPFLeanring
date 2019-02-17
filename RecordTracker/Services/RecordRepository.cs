@@ -84,6 +84,18 @@ namespace RecordTracker.Services
         {
             return rec.PoliceStationID == st.Id;
         }
-       
+
+        public async Task DeleteRecordsAsync(long id)
+        {
+            var LetterRecord = _context.LetterRecords.FirstOrDefault(c => c.Id == id);
+            if (LetterRecord != null)
+            {
+                _context.LetterRecords.Remove(LetterRecord);
+
+            }
+            await _context.SaveChangesAsync();
+
+        }
+
     }
 }
