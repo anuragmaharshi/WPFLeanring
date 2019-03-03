@@ -481,6 +481,7 @@ namespace RecordTracker.ViewModel
         private void OnSave()
         {
             RecRepo.UpdateLetterRecordAsync(SelectedRecord);
+            onSearch();
         }
 
         private bool canSearch()
