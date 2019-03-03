@@ -103,7 +103,13 @@ namespace RecordTracker.ViewModel
             var data = repo.GetSourcesAsync().Result.ToList();
             ObservableCollection<Source> SourceData = new ObservableCollection<Source>();
             foreach (var item in data)
-                SourceData.Add(item);
+            {
+                if (item.Id != 1)
+                {
+                    SourceData.Add(item);
+                }
+            }
+       
             Sources = SourceData;
         }
         #endregion

@@ -48,8 +48,8 @@ namespace RecordTracker.ViewModel
                     SourceRepo = new SourceRepository();
                     SubRepo = new SubjectRepository();
                     AddRepo = new RecordRepository();
-                    AddNewRecord = new RelayCommand(OnAdd, canAdd);
-                    CancelRecord = new RelayCommand(OnCancel, canCancel);
+                    AddNewRecord = new RelayCommand(OnAdd, CanAdd);
+                    CancelRecord = new RelayCommand(OnCancel, CanCancel);
                    
                 }
             }
@@ -107,7 +107,7 @@ namespace RecordTracker.ViewModel
         {
             get { return _letterNumber; }
             set {
-                //_letterNumber = value;
+                
                 if (value != "")
                     _letterNumber = value;
                 else
@@ -124,7 +124,7 @@ namespace RecordTracker.ViewModel
             get { return _officeReceiptDate; }
             set
             {
-
+                
                 _officeReceiptDate = value;
                 RaisePropertyChanged("OfficeReceiptDate");
                 CancelRecord.RaiseCanExecuteChanged();
@@ -138,7 +138,7 @@ namespace RecordTracker.ViewModel
             get { return _officeDispatchDate; }
             set
             {
-
+               
                 _officeDispatchDate = value;
                 RaisePropertyChanged("OfficeDispatchDate");
                 CancelRecord.RaiseCanExecuteChanged();
@@ -168,6 +168,7 @@ namespace RecordTracker.ViewModel
             get { return _psDispatchDate; }
             set
             {
+               
                 _psDispatchDate = value;
                 AddNewRecord.RaiseCanExecuteChanged();
                 CancelRecord.RaiseCanExecuteChanged();
@@ -369,6 +370,13 @@ namespace RecordTracker.ViewModel
                 foreach (var item in SubjectList)
                     SubjectData.Add(item);
                 Subjects = SubjectData;
+
+                SelectedPS = PoliceStations.First(x => x.Id.Equals(1));
+                SelectedTA = TopicsAndAreas.First(x => x.Id.Equals(1));
+                SelectedPO = PoliceOfficers.First(x => x.Id.Equals(1));
+                SelectedSource = Sources.First(x => x.Id.Equals(1));
+                SelectedSubject = Subjects.First(x => x.Id.Equals(1));
+
             }
             catch (Exception e)
             {
@@ -377,27 +385,28 @@ namespace RecordTracker.ViewModel
             }
         }
 
-        private bool canAdd()
+        private bool CanAdd()
         {
-            return SelectedPS!=null && SelectedTA != null && SelectedPO != null 
-                && LetterNumber != null && SelectedSource != null && SelectedSubject != null && OfficeReceiptDate != null;
+            return LetterNumber != null;
+
         }
 
         private void OnAdd()
         {
-            SqliteDataLayer.LetterRecord record = new SqliteDataLayer.LetterRecord();
+            LetterRecord record = new LetterRecord
+            {
+                LetterNumber = LetterNumber
+            };
 
-            record.LetterNumber = LetterNumber;
             if (OfficeDispatchNumber != null)
                 record.OfficeDispatchNumber = OfficeDispatchNumber;
-            else
-                record.OfficeDispatchNumber = null;
 
-            if(SelectedSource!=null)
+            if (SelectedSource != null)
                 record.SourceID = SelectedSource.Id;
-
+           
             if(OfficeDispatchDate!=null)
                 record.OfficeDispatchDate = FormatDate(OfficeDispatchDate);
+
             if(OfficeReceiptDate!=null)
                 record.OfficeReceiptDate = FormatDate(OfficeReceiptDate);
 
@@ -407,33 +416,48 @@ namespace RecordTracker.ViewModel
             if(SanhaDetail!=null)
                 record.SanhaDetail = SanhaDetail;
 
-            record.VerificationDetail = VerificationDetail;
-            record.SubjectID = SelectedSubject.Id;
+            if(VerificationDetail != null)
+                record.VerificationDetail = VerificationDetail;
 
+            if (SelectedSubject != null)
+                record.SubjectID = SelectedSubject.Id;
+            
             if(PsDispatchNumber!=null)
                 record.PsDispatchNumber = PsDispatchNumber;
-            record.PsDispatchDate = PsDispatchDate;
-            record.TopicAreaID = SelectedTA.Id;
-            record.PoliceOfficerID = SelectedPO.Id;
-            record.PoliceStationID = SelectedPS.Id;
-  
+
+            if(PsDispatchDate!=null)
+                record.PsDispatchDate = FormatDate(PsDispatchDate);
+
+            if (SelectedTA != null)
+                record.TopicAreaID = SelectedTA.Id;
+           
+            if (SelectedPO != null)
+                record.PoliceOfficerID = SelectedPO.Id;
+           
+            if (SelectedPS != null)
+                record.PoliceStationID = SelectedPS.Id;
+            
             record.StatusID = 1;
             record.Remarks = Remarks;
+
             if(CaseNumber!=null)
                 record.CaseNumber = CaseNumber;
             try
             {
+                _logger.Info("Adding a new record" + record.ToString());
                 AddRepo.AddLetterRecordAsync(record).Wait();
                 SaveText = "Record added successfully.";
             }
-            catch
+            catch(Exception e)
             {
+                _logger.Error("Some error have occured in AddRecordViewModel" + e.StackTrace);
+                _logger.Error("Error messgage" + e.Message+" \n inner exception"+e.InnerException.Message);
                 SaveText = "Unable to add record.";
             }
             ResetUI();
         }
 
-        private bool canCancel()
+        private bool CanCancel()
         {
             return SelectedPS != null || SelectedTA != null || SelectedPO != null 
                 || LetterNumber!=null || OfficeDispatchNumber != null|| OfficeDispatchDate != null 
@@ -449,16 +473,17 @@ namespace RecordTracker.ViewModel
         }
 
         private void ResetUI()
-        {   
-            SelectedPS = null;
-            SelectedTA = null;
-            SelectedPO = null;
+        {
+            SelectedPS = PoliceStations.First(x => x.Id.Equals(1));
+            SelectedTA = TopicsAndAreas.First(x => x.Id.Equals(1));
+            SelectedPO = PoliceOfficers.First(x => x.Id.Equals(1));
+            SelectedSource = Sources.First(x => x.Id.Equals(1));
+            SelectedSubject = Subjects.First(x => x.Id.Equals(1));
             LetterNumber = null;
             OfficeDispatchNumber = null;
             OfficeDispatchDate = null;
             OfficeReceiptDate = null;
-            SelectedSource = null;
-            SelectedSubject = null;
+           
             PsDispatchDate = null;
             PsDispatchNumber = null;
             SanhaDetail = null;
@@ -471,8 +496,19 @@ namespace RecordTracker.ViewModel
 
         private string FormatDate(string dateTime)
         {
-            var dty = DateTime.Parse(dateTime);
-            return dty.ToString("yyyy-MM-dd");
+            try
+            {
+                _logger.Info(dateTime);
+                var dty = DateTime.Parse(dateTime, CultureInfo.InvariantCulture);
+                return dty.ToString("yyyy-MM-dd");
+            }
+            catch(Exception e)
+            {
+                _logger.Error("Some error occured while formatting " + e.StackTrace);
+                _logger.Error("error message is  " + e.Message);
+                return null;
+            }
+           
         }
         #endregion
     }

@@ -196,23 +196,23 @@
                         </ScrollViewer>
                     </Border>
                 </Popup>
-
-                <DataGrid  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="80"  RowHeaderWidth="40" 
-                   VerticalScrollBarVisibility="Auto" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                  BorderBrush="Gray" BorderThickness="5" Background="LightGray" 
-                  AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding ReportRecords}" SelectedItem="{Binding SelectedRecord}" Name="LetterDataGrd">
-                    <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <Setter Property="Background" Value="LightGreen" />
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Green"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.RowStyle>
-                    <DataGrid.ColumnHeaderStyle>
+                
+                    <DataGrid  
+                        
+                        HorizontalContentAlignment="Stretch" 
+                        ColumnWidth="80"  RowHeaderWidth="40" 
+                        SelectionMode="Single" 
+                        BorderBrush="Gray" BorderThickness="1"  
+                        AutoGenerateColumns="False"  CanUserAddRows="False" 
+                        ItemsSource="{Binding ReportRecords}" 
+                        SelectedItem="{Binding SelectedRecord}" Name="LetterDataGrd"
+                        Width="800" Height="500"
+                        HorizontalScrollBarVisibility="Visible"
+                        VerticalScrollBarVisibility="Visible" 
+                        ScrollViewer.CanContentScroll="True"
+                        >
+                        
+                        <DataGrid.ColumnHeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
@@ -427,8 +427,8 @@
 
                     </DataGrid.Columns>
                 </DataGrid>
+             
 
-                
             </StackPanel>
         </StackPanel>
         

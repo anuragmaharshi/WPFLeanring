@@ -73,7 +73,13 @@ namespace RecordTracker.ViewModel
             var data = repo.GetSubectsAsync().Result.ToList();
             ObservableCollection<Subject> SubjectData = new ObservableCollection<Subject>();
             foreach (var item in data)
-                SubjectData.Add(item);
+            {
+                if (item.Id != 1)
+                {
+                    SubjectData.Add(item);
+                }
+            }
+           
             Subjects = SubjectData;
         }
         private bool CanSave()

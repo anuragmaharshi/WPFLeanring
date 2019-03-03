@@ -75,7 +75,11 @@ namespace RecordTracker.ViewModel
             var data= repo.GetPoliceStationsAsync().Result.ToList();
             ObservableCollection<PoliceStation> PSData = new ObservableCollection<PoliceStation>();
             foreach (var item in data)
-                PSData.Add(item);
+                if (item.Id != 1)
+                {
+                    PSData.Add(item);
+                }
+           
             PoliceStations = PSData;
         }
 

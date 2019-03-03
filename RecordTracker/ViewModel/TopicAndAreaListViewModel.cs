@@ -71,7 +71,13 @@ namespace RecordTracker.ViewModel
             var data = repo.GetTopicAndAreasAsync().Result.ToList();
             ObservableCollection<TopicsAndArea> TaAData = new ObservableCollection<TopicsAndArea>();
             foreach (var item in data)
-                TaAData.Add(item);
+            {
+                if (item.Id != 1)
+                {
+                    TaAData.Add(item);
+                }
+            }
+               
             TopicsAndAreas = TaAData;
         }
 

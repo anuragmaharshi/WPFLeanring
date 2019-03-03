@@ -22,6 +22,10 @@ namespace RecordTracker
             base.OnStartup(e);
             _logger.Info("Starting Application- App.xaml");
             SetupExceptionHandling();
+
+            //Style dpStyle = new Style(typeof(System.Windows.Controls.DatePicker));
+            //dpStyle.Setters.Add(new Setter(System.Windows.Controls.DatePicker.LanguageProperty, System.Windows.Markup.XmlLanguage.GetLanguage("en-US")));
+            //this.Resources.Add(typeof(System.Windows.Controls.DatePicker), dpStyle);
         }
 
         private void SetupExceptionHandling()

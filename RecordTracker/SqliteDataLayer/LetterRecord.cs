@@ -41,7 +41,7 @@ namespace RecordTracker.SqliteDataLayer
                 }
                 catch 
                 {
-                    return "";
+                    return " ";
                 }
                
             }
@@ -52,8 +52,16 @@ namespace RecordTracker.SqliteDataLayer
         {
             get
             {
-                var dty = DateTime.Parse(OfficeReceiptDate);
-                return dty.ToString("yyyy-MM-dd");
+                try
+                {
+                    var dty = DateTime.Parse(OfficeReceiptDate);
+                    return dty.ToString("yyyy-MM-dd");
+                }
+                catch
+                {
+                    return " ";
+                }
+              
             }
 
         }
@@ -69,11 +77,19 @@ namespace RecordTracker.SqliteDataLayer
                 }
                 catch
                 {
-                    return "";
+                    return " ";
                 }
               
             }
 
+        }
+
+        public override string ToString()
+        {
+            string value = string.Format("letter number {0} , OfficeReceiptDate = {1}, TopicAreaID = {2} ," +
+                " OfficeDispatchNumber = {3},FormatPsDispatchDate = {4}",
+                LetterNumber, OfficeReceiptDate, TopicAreaID, OfficeDispatchNumber, FormatPsDispatchDate);
+            return value;
         }
 
     }

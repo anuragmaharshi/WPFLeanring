@@ -29,6 +29,8 @@ namespace RecordTracker.Views
             {
                 _logger.Info("Inside RecordsReport.xaml. Initialising it");
                 InitializeComponent();
+               // LetterDataGrd = SystemParameters.WorkArea.Height;
+                LetterDataGrd.Width = SystemParameters.WorkArea.Width-20;
             }
             catch (Exception e)
             {
