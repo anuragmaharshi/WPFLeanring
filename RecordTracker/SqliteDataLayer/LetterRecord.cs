@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,12 +37,12 @@ namespace RecordTracker.SqliteDataLayer
             {
                 try
                 {
-                    var dty = DateTime.Parse(OfficeDispatchDate);
+                    var dty = DateTime.Parse(OfficeDispatchDate, CultureInfo.InvariantCulture);
                     return dty.ToString("yyyy-MM-dd");
                 }
                 catch 
                 {
-                    return " ";
+                    return null;
                 }
                
             }
@@ -54,12 +55,12 @@ namespace RecordTracker.SqliteDataLayer
             {
                 try
                 {
-                    var dty = DateTime.Parse(OfficeReceiptDate);
+                    var dty = DateTime.Parse(OfficeReceiptDate, CultureInfo.InvariantCulture);
                     return dty.ToString("yyyy-MM-dd");
                 }
                 catch
                 {
-                    return " ";
+                    return "";
                 }
               
             }
@@ -72,12 +73,12 @@ namespace RecordTracker.SqliteDataLayer
             {
                 try
                 {
-                    var dty = DateTime.Parse(PsDispatchDate);
+                    var dty = DateTime.Parse(PsDispatchDate, CultureInfo.InvariantCulture);
                     return dty.ToString("yyyy-MM-dd");
                 }
                 catch
                 {
-                    return " ";
+                    return "";
                 }
               
             }

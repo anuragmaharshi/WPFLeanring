@@ -6,6 +6,7 @@ using RecordTracker.SqliteDataLayer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -381,12 +382,22 @@ namespace RecordTracker.ViewModel
             set { _caseNumberFilter = value; RaisePropertyChanged("PdfFilterCaseNumber"); }
         }
 
+        private Visibility _isWorking;
+        public Visibility IsWorking
+        {
+            get { return _isWorking; }
+            set { _isWorking = value;RaisePropertyChanged("IsWorking");
+               
+            }
+        }
+
         public void LoadData()
         {
             try
             {
                 _logger.Info("Inside Records viewer view model Load data");
-                var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
+                IsWorking = Visibility.Hidden;
+                 var POList = POrepo.GetPoliceOfficersAsync().Result.ToList();
                 ObservableCollection<PoliceOfficer> POData = new ObservableCollection<PoliceOfficer>();
                 POFilter = new ObservableCollection<PoliceOfficer>();
                 foreach (var item in POList)
@@ -480,8 +491,11 @@ namespace RecordTracker.ViewModel
 
         private void OnSave()
         {
+            IsWorking = Visibility.Visible;
+          
             RecRepo.UpdateLetterRecordAsync(SelectedRecord);
             onSearch();
+            IsWorking = Visibility.Hidden;
         }
 
         private bool canSearch()
@@ -491,93 +505,97 @@ namespace RecordTracker.ViewModel
 
         private void onSearch()
         {
-            List<long> idPO, idPS, idTA,idSrc,idSub,idStatus;
-            idPO = new List<long>();
-            idPS = new List<long>();
-            idTA = new List<long>();
-            idSrc = new List<long>();
-            idSub = new List<long>();
-            idStatus = new List<long>();
-            if (SelectedPoliceOfficer.Name.Equals("All"))
-            {
-                foreach(var item in PoliceOfficers)
-                {
-                    idPO.Add(item.Id);
-                }      
-            }
-            else
-            {
-                idPO.Add(SelectedPoliceOfficer.Id);
-            }
+       
+                IsWorking = Visibility.Visible;
 
-            if (SelectedPoliceStation.Name.Equals("All"))
-            {
-                foreach (var item in PoliceStations)
+                List<long> idPO, idPS, idTA, idSrc, idSub, idStatus;
+                idPO = new List<long>();
+                idPS = new List<long>();
+                idTA = new List<long>();
+                idSrc = new List<long>();
+                idSub = new List<long>();
+                idStatus = new List<long>();
+                if (SelectedPoliceOfficer.Name.Equals("All"))
                 {
-                    idPS.Add(item.Id);
+                    foreach (var item in PoliceOfficers)
+                    {
+                        idPO.Add(item.Id);
+                    }
                 }
-            }
-            else
-            {
-                idPS.Add(SelectedPoliceStation.Id);
-            }
-
-            if (SelectedTopic.Name.Equals("All"))
-            {
-                foreach (var item in TopicsAndAreas)
+                else
                 {
-                    idTA.Add(item.Id);
+                    idPO.Add(SelectedPoliceOfficer.Id);
                 }
-            }
-            else
-            {
-                idTA.Add(SelectedTopic.Id);
-            }
 
-            if (SelectedSource.Name.Equals("All"))
-            {
-                foreach (var item in Sources)
+                if (SelectedPoliceStation.Name.Equals("All"))
                 {
-                    idSrc.Add(item.Id);
+                    foreach (var item in PoliceStations)
+                    {
+                        idPS.Add(item.Id);
+                    }
                 }
-            }
-            else
-            {
-                idSrc.Add(SelectedSource.Id);
-            }
-
-            if (SelectedSubject.Name.Equals("All"))
-            {
-                foreach (var item in Subjects)
+                else
                 {
-                    idSub.Add(item.Id);
+                    idPS.Add(SelectedPoliceStation.Id);
                 }
-            }
-            else
-            {
-                idSub.Add(SelectedSubject.Id);
-            }
 
-            if (SelectedStatus.Name.Equals("All"))
-            {
-                foreach (var item in Statuses)
+                if (SelectedTopic.Name.Equals("All"))
                 {
-                    idStatus.Add(item.Id);
+                    foreach (var item in TopicsAndAreas)
+                    {
+                        idTA.Add(item.Id);
+                    }
                 }
-            }
-            else
-            {
-                idStatus.Add(SelectedStatus.Id);
-            }
-            letterRecords = RecRepo.GetRecordsAsync(idPS,idPO,idTA,idSrc,idSub,idStatus).Result.ToList();
-          
-            ObservableCollection<SqliteDataLayer.LetterRecord> RecData = new ObservableCollection<SqliteDataLayer.LetterRecord>();
-            foreach (var item in letterRecords)
-                RecData.Add(item);
-            ReportRecords = RecData;
+                else
+                {
+                    idTA.Add(SelectedTopic.Id);
+                }
 
-          
-        }
+                if (SelectedSource.Name.Equals("All"))
+                {
+                    foreach (var item in Sources)
+                    {
+                        idSrc.Add(item.Id);
+                    }
+                }
+                else
+                {
+                    idSrc.Add(SelectedSource.Id);
+                }
+
+                if (SelectedSubject.Name.Equals("All"))
+                {
+                    foreach (var item in Subjects)
+                    {
+                        idSub.Add(item.Id);
+                    }
+                }
+                else
+                {
+                    idSub.Add(SelectedSubject.Id);
+                }
+
+                if (SelectedStatus.Name.Equals("All"))
+                {
+                    foreach (var item in Statuses)
+                    {
+                        idStatus.Add(item.Id);
+                    }
+                }
+                else
+                {
+                    idStatus.Add(SelectedStatus.Id);
+                }
+                letterRecords = RecRepo.GetRecordsAsync(idPS, idPO, idTA, idSrc, idSub, idStatus).Result.ToList();
+
+                ObservableCollection<SqliteDataLayer.LetterRecord> RecData = new ObservableCollection<SqliteDataLayer.LetterRecord>();
+                foreach (var item in letterRecords)
+                    RecData.Add(item);
+                ReportRecords = RecData;
+
+                IsWorking = Visibility.Hidden;
+            }
+        
 
         private bool canExport()
         {

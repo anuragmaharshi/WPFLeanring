@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RecordTracker.Views"
              xmlns:viewModel="clr-namespace:RecordTracker.ViewModel"
-             
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -32,6 +33,7 @@
                
             </Style.Triggers>
         </Style>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <viewModel:RecordsReportViewModel/>
@@ -166,9 +168,9 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" >
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Save" Padding="2" Width="100" Command="{Binding SaveRecord}"/>
+                    <Button Content="Save" Padding="2" Width="100" Command="{Binding SaveRecord}" />
                     <Button Content="Delete" Margin="10,0,10,0"  Width="100" Command="{Binding DeleteRecord}" />
-                    <Button Content="Print to PDF"  Width="100" Command="{Binding ExportToPDF}"/>
+                    <Button Content="Print to PDF"  Width="110" Command="{Binding ExportToPDF}"/>
                     <ToggleButton Name="buttonPDFConfig" Content="Configure PDF" Margin="10,0,10,0"/>
 
 
@@ -219,7 +221,10 @@
                         </ScrollViewer>
                     </Border>
                 </Popup>
-                
+                <Border Visibility="{Binding IsWorking}">
+                    <fa:ImageAwesome Icon="Refresh" Spin="True" Height="48" Width="48"  /> 
+                </Border>
+               
                     <DataGrid  
                         
                         HorizontalContentAlignment="Stretch" 
@@ -273,20 +278,22 @@
                         <DataGridTemplateColumn Header="Recipt Date " CanUserSort="True" SortMemberPath="OfficeReceiptDate">
                             <DataGridTemplateColumn.CellTemplate >
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding FormatOfficeReceiptDate, UpdateSourceTrigger=LostFocus}"  Margin="4"/>
+                                    <TextBlock Text="{Binding FormatOfficeReceiptDate,TargetNullValue={x:Static system:String.Empty}}"  Margin="4"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate >
-                                    <DatePicker SelectedDate="{Binding OfficeReceiptDate, StringFormat='dd MMM yyyy', Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  >
+                                    <DatePicker SelectedDate="{Binding OfficeReceiptDate, StringFormat='yyyy-MM-dd',TargetNullValue={x:Static system:String.Empty}, 
+                                        Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  >
                                         <DatePicker.Resources>
                                             <Style TargetType="DatePickerTextBox" >
                                                 <Setter Property="Control.Template">
                                                     <Setter.Value>
                                                         <ControlTemplate>
-                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, 
+                                                                StringFormat='yyyy-MM-dd', TargetNullValue={x:Static system:String.Empty}, 
+                                                                RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
                                                             </TextBox>
-
                                                         </ControlTemplate>
                                                     </Setter.Value>
                                                 </Setter>
@@ -351,18 +358,21 @@
                         <DataGridTemplateColumn Header="Office Dispatch Date" CanUserSort="True" SortMemberPath="OfficeDispatchDate">
                             <DataGridTemplateColumn.CellTemplate >
                                 <DataTemplate >
-                                    <TextBlock Text="{Binding FormatOfficeDispatchDate}"  Margin="4"/>
+                                    <TextBlock Text="{Binding FormatOfficeDispatchDate, TargetNullValue={x:Static system:String.Empty}}"  Margin="4"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate >
-                                    <DatePicker SelectedDate="{Binding OfficeDispatchDate,StringFormat='dd MMM yyyy', Mode=TwoWay}" >
+                                    <DatePicker SelectedDate="{Binding OfficeDispatchDate,StringFormat='yyyy-MM-dd',TargetNullValue={x:Static system:String.Empty}, 
+                                        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                         <DatePicker.Resources>
                                             <Style TargetType="DatePickerTextBox" >
                                                 <Setter Property="Control.Template">
                                                     <Setter.Value>
                                                         <ControlTemplate>
-                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, 
+                                                                StringFormat='yyyy-MM-dd',TargetNullValue={x:Static system:String.Empty},
+                                                                RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
                                                             </TextBox>
                                                         </ControlTemplate>
                                                     </Setter.Value>
@@ -419,18 +429,19 @@
                         <DataGridTemplateColumn Header="PS Dispatch Date" CanUserSort="True" SortMemberPath="PsDispatchDate">
                             <DataGridTemplateColumn.CellTemplate >
                                 <DataTemplate >
-                                    <TextBlock Text="{Binding FormatPsDispatchDate}"  Margin="4"/>
+                                    <TextBlock Text="{Binding FormatPsDispatchDate,TargetNullValue={x:Static system:String.Empty}}"  Margin="4"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate >
-                                    <DatePicker SelectedDate="{Binding PsDispatchDate,StringFormat='dd MMM yyyy', Mode=TwoWay}" >
+                                    <DatePicker SelectedDate="{Binding PsDispatchDate,StringFormat='yyyy-MM-dd',TargetNullValue={x:Static system:String.Empty}, Mode=TwoWay}" >
                                         <DatePicker.Resources>
                                             <Style TargetType="DatePickerTextBox" >
                                                 <Setter Property="Control.Template">
                                                     <Setter.Value>
                                                         <ControlTemplate>
-                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='dd MMM yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
+                                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat='yyyy-MM-dd',
+                                                                TargetNullValue={x:Static system:String.Empty}, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" IsReadOnly="True">
                                                             </TextBox>
                                                         </ControlTemplate>
                                                     </Setter.Value>
