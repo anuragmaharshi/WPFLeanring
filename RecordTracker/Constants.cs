@@ -17,9 +17,9 @@ namespace RecordTracker
 
             //_logger.Info("DB file path set = " + ConfigurationManager.AppSettings["DbFilePath"]);
             // return ConfigurationManager.AppSettings["DbFilePath"];
-            var fileName = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.LocalApplicationData), "RecordTracker\\MainApplication.db");
-            return fileName;
+            //var fileName = Path.Combine(Environment.GetFolderPath(
+            //Environment.SpecialFolder.LocalApplicationData), "RecordTracker\\MainApplication.db");
+            return "Resources/MainApplication.db";
         }
     }
 }

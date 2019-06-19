@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,18 +28,40 @@ namespace RecordTracker
             try
             {
                 _logger.Info("Inside Mainwindow .xaml");
+                LogPath();
+                if (!IsDBFileExist(Constants.GetDbFilePath()))
+                    throw new FileNotFoundException("File not found at path"+ Constants.GetDbFilePath());
                 InitializeComponent();
                 this.Height = SystemParameters.WorkArea.Height;
                 this.Width = SystemParameters.WorkArea.Width;
                 this.WindowStyle = WindowStyle.SingleBorderWindow;
                 this.WindowState = WindowState.Maximized;
             }
+            catch(FileNotFoundException e)
+            {
+                _logger.Error("Some error occured - error message is" + e.Message);
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
             catch(Exception e)
             {
-                MessageBox.Show(e.Message);
-                _logger.Error("Some error occures"+e.StackTrace);
+                
+                _logger.Error("Some error occured"+e.StackTrace);
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
         }
-            
+
+        private void LogPath()
+        {
+            var fileName = System.IO.Path.Combine(Environment.GetFolderPath(
+            Environment.SpecialFolder.LocalApplicationData), "RecordTracker\\MainApplication.db");
+            _logger.Info("Local app path"+fileName);
+            _logger.Info("Check file " + IsDBFileExist(fileName));
+        }
+
+        private bool IsDBFileExist(string fileName)
+        {
+           return File.Exists(fileName);
+        }
+    
     }
 }
