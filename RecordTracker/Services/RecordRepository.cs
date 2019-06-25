@@ -49,7 +49,7 @@ namespace RecordTracker.Services
            
         }
 
-        public Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync(List<long> PSids, 
+        public Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync1(List<long> PSids, 
             List<long> POids, List<long> TAids,List<long> Srcids,List<long> Subids, List<long> StatusIds)
         {
 
@@ -65,9 +65,42 @@ namespace RecordTracker.Services
                        select record);
 
             return AllData.ToListAsync();
-
-
+            /*AllData = (from record in _context.LetterRecords
+                       where StatusIds.Any(x => x.Equals(record.StatusID))
+                       && PSids.Any(x => x.Equals(record.PoliceStationID))
+                       && POids.Any(x => x.Equals(record.PoliceOfficerID))
+                       && TAids.Any(x => x.Equals(record.TopicAreaID))
+                       && Srcids.Any(x => x.Equals(record.SourceID))
+                       && Subids.Any(x => x.Equals(record.SubjectID))
+                       select record);
+                       */
         }
+
+        public Task<List<SqliteDataLayer.LetterRecord>> GetRecordsAsync(List<long> PSids,
+           List<long> POids, List<long> TAids, List<long> Srcids, List<long> Subids, List<long> StatusIds)
+        {
+
+
+            IQueryable<SqliteDataLayer.LetterRecord> AllData;
+            AllData = (from record in _context.LetterRecords
+                       join source in _context.Sources on record.SourceID equals source.Id
+                       join subject in _context.Subjects on record.SubjectID equals subject.Id
+                       join status in _context.Status on record.StatusID equals status.Id
+                       join policeStation in _context.PoliceStations on record.PoliceStationID equals policeStation.Id
+                       join policeOfficer in _context.PoliceOfficers on record.PoliceOfficerID equals policeOfficer.Id
+                       join topic in _context.TopicsAndAreas on record.TopicAreaID equals topic.Id
+                       where TAids.Contains(topic.Id)
+                       where PSids.Contains(policeStation.Id)
+                       where POids.Contains(policeOfficer.Id)
+                       where Srcids.Contains(source.Id)
+                       where Subids.Contains(subject.Id)
+                       where StatusIds.Contains(status.Id)
+                       select record);
+           
+            return AllData.ToListAsync();
+            
+        }
+
 
         public async Task<SqliteDataLayer.LetterRecord> UpdateLetterRecordAsync(SqliteDataLayer.LetterRecord record)
         {

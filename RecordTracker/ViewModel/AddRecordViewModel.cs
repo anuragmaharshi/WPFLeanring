@@ -376,6 +376,7 @@ namespace RecordTracker.ViewModel
                 SelectedPO = PoliceOfficers.First(x => x.Id.Equals(1));
                 SelectedSource = Sources.First(x => x.Id.Equals(1));
                 SelectedSubject = Subjects.First(x => x.Id.Equals(1));
+                SaveText = null;
 
             }
             catch (Exception e)
